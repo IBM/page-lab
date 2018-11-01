@@ -1,6 +1,6 @@
 # Page Lab
 
-Web Page Performance Laboratory
+Web Page Performance Laboratory: Scaling (https://github.com/GoogleChrome/Lighthouse "Google Lighthouse") performace and web testing tools
 
 ## Page Lab is an attempt at understanding web performace at scale
 
@@ -12,6 +12,16 @@ The goals here are 3-fold:
 * A history of each test run, for as many runs as desired
 * Historical data will allow us to track performance of our pages over time, giving us insight into when changes cause performance regressions
 * Coupled with the Web Timing API, Page Lab will be able to drill into any included scripts (properly instrumented) and understand what EXACTLY is impacting page performance
+
+## Get started
+
+### Setup Django 'Heads Up Display' dashboard
+
+* see: (admin/pageaudit/README.md "Django README")
+
+### Setup Node testing server
+
+$ see: (pageaudit/README.md "Node README")
 
 ## Roadmap & Ideas
 
