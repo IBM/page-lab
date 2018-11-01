@@ -25,6 +25,6 @@ Get _pageaudit_ django app up and running, add some Urls then...
 
 Page Lab node server will connect to the Django server, request all the Urls and fill the redis queue with them.
 
-Wokers will fork, grab a url from the queue and run a Lighthouse performance , a18y or other audit and report back to the Django server.
+Workers will fork, grab a url from the queue and run a Lighthouse performance, a18y or other audit and report back to the Django server.
 
 A default of 12 tests will be run concurrently
