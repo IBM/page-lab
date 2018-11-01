@@ -1,0 +1,9 @@
+{% load static %}
+{% load beautify %}
+{% load scoredisplayoptions %}
+
+<div data-itemid="{{ url.id }}" class="pl-compare-item ibm-col-12-4 ibm-center">
+    <p><a href="#" data-itemid="{{ url.id }}" class="pl-compare-item-remove ibm-textcolor-red-50 ibm-small">Remove</a></p>
+    <div style="margin-bottom: 10px !important;"><img src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="80" style="border: 1px solid #c7c7c7;"></div>
+    <p class="ibm-small ibm-word-break">{{ url.url|noprotocol }}</p>
+</div>

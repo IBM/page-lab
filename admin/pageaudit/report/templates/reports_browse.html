@@ -1,0 +1,207 @@
+{% extends "page_template.html" %}
+
+{% load beautify %}
+{% load static %}
+
+
+{% block pageTitle %} Report cards {% endblock  %}
+
+{% block menuBrowseClass %}ibm-highlight{% endblock %}
+        
+
+
+
+{% block extraFiles %}
+        
+    <style>
+        
+        /* Add slight delay so fly-bys aren't so annoying. */
+        .pl-reportcard {
+            transition: border .4s .15s;
+        }
+        
+        .pl-reportcard-notests {
+            background: rgba(0,0,0,0.75);
+            box-sizing: border-box;
+            left: 50%;
+            padding: 16px;
+            position: absolute;
+            top: 40%;
+            transform: translate3d(-50%,-50%,0);
+            width: 120px;
+        }
+        
+        .pl-reportcard {
+            background: #fff;
+            position: relative;
+        }
+        
+        .pl-reportcard img {
+            border: 1px solid #c7c7c7;
+        }
+       
+        .pl-compare-cbcon {
+            position: absolute;
+            right: 10px;
+        }
+        
+        .pl-compare-cbcon .ibm-styled-checkbox + label::before {
+            height: 18px;
+            left: 6px;
+            top: 3px;
+            width: 18px;
+        }
+        
+        .pl-compare-cbcon .ibm-styled-checkbox + label::after {
+            left: 12px;
+            top: 6px;
+        }
+
+        /* Add slight delay so fly-bys aren't so annoying. */
+        .pl-compare-cbcon .ibm-checkbox-wrapper label {
+            transition: opacity .4s .15s;
+            opacity: 0;
+        }
+        .pl-reportcard:hover .ibm-checkbox-wrapper label,
+        .pl-compare-cbcon .ibm-checkbox-wrapper input:checked + label {
+            opacity: 1;
+        }
+        
+        
+    </style>
+    
+    
+    <script>
+        
+        {% include "compare.js" %}
+
+        (function ($, IBM) {
+            
+            var $loadmoreContainer, $cardContainer, pageNum = 1;
+            
+            
+            function setupLoadMore () {
+                $loadmoreContainer.find("button")[0].addEventListener("click", loadItems);
+            }
+            
+            function loadItems () {
+                $.ajax({
+                    url: "{% url 'plr:api_home_items' %}?page=" + (pageNum + 1),
+                    dataType: "json",
+                    data: $("#pl-sortform").serialize(),
+                    success: function (data) {
+                        $cardContainer.append(data.resultsHtml);
+                        
+                        pl.compare.preselectCheckbox($cardContainer.find("input:checkbox"));
+                        
+                        if (data.hasNextPage) {
+                            pageNum = (data.pageNum + 1);
+                        }
+                        else {
+                            $loadmoreContainer.remove();
+                        }
+                    }
+               });
+            }
+            
+            $(function () {
+                $loadmoreContainer = $("#pl-loadmore");
+                $cardContainer = $("#pl-cards-container");
+                if ($loadmoreContainer[0]) {
+                    setupLoadMore();
+                }
+                
+                // Setup checkboxes on this page to add/remove items in the compare tray.
+                pl.compare.setupCompareCheckboxes($("#pl-cards-container"));
+                pl.compare.preselectCheckbox($("input:checkbox"));
+                
+            });
+        })(jQuery, IBMCore);
+                
+    </script>
+    
+{% endblock %}
+
+
+{% block content %}
+
+		<div class="ibm-fluid ibm-fullwidth">
+            <div class="ibm-col-12-12">
+                <form id="pl-sortform" aria-label="Sort data listing" action="" method="get">
+                    
+                    
+<!--
+                            <div class="ibm-margin-bottom-1" style="margin-right: 60px; display: inline-block;">
+                                <p class="ibm-bold" style="padding-bottom: 10px;">Filter:</p>
+                                <select name="filter" aria-label="Select a field">
+                                    <option value="all" {% if filter == 'all' %}selected="selected"{% endif %}>All</option>
+                                    <option value="good" {% if filter == 'good' %}selected="selected"{% endif %}>Performance - Good</option>
+                                    <option value="average" {% if filter == 'average' %}selected="selected"{% endif %}>Performance - Avg</option>
+                                    <option value="poor" {% if filter == 'poor' %}selected="selected"{% endif %}>Performance - Poor</option>
+                                </select>
+                            </div>
+-->
+                    
+                            <div class="ibm-margin-bottom-1" style="margin-right: 15px; display: inline-block;">
+                                <p class="ibm-bold" style="padding-bottom: 10px;">Sort:</p>
+                                <select name="sortby" aria-label="Select a field">
+                                    <option value="url" {% if sortby == 'url' %}selected="selected"{% endif %}>URL</option>
+                                    <option value="date" {% if sortby == 'date' %}selected="selected"{% endif %}>Last test date</option>
+                                    <option value="a11yscore" {% if sortby == 'a11yscore' %}selected="selected"{% endif %}>Accessibility score</option>
+                                    <option value="perfscore" {% if sortby == 'perfscore' %}selected="selected"{% endif %}>Performance score</option>
+                                    <option value="seoscore" {% if sortby == 'seoscore' %}selected="selected"{% endif %}>SEO score</option>
+                                </select>
+                            </div>
+                            
+                            <div class="ibm-margin-bottom-1" style="margin-right: 60px; display: inline-block;">
+                                <select name="sortorder" aria-label="Select an order">
+                                    <option value="asc" {% if sortorder == 'asc' %}selected="selected"{% endif %}>Ascending</option>
+                                    <option value="desc" {% if sortorder == 'desc' %}selected="selected"{% endif %}>Descending</option>
+                                </select>
+                            </div>
+                            
+                        
+                            <div class="ibm-margin-bottom-1" style="margin-right: 15px; display: inline-block;">
+                                <p class="ibm-bold" style="padding-bottom: 10px;">Show:</p>
+                                <select name="viewdata" aria-label="Select an order">
+                                    <option value="perfscore" {% if viewdata == 'perfscore' %}selected="selected"{% endif %}>Performance score</option>
+                                    <option value="a11yscore" {% if viewdata == 'a11yscore' %}selected="selected"{% endif %}>Accessibility score</option>
+                                    <option value="seoscore" {% if viewdata == 'seoscore' %}selected="selected"{% endif %}>SEO score</option>
+                                </select>
+                            </div>
+                                    
+                            <div class="ibm-margin-bottom-1" style="margin-right: 60px; display: inline-block;">
+                                <p class="ibm-ind-link">
+                                    <a class="ibm-forward-link" href="####" onclick="jQuery('#pl-sortform').submit();return false;">Apply</a>
+                                    
+                                </p>
+                            </div>
+                        
+                </form>
+            </div>
+		</div>
+		
+		<br>
+		
+        <div id="pl-cards-container" class="ibm-fluid ibm-fullwidth ibm-flex ibm-flex--wrap ibm-margin-bottom-1">
+            {% for url in urls %}
+            	{% include "browse_item.html" with url=url %}
+            {% endfor %}	  
+		</div>
+		
+		{% if hasNextPage %}
+    		<div id="pl-loadmore" class="ibm-fluid ibm-fullwidth">
+        		<div class="ibm-col-12-6 ibm-center-block">
+            		<div class="ibm-center">
+                		<button class="ibm-margin-top-2 ibm-margin-bottom-2 ibm-btn-pri ibm-btn-green-50" style="width:300px;">Load more</button>
+            		</div>
+        		</div>
+    		</div>
+		{% endif %}
+    		
+
+	{% include "compare_tray.html" %}
+	
+
+    
+{% endblock %}

@@ -1,0 +1,17 @@
+
+	<form action="{% url 'plr:signin' %}" method="POST" class="ibm-row-form">
+		<!-- CSRF -->
+		{% csrf_token %}
+		
+		<p>
+			<strong>{{ form.username.label_tag }}</strong>
+			{{ form.username }}
+		</p>
+		<p>
+			<strong>{{ form.password.label_tag }}</strong>
+			{{ form.password }}
+		</p>
+
+		<p class="ibm-margin-top-1"><button class="ibm-btn-pri ibm-btn-blue-50" type="submit">Sign in</button></p>
+	</form>
+

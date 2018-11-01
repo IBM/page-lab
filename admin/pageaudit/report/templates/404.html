@@ -1,0 +1,17 @@
+{% extends "page_template.html" %}
+
+{% block pageTitle %} Lost and (not) found {% endblock  %}
+
+{% block content %}
+
+	<div class="ibm-margin-bottom-2">
+		<div class="ibm-fluid ibm-fullwidth">
+	    	<div class="ibm-col-12-12">
+		    	
+		    	<p class="ibm-important">Woops, whatever you were looking for isn't here. Try going back or starting from the <a href="{% url 'plr:home' %}" class="ibm-underline">home page</a>.</p>
+							
+		    </div>
+		</div>
+	</div>
+	
+{% endblock %}

@@ -1,0 +1,311 @@
+{% extends "page_template.html" %}
+
+{% load beautify %}
+{% load static %}
+{% load inline_static_tags %}
+
+
+{% block browserTitle %} - URL report {% endblock  %}
+
+{% block pageTitle %} URL report {% endblock  %}
+
+
+{% block pageSubtitle %} 
+    <p class="ibm-ind-link"><a class="ibm-icon-after ibm-light ibm-textcolor-white-core ibm-external-link ibm-word-break-all" href="{{ url1.url }}" title="View page in new window" target="_blank">{{ url1.url|noprotocol }}</a></p>
+    <div class="pl-compare-checkbox-con ibm-alternate-background">
+    	<span class="ibm-checkbox-wrapper ibm-small">
+            <input class="ibm-styled-checkbox" id="id_{{ url1.id }}" value="{{ url1.id }}" type="checkbox"> 
+            <label for="id_{{ url1.id }}" class="ibm-field-label">Compare</label>
+        </span>                       
+    </div>
+ {% endblock  %}
+
+
+{% block extraFiles %}
+
+    <style>
+        
+        .pl-url-detail-donut {
+            display: inline-block;
+            width: 230px;
+        }
+       
+        .pl-url-detail-donut .pl-perfscore {
+            border-width: 10px;
+            font-size: 2rem;
+            height: 60px;
+            line-height: 60px;
+            width: 60px;
+        }
+        
+    </style>
+
+{% endblock %}
+
+
+{% block content %}
+
+        <div class="ibm-fluid ibm-flex ibm-fullwidth">
+            <div class="ibm-col-12-3 ibm-col-xlarge-12-2 ibm-margin-bottom-1">
+
+            	<p class="ibm-margin-bottom-1">
+                    <a href="{{ url1.url }}" title="View page in new window" target="_blank"><img class="ibm-downsize" src="data:image/png;base64,{{ url1.lighthouse_run.thumbnail_image }}" width="155" style="border: 1px solid #c7c7c7;"></a>
+                </p>
+            	
+            </div>
+            <div class="ibm-col-12-9 ibm-col-xlarge-12-10">
+                <div id="linechart"></div>
+            </div>            
+        </div>
+        
+        
+        <div class="ibm-fluid ibm-fullwidth ibm-margin-top-2">
+            <div class="ibm-col-12-12"><div class="ibm-rule ibm-gray-30 ibm-alternate"><hr></div></div>
+        </div>
+        
+        <div class="ibm-fluid ibm-margin-top-2">
+            <div class="ibm-col-12-12 ibm-center">
+                <h4 class="ibm-h4 ibm-bold">Average scores across <span class="ibm-light">{{ lighthouseRuns.count }}</span> test runs</h4>
+            
+                <div class="pl-url-detail-donut ibm-margin-bottom-2">
+                    <div>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.performance_score %}</div>
+                    <p class="ibm-h4 ibm-margin-top-1">Performance</p>
+                </div>
+                
+                <div class="pl-url-detail-donut ibm-margin-bottom-2">
+                    <div>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.accessibility_score %}</div>
+                    <p class="ibm-h4 ibm-margin-top-1">Accessibility</p>
+                </div>
+                
+                <div class="pl-url-detail-donut ibm-margin-bottom-2">
+                    <div>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.seo_score %}</div>
+                    <p class="ibm-h4 ibm-margin-top-1">SEO</p>
+                </div>
+            </div>
+        </div>
+        
+                
+        <div class="ibm-margin-top-2 ibm-fluid ibm-flex ibm-fullwidth">
+            <div class="ibm-col-12-6">
+                <h4 class="ibm-bold">Average KPIs &nbsp; <span style="position: relative;margin-top:-2px;" class="ibm-information-link ibm-textcolor-blue-60" data-widget="tooltip" title="Standard indicators of a page's performance."><span class="ibm-access">Key performance indicators</span></span></h4>
+                
+                <table class="ibm-data-table">
+                    <tbody>
+                        <tr>
+                            <td class="ibm-bold">Last tested:</td>
+                            <td class="ibm-right" style="width:200px;">{{ url1.lighthouse_run.created_date }}</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="ibm-bold">Total size:</td>
+                            <td class="ibm-right">{{ url1.url_kpi_average.total_byte_weight|kbToMb }}</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="ibm-bold"># of network requests:</td>
+                            <td class="ibm-right">{{ url1.url_kpi_average.number_network_requests|withComma }}</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="ibm-bold">Time to first byte:</td>
+                            <td class="ibm-right">{{ url1.url_kpi_average.time_to_first_byte|withComma }} ms</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="ibm-bold">DOM content loaded:</td>
+                            <td class="ibm-right">{{ url1.url_kpi_average.dom_content_loaded|withComma }} ms</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="ibm-bold">First contentful paint:</td>
+                            <td class="ibm-right">{{ url1.url_kpi_average.first_contentful_paint|withComma }} ms</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="ibm-bold">First meaningful paint:</td>
+                            <td class="ibm-right">{{ url1.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="ibm-bold">DOM loaded:</td>
+                            <td class="ibm-right">{{ url1.url_kpi_average.dom_loaded|withComma }} ms</td>
+                        </tr>
+                       
+                        <tr>
+                            <td class="ibm-bold">Fully interactive:</td>
+                            <td class="ibm-right">{{ url1.url_kpi_average.interactive|withComma }} ms</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="ibm-bold"># of redirects:</td>
+                            <td class="ibm-right">{{ url1.lighthouse_run.redirect_hops|withComma }}</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="ibm-bold">Wasted redirect time:</td>
+                            <td class="ibm-right">{{ url1.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+
+            </div>
+            
+            <div class="ibm-col-12-6">
+                <h4 class="ibm-bold">Average user timing measures &nbsp; <span style="position: relative;margin-top:-2px;" class="ibm-information-link ibm-textcolor-blue-60" data-widget="tooltip" title="Custom user timing measures from any JS on the page. Only non-zero durations are shown. These do not necessarily show the cause of page performance issues."><span class="ibm-access">Only non-zero values</span></span></h4>
+                
+                <table class="ibm-data-table">
+                    <thead>
+                        <tr>
+                            <td>Name</td>
+                            <td>Start</td>
+                            <td>Duration</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {# Skip measures that are zero duration because they don't make a difference #}
+                        
+                        {% for measure in url1.user_timing_measure_avg_url.all %}
+                            {% if measure.duration > 0 %}
+                            <tr>
+                                <td>{{ measure.name }}</td>
+                                <td class="ibm-right">{{ measure.start_time|withComma }} ms</td>
+                                <td class="ibm-right">{{ measure.duration|withComma }} ms</td>
+                            </tr>    
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+        
+        
+        <div class="ibm-fluid ibm-fullwidth ibm-margin-top-3 ibm-margin-bottom-2">
+            <div class="ibm-col-12-12"><div class="ibm-rule ibm-gray-30 ibm-alternate"><hr></div></div>
+        </div>
+        
+        
+        <div class="ibm-fluid ibm-fullwidth">
+            <div class="ibm-col-12-6"><p class="ibm-h4 ibm-bold">Test runs history</p></div>
+            <div class="ibm-col-12-6 ibm-right ibm-left-small" id="pl-exportbuttons"></div>
+        </div> 
+        <div class="ibm-fluid ibm-fullwidth">
+            <div class="ibm-col-12-12">
+                <table id="pl-rundata-kpis" data-tablerowselector="enable" data-column-defs='[{"targets":"no-sort","orderable":false}]' data-order='[]' class="ibm-data-table ibm-padding-small ibm-small ibm-altrows" data-widget="datatable" data-col-reorder="true" data-info="true" data-ordering="true" data-paging="true" data-searching="true" data-page-length="10" data-buttons='["excel"]' data-dom="lBfrtip">
+    	            <thead>
+    		            <th scope="col" class="no-sort"></th>
+                        <th>Test time</th>
+                        <th>Performance score</th>
+                        <th>Accessibility score</th>
+                        <th>SEO score</th>
+                        <th>Size (KB)</th>
+                        <th>Network requests</th>
+                        <th>Time to first byte (ms)</th>
+                        <th>DOM content loaded (ms)</th>
+                        <th>First contentful paint (ms)</th>
+                        <th>First meaningful paint (ms)</th>
+                        <th>DOM loaded (ms)</th>
+                        <th>Fully interactive (ms)</th>
+                        <th># redirects</th>
+                        <th>Wasted redirect time</th>
+    	            </thead>
+    	            
+    	            <tbody>
+    		            {% for lighthouseRun in lighthouseRuns %}
+    		                <tr>
+        		                <td>{{ forloop.counter }}</td>
+        		                <td>{{ lighthouseRun.created_date }}</td>
+        		                <td>{{ lighthouseRun.performance_score }}</td>
+        		                <td>{{ lighthouseRun.accessibility_score }}</td>
+        		                <td>{{ lighthouseRun.seo_score }}</td>
+        		                <td>{{ lighthouseRun.total_byte_weight|byteToKb }}</td>
+        		                <td>{{ lighthouseRun.number_network_requests }}</td>
+        		                <td>{{ lighthouseRun.time_to_first_byte }}</td>
+        		                <td>{{ lighthouseRun.dom_loaded }}</td>
+        		                <td>{{ lighthouseRun.first_contentful_paint }}</td>
+        		                <td>{{ lighthouseRun.first_meaningful_paint }}</td>
+        		                <td>{{ lighthouseRun.dom_content_loaded }}</td>
+        		                <td>{{ lighthouseRun.interactive }}</td>
+        		                <td>{{ lighthouseRun.redirect_hops }}</td>
+        		                <td>{{ lighthouseRun.redirect_wasted_ms }}</td>
+    		                </tr>
+    		            {% endfor %}
+    	            </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    <link href="{% static 'report/charting/c3.min.css' %}" rel="stylesheet">   
+    
+	<script src="{% static 'report/design/tables.js' %}"></script>
+    <script src="{% static 'report/design/datatables/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'report/design/datatables/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'report/design/datatables/jszip.min.js' %}"></script>
+    <script src="{% static 'report/design/datatables/buttons.html5.min.js' %}"></script>
+
+    <script src="{% static 'report/charting/d3.v4.min.js' %}"></script>
+    <script src="{% static 'report/charting/c3.min.js' %}"></script>
+
+    <script>
+
+        {% include "compare.js" %}
+
+        (function ($, IBM) {
+            
+            function adjustExportButtons ($scope) {
+                var $tablewidgetContainer = $scope.parent(),
+                    $buttonCon = $tablewidgetContainer.find(".dt-buttons");
+                
+                $buttonCon.removeClass("dt-buttons").addClass("ibm-btn-row").appendTo("#pl-exportbuttons").prepend('<span class="ibm-bold ibm-margin-bottom-1" style="display:inline-block;margin-right:20px;">Export table</span>');
+               
+                $buttonCon.find("button").addClass("ibm-btn-pri ibm-btn-blue-50 ibm-btn-small")[0].addEventListener("click", function () {
+                    emailSelectedApps();
+                })
+            }
+            
+            
+            function createHistoryLineChart () {
+                var chart = c3.generate({
+                    bindto: '#linechart',
+
+                    data: {
+                        x: 'x',
+                        xFormat: '%d-%m-%Y',
+                        columns: [
+                            {{ lineChartData.dates|safe }},
+                            {{ lineChartData.perfScores|safe }},
+                            {{ lineChartData.a11yScores|safe }},
+                            {{ lineChartData.seoScores|safe }},
+                        ]
+                    },
+                    axis: {
+                        x: {
+                            type: 'timeseries',
+                            tick: {
+                                format: '%m-%d-%Y'
+                            }
+                        }
+                    }
+                    
+                });
+            }
+            
+            createHistoryLineChart();
+
+            $(function(){
+                adjustExportButtons($("#pl-rundata-kpis"));
+                pl.compare.setupCompareCheckboxes($(".pl-compare-checkbox-con"));
+                pl.compare.preselectCheckbox($(".pl-compare-checkbox-con").find("input"));
+            });
+            
+        })(jQuery, IBMCore);        
+        
+    </script>
+
+
+	{% include "compare_tray.html" %}
+	
+    
+{% endblock %}

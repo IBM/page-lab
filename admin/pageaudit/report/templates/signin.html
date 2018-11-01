@@ -1,0 +1,24 @@
+{% extends "page_template.html" %}
+
+{% block statsFile %} {% endblock %}
+
+{% block browserTitle %} - Sign in {% endblock  %}
+
+{% block pageTitle %} Sign in {% endblock  %}
+
+{% block content %}
+
+	<div class="ibm-fluid ibm-fullwidth">
+		<div class="ibm-col-12-12">
+					
+			{% if error %}
+				<div class="ibm-margin-bottom-1 ibm-error">{{ error|safe }}</div>
+			{% endif %}
+			
+			{% include "auth_form.html" %}
+
+		</div>
+	</div>
+	
+
+{% endblock %}

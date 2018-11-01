@@ -1,0 +1,12 @@
+django==2
+psycopg2_binary
+django-extensions
+pyopenssl
+werkzeug
+django-dbbackup
+ldap3
+requests
+django-debug-toolbar==1.9.1
+ipdb
+pygraphviz
+django-inline-static

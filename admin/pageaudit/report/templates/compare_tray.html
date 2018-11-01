@@ -1,0 +1,93 @@
+{% load beautify %}
+{% load static %}
+
+        
+    <style>
+        
+        #pl-compare {
+            bottom: 0;
+            display: none;
+            position: fixed;
+            transform: translate3d(0, calc(100% - 46px),0);
+            transition: transform .5s cubic-bezier(0.2, 1, 0.2, 1);
+            width: 100%;
+            z-index: 5;
+        }
+        
+        
+        /* Default; tray is hidden. When JS adds class, show tray and add footer padding. */
+        .pl-compare-enabled #pl-compare {
+            display: block;
+        }
+        .pl-compare-enabled #ibm-footer {
+            padding-bottom: 46px;
+        }
+        
+        /* Slide tray up when 'open' link is clicked (JS adds 'opened' class.) */
+        #pl-compare.opened {
+            transform: translate3d(0,0,0);
+        }
+        
+        
+        #pl-compare .pl-compare-closetray {
+            display: none;
+        }
+        #pl-compare.opened .pl-compare-closetray {
+            display: block;
+        }
+        
+        
+        #pl-compare .pl-compare-opentray {
+            display: block;
+        }
+        #pl-compare.opened .pl-compare-opentray {
+            display: none;
+        }
+        
+        
+        #pl-compare-header {
+            padding-top: 8px;
+        }
+        
+        /* Default: 'compare' link hidden, plain text shown. */
+        .pl-compare-comparelink-con .pl-compare-plaintext {
+            cursor: not-allowed;
+            display: inline;
+        }
+        .pl-compare-comparelink-con .pl-compare-hotlink {
+            display: none;
+        }
+        
+        /* >1 items; 'compare' link shown, text hidden. */
+        .pl-compare-comparelink-con.enabled .pl-compare-plaintext {
+            display: none;
+        }
+        .pl-compare-comparelink-con.enabled .pl-compare-hotlink {
+            display: inline;
+        }
+        
+    </style>
+    
+
+    <div id="pl-compare" class="ibm-hidden-small">
+        <div id="pl-compare-header" class="ibm-background-gray-80 ibm-fluid ibm-fullwidth">
+            <div class="ibm-col-12-4">
+                <p id="pl-compare-openclose" class="ibm-ind-link ibm-icononly ibm-padding-bottom-0"><a href="#" class="pl-compare-closetray ibm-nospacing ibm-minimize-link ibm-textcolor-white-core">Close tray</a><a href="#" class="pl-compare-opentray ibm-nospacing ibm-maximize-link ibm-textcolor-white-core">Open tray</a></p>
+            </div>
+            <div class="ibm-col-12-4">
+                <p class="pl-compare-comparelink-con ibm-center ibm-padding-bottom-0">
+                    <span class="pl-compare-hotlink"><a class="pl-compare-comparelink ibm-light ibm-textcolor-white-core" href="#">Compare</a></span>
+                    <span class="pl-compare-plaintext ibm-light ibm-textcolor-white-core">Compare</span>
+                </p>
+            </div>
+            <div class="ibm-col-12-4">
+                <p class="ibm-right ibm-padding-bottom-0"><a class="pl-compare-clearall ibm-textcolor-white-core ibm-light" href="#">Clear all</a></p>
+            </div>
+        </div>
+        
+        
+        <div id="pl-compare-body" class="ibm-fluid ibm-fullwidth ibm-background-white-core ibm-padding-top-1">
+            
+        </div> 
+            
+    </div>

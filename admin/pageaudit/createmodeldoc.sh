@@ -1,0 +1,1 @@
+python manage.py graph_models -a -g -o documentation/pagelab_models.png
