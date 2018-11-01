@@ -2,7 +2,7 @@
 
 Web Page Performance Laboratory: Scaling [Lighthouse](https://github.com/GoogleChrome/Lighthouse "Google Lighthouse") performace and web testing tools
 
-## This is Alpha software and needs some work and testing and some automation
+* This is Alpha software and needs some work and testing and some automation
 
 ## Page Lab is an attempt at understanding web performace at scale
 
