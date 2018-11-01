@@ -4,7 +4,7 @@ Web Page Performance Laboratory: Scaling [Lighthouse](https://github.com/GoogleC
 
 * This is Alpha software and needs some testing and automation. PR's are accepted!
 
-## Page Lab is an attempt at understanding web performace at scale
+## Page Lab is an attempt at understanding web performance at scale
 
 The goals here are 3-fold:
 
