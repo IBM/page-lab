@@ -126,7 +126,6 @@ class Url(models.Model):
         
         defSortby = "date"
         defSortorder = "-"
-        defFilter = []
 
         ## Sort by.
         try:
@@ -147,10 +146,7 @@ class Url(models.Model):
         except Exception as ex:
             userSortorder = defSortorder
 
-        try:
-          userFilter = defFilter if options['filter'] == None else list(map(str.strip, options['filter'].split(',')))
-        except Exception as ex:
-          userFilter = defFilter
+        userFilter = getFilter(options['filter'])
 
         ## Map sortorder field to proper query filter condition.
         querySortorder = "" if userSortorder == "asc" else defSortorder
@@ -289,6 +285,13 @@ class UrlKpiAverage(models.Model):
     def __str__(self):
         return '%s' % (self.url.url,)
 
+    def getFilteredAverages(filter):
+        userFilter = getFilter(filter)
+        averages = UrlKpiAverage.objects
+        if len(userFilter) > 0:
+          ids = Url.objects.filter(functools.reduce(operator.or_, (Q(url__icontains=match) for match in userFilter))).values_list('id', flat=True)
+          averages = averages.filter(url_id__in=ids)
+        return averages
 
 ## FUTURE USE:
 # class LighthouseConfig(models.Model):

@@ -283,8 +283,11 @@ def reports_dashboard(request):
     ## Vars here allow for easy future update to scope data to any set of URLs, instead of all.
     ## This way NONE OF THE THINGS IN "CONTEXT" need to be touched.
     ## Simple change the scope/queries of these two vars.
-    urlKpiAverages = UrlKpiAverage.objects.all()
-    urls = Url.objects.all()
+    filter = request.GET.get('filter')
+    urlKpiAverages = UrlKpiAverage.getFilteredAverages(filter)
+    urls = Url.getUrls({
+        'filter': filter
+    })
     
     
     ## Get a bunch of counts to chart.

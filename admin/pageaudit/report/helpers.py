@@ -4,6 +4,17 @@ import requests, json
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 
+##
+## Attempts to create a filter (type: list) from inputted comma-separated list.
+## Defaults to an empty list.
+##
+def getFilter(filter):
+    defFilter = []
+    try:
+        returnFilter = defFilter if filter == None else list(map(str.strip, filter.split(',')))
+    except Exception as ex:
+        returnFilter = defFilter
+    return returnFilter
 
 ##
 ##  User timings is an array of generic non-property-named objects.
