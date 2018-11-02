@@ -238,6 +238,7 @@ def reports_browse(request):
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
         'sortorder': request.GET.get('sortorder'),
+        'filter': request.GET.get('filter')
     })
     
     ## Pagination is AWESOME:  https://docs.djangoproject.com/en/2.0/topics/pagination/

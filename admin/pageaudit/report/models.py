@@ -1,4 +1,6 @@
+import functools
 import json
+import operator
 
 from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.models import User, Group
@@ -124,7 +126,7 @@ class Url(models.Model):
         
         defSortby = "date"
         defSortorder = "-"
-        defFilter = None
+        defFilter = []
 
         ## Sort by.
         try:
@@ -145,10 +147,18 @@ class Url(models.Model):
         except Exception as ex:
             userSortorder = defSortorder
 
+        try:
+          userFilter = defFilter if options['filter'] == None else list(map(str.strip, options['filter'].split(',')))
+        except Exception as ex:
+          userFilter = defFilter
+
         ## Map sortorder field to proper query filter condition.
         querySortorder = "" if userSortorder == "asc" else defSortorder
         
-        return Url().haveValidRuns().prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").order_by(querySortorder + querySortby)
+        urls = Url().haveValidRuns().prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").order_by(querySortorder + querySortby)
+        if len(userFilter) > 0:
+          urls = urls.filter(functools.reduce(operator.or_, (Q(url__icontains=match) for match in userFilter)))
+        return urls
     
     def getKpiAverages(self):
         try:
