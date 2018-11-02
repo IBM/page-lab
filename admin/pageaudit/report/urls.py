@@ -6,7 +6,7 @@ from django.views.generic import RedirectView
 from .views import *
 
 ## URLS are from context of /report/ so don't include that in here.
-## NAMESPACE for these URLS is "plr" (perf-lab report). 
+## NAMESPACE for these URLS is "plr" (page-lab report). 
 ## So {% url 'plr:home' %} points to the "/report/" URL using "home" view
 urlpatterns = [
     url(r'^$', home, name='home'),

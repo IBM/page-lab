@@ -24,13 +24,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.ibm.com/blackops/perf-lab"
+    "url": "https://github.com/IBM/page-lab/"
   },
   "keywords": [
     "web",
     "performance",
     "testing"
   ],
-  "author": "d.dahl@ibm.com",
+  "author": "",
   "license": "Apache2"
 }
