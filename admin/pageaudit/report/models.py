@@ -103,8 +103,6 @@ class Url(models.Model):
     inactive = models.BooleanField(default=False)
     sequence = models.PositiveIntegerField(default=0)
     
-    user_timings_migrated = models.DateTimeField(null=True)
-    
     ## Sets up custom queries at top.
     objects = UrlManger()
 
