@@ -234,11 +234,14 @@ def about(request):
 ##
 ##
 def reports_browse(request):
-
+    if request.POST:
+      filter = request.POST.get('filter')
+    else:
+      filter = request.COOKIES['url_filter']
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
         'sortorder': request.GET.get('sortorder'),
-        'filter': request.GET.get('filter')
+        'filter': filter
     })
     
     ## Pagination is AWESOME:  https://docs.djangoproject.com/en/2.0/topics/pagination/
@@ -253,11 +256,14 @@ def reports_browse(request):
         'urls': urlsToShow,
         'sortby': request.GET.get('sortby', 'date'),
         'sortorder': request.GET.get('sortorder', 'desc'),
+        'url_filter': filter,
         'viewdata': viewData,
         'hasNextPage': urlsToShow.has_next(),
     }
     
-    return render(request, 'reports_browse.html', context)
+    response = render(request, 'reports_browse.html', context)
+    response.set_cookie('url_filter', filter)
+    return response
 
 
 ##

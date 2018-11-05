@@ -71,6 +71,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+
 if DEBUG:
     MIDDLEWARE.append(
         'debug_toolbar.middleware.DebugToolbarMiddleware')

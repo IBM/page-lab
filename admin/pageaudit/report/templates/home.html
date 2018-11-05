@@ -53,15 +53,16 @@
                     <button class="ibm-btn-pri ibm-btn-small ibm-btn-green-50 ibm-margin-bottom-2">View report</button>
                 </div>
             </form>
-            <form action="" method="GET">
+            <form action="{% url 'plr:reports_browse' %}" method="POST">
+                {% csrf_token %}
                 <div class="ibm-col-12-10">
                     <div class="ibm-padding-bottom-2" style="position: relative;">
-                        <input id="pl-substring-search" class="ibm-fullwidth ibm-styled-input" type="text" autocomplete="off" placeholder='Generate report for URL keyword matches (e.g. "marketplace, cloud")'
-                            value="" aria-label="Generate report for URL keyword matches, such as marketplace or cloud">
+                        <input id="pl-substring-search" name="filter" class="ibm-fullwidth ibm-styled-input" type="text" autocomplete="off" placeholder='Apply filter for URL keyword matches (e.g. "marketplace, cloud")'
+                            value="" aria-label="Apply filter for URL keyword matches, such as marketplace or cloud">
                     </div>
                 </div>
                 <div class="ibm-btn-row">
-                    <button class="ibm-btn-pri ibm-btn-small ibm-btn-green-50 ibm-margin-bottom-2">View report</button>
+                    <button class="ibm-btn-pri ibm-btn-small ibm-btn-green-50 ibm-margin-bottom-2">Apply filter</button>
                 </div>
             </form>
             <p class="ibm-btn-row">
@@ -77,7 +78,6 @@
 
     <script>        
         {% include "url_typeahead.js" %}
-        {% include "url_substr_search.js" %}
         {% include "compare.js" %}
     </script>
 
