@@ -289,7 +289,7 @@ def reports_dashboard(request):
     ## Vars here allow for easy future update to scope data to any set of URLs, instead of all.
     ## This way NONE OF THE THINGS IN "CONTEXT" need to be touched.
     ## Simple change the scope/queries of these two vars.
-    filter = request.GET.get('filter')
+    filter = request.COOKIES['url_filter']
     urlKpiAverages = UrlKpiAverage.getFilteredAverages(filter)
     urls = Url.getUrls({
         'filter': filter
