@@ -8,13 +8,16 @@ from django.core.mail import send_mail
 ## Attempts to create a filter (type: list) from inputted comma-separated list.
 ## Defaults to an empty list.
 ##
-def getFilter(filter):
-    defFilter = []
-    try:
-        returnFilter = defFilter if filter == None else list(map(str.strip, filter.split(',')))
-    except Exception as ex:
-        returnFilter = defFilter
-    return returnFilter
+def getFilter(request):
+  defFilter = []
+  incomingFilter = request.POST.get('filter') if request.POST else request.GET.get('filter')
+  if incomingFilter != None and len(incomingFilter) > 0:
+    return list(map(str.strip, incomingFilter.split(',')))
+  if request.POST:
+    filter = defFilter
+  else:
+    filter = defFilter if request.COOKIES.get('urlFilter') == None else json.loads(request.COOKIES.get('urlFilter'))
+  return filter
 
 ##
 ##  User timings is an array of generic non-property-named objects.

@@ -1,0 +1,30 @@
+<style>
+    #filter-clear {
+      display: inline;
+      padding-left: 30px;
+    }
+
+    .filter-tag {
+      background-color: rgb(183, 210, 255);
+      border-radius: 3px;
+      display: inline-block;
+      padding: 0 8px;
+    }
+</style>
+
+{% if urlFilter != None and urlFilter|length > 0 %}
+    <div class="ibm-margin-bottom-1" style="margin-right: 60px; display: inline;">
+        <p class="ibm-bold" style="display: inline; padding-right: 5px;">
+          URL filters applied:
+        </p>
+        {% for filter in urlFilter %}
+            <p class="filter-tag">{{ filter }}</p>
+        {% endfor %}
+        {% with "plr:"|add:view_name as endpoint %}
+            <form id="filter-clear" action="{% url endpoint %}" method="POST">
+                {% csrf_token %}
+                <button class="ibm-btn-pri ibm-btn-small ibm-btn-green-50 ibm-margin-bottom-2">Clear filters</button>
+            </form>
+        {% endwith %}
+    </div>
+{% endif %}

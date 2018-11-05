@@ -234,10 +234,7 @@ def about(request):
 ##
 ##
 def reports_browse(request):
-    if request.POST:
-      filter = request.POST.get('filter')
-    else:
-      filter = request.COOKIES['url_filter']
+    filter = getFilter(request)
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
         'sortorder': request.GET.get('sortorder'),
@@ -256,13 +253,13 @@ def reports_browse(request):
         'urls': urlsToShow,
         'sortby': request.GET.get('sortby', 'date'),
         'sortorder': request.GET.get('sortorder', 'desc'),
-        'url_filter': filter,
+        'urlFilter': filter,
         'viewdata': viewData,
         'hasNextPage': urlsToShow.has_next(),
     }
     
     response = render(request, 'reports_browse.html', context)
-    response.set_cookie('url_filter', filter)
+    response.set_cookie('urlFilter', json.dumps(filter))
     return response
 
 
@@ -289,7 +286,7 @@ def reports_dashboard(request):
     ## Vars here allow for easy future update to scope data to any set of URLs, instead of all.
     ## This way NONE OF THE THINGS IN "CONTEXT" need to be touched.
     ## Simple change the scope/queries of these two vars.
-    filter = request.COOKIES['url_filter']
+    filter = getFilter(request)
     urlKpiAverages = UrlKpiAverage.getFilteredAverages(filter)
     urls = Url.getUrls({
         'filter': filter
@@ -300,6 +297,7 @@ def reports_dashboard(request):
     ## Nothing here should be changed unless we add a new data point to chart.
     context = {
         'urlCountTested': urls.count(),
+        'urlFilter': filter,
         
         'urlGlobalPerfAvg': round(urlKpiAverages.aggregate(Avg('performance_score'))['performance_score__avg']),
         'urlGlobalA11yAvg': round(urlKpiAverages.aggregate(Avg('accessibility_score'))['accessibility_score__avg']),
@@ -322,7 +320,9 @@ def reports_dashboard(request):
         'urlFiCountAvg': urls.filter(url_kpi_average__interactive__gte=(reportBuckets['tti']['fast']*1000), url_kpi_average__interactive__lte=(reportBuckets['tti']['slow']*1000)).count(),
    }
     
-    return render(request, 'reports_dashboard.html', context)
+    response = render(request, 'reports_dashboard.html', context)
+    response.set_cookie('urlFilter', json.dumps(filter))
+    return response
 
 
 ##

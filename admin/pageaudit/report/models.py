@@ -146,7 +146,7 @@ class Url(models.Model):
         except Exception as ex:
             userSortorder = defSortorder
 
-        userFilter = getFilter(options['filter'])
+        userFilter = options['filter']
 
         ## Map sortorder field to proper query filter condition.
         querySortorder = "" if userSortorder == "asc" else defSortorder
@@ -286,10 +286,9 @@ class UrlKpiAverage(models.Model):
         return '%s' % (self.url.url,)
 
     def getFilteredAverages(filter):
-        userFilter = getFilter(filter)
         averages = UrlKpiAverage.objects
-        if len(userFilter) > 0:
-          ids = Url.objects.filter(functools.reduce(operator.or_, (Q(url__icontains=match) for match in userFilter))).values_list('id', flat=True)
+        if len(filter) > 0:
+          ids = Url.objects.filter(functools.reduce(operator.or_, (Q(url__icontains=match) for match in filter))).values_list('id', flat=True)
           averages = averages.filter(url_id__in=ids)
         return averages
 
