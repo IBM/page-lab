@@ -19,6 +19,13 @@ def getFilter(request):
     filter = defFilter if request.COOKIES.get('urlFilter') == None else json.loads(request.COOKIES.get('urlFilter'))
   return filter
 
+def getFilterContext(request):
+  filter = getFilter(request)
+  return {
+    'urlFilter': filter,
+    'shareLink': f'https://{request.get_host()}{request.path}?filter={",".join(filter)}'
+  }
+
 ##
 ##  User timings is an array of generic non-property-named objects.
 ##  To get the one you want, you have to loop thru the array and find the one with the name you want.

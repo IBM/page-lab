@@ -234,11 +234,11 @@ def about(request):
 ##
 ##
 def reports_browse(request):
-    filter = getFilter(request)
+    filterContext = getFilterContext(request)
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
         'sortorder': request.GET.get('sortorder'),
-        'filter': filter
+        'filter': filterContext['urlFilter']
     })
     
     ## Pagination is AWESOME:  https://docs.djangoproject.com/en/2.0/topics/pagination/
@@ -253,13 +253,13 @@ def reports_browse(request):
         'urls': urlsToShow,
         'sortby': request.GET.get('sortby', 'date'),
         'sortorder': request.GET.get('sortorder', 'desc'),
-        'urlFilter': filter,
         'viewdata': viewData,
         'hasNextPage': urlsToShow.has_next(),
+        **filterContext
     }
     
     response = render(request, 'reports_browse.html', context)
-    response.set_cookie('urlFilter', json.dumps(filter))
+    response.set_cookie('urlFilter', json.dumps(filterContext['urlFilter']))
     return response
 
 
@@ -286,10 +286,10 @@ def reports_dashboard(request):
     ## Vars here allow for easy future update to scope data to any set of URLs, instead of all.
     ## This way NONE OF THE THINGS IN "CONTEXT" need to be touched.
     ## Simple change the scope/queries of these two vars.
-    filter = getFilter(request)
-    urlKpiAverages = UrlKpiAverage.getFilteredAverages(filter)
+    filterContext = getFilterContext(request)
+    urlKpiAverages = UrlKpiAverage.getFilteredAverages(filterContext['urlFilter'])
     urls = Url.getUrls({
-        'filter': filter
+        'filter': filterContext['urlFilter']
     })
     
     
@@ -297,7 +297,6 @@ def reports_dashboard(request):
     ## Nothing here should be changed unless we add a new data point to chart.
     context = {
         'urlCountTested': urls.count(),
-        'urlFilter': filter,
         
         'urlGlobalPerfAvg': round(urlKpiAverages.aggregate(Avg('performance_score'))['performance_score__avg']),
         'urlGlobalA11yAvg': round(urlKpiAverages.aggregate(Avg('accessibility_score'))['accessibility_score__avg']),
@@ -318,10 +317,12 @@ def reports_dashboard(request):
         'urlFiCountSlow': urls.filter(url_kpi_average__interactive__gt=(reportBuckets['tti']['slow']*1000)).count(),
         'urlFiCountFast': urls.filter(url_kpi_average__interactive__lt=(reportBuckets['tti']['fast']*1000)).count(),
         'urlFiCountAvg': urls.filter(url_kpi_average__interactive__gte=(reportBuckets['tti']['fast']*1000), url_kpi_average__interactive__lte=(reportBuckets['tti']['slow']*1000)).count(),
+
+        **filterContext
    }
     
     response = render(request, 'reports_dashboard.html', context)
-    response.set_cookie('urlFilter', json.dumps(filter))
+    response.set_cookie('urlFilter', json.dumps(filterContext['urlFilter']))
     return response
 
 
