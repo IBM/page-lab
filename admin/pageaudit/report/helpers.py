@@ -1,5 +1,7 @@
 import os
 import requests, json
+import bleach
+import urllib
 
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -12,7 +14,7 @@ def getFilter(request):
   defFilter = []
   incomingFilter = request.POST.get('filter') if request.POST else request.GET.get('filter')
   if incomingFilter != None and len(incomingFilter) > 0:
-    return list(map(str.strip, incomingFilter.split(',')))
+    return list(map(str.strip, bleach.clean(incomingFilter).split(',')))
   if request.POST:
     filter = defFilter
   else:
@@ -21,9 +23,10 @@ def getFilter(request):
 
 def getFilterContext(request):
   filter = getFilter(request)
+  filterQuery = {'filter': ",".join(filter)}
   return {
     'urlFilter': filter,
-    'shareLink': f'https://{request.get_host()}{request.path}?filter={",".join(filter)}'
+    'shareLink': f'https://{request.get_host()}{request.path}?{urllib.parse.urlencode(filterQuery)}'
   }
 
 ##
