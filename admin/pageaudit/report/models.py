@@ -799,12 +799,8 @@ class UrlFilter(models.Model):
         """
         filter_parts = UrlFilterPart.objects.filter(url_filter=self)
 
-        # TODO: test for search_key and path_segment and search the related
-        #       models:
-
         and_condition = Q()
         for part in filter_parts:
-            # import ipdb; ipdb.set_trace()
             query_obj = self.make_query_object(part)
             and_condition.add(Q(**query_obj), Q.AND)
 
