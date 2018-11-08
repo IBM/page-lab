@@ -19,7 +19,7 @@ The goals here are 3-fold:
 
 ### Setup Django 'Heads Up Display' dashboard
 
-* see: [Django README](admin/pageaudit/README.md "Django README")
+* see: [Django README](admin/README.md "Django README")
 
 ### Setup Node testing server
 
