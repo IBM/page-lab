@@ -142,9 +142,10 @@ class Url(models.Model):
     origin = models.CharField(max_length=255, blank=True)
     parsed_url = models.URLField(blank=True)
 
+    url_paths = models.ManyToManyField('UrlPath', blank=True)
+    search_key_vals = models.ManyToManyField('SearchKeyVal', blank=True)
     ## Sets up custom queries at top.
     objects = UrlManger()
-
 
     class Meta:
         ordering = ['url']
@@ -156,7 +157,7 @@ class Url(models.Model):
         """
         Override save to populate the location data
         """
-        if self.url is not self.parsed_url:
+        if self.url != self.parsed_url:
             # We parse the url and save each location bit
             loc = parse.urlparse(self.url)
             self.protocol = loc.scheme
@@ -170,16 +171,18 @@ class Url(models.Model):
             self.parsed_url = self.url
 
             super(Url, self).save(*args, **kwargs) # save this now
-            # replace any existing SearchKeyVal and UrlPath objects
-            UrlPath.objects.filter(url=self).delete()
-            SearchKeyVal.objects.filter(url=self).delete()
+            # replace any existing SearchKeyVal and UrlPath objects in m2m
+            self.url_paths.all().delete()
+            self.search_key_vals.all().delete()
             # now re-save them
             pathSegments = loc.path.split('/')
             i = 0
             for seg in pathSegments:
                 if seg is not '':
-                    UrlPath.objects.create(url=self, sequence=i, path=seg)
+                    path = UrlPath.objects.create(sequence=i, path=seg)
+                    self.url_paths.add(path)
                     i = i + 1
+            self.save() # save added m2m records
 
             for query in loc.query.split('&'):
                 kv = query.split('=')
@@ -191,7 +194,11 @@ class Url(models.Model):
                     val = kv[1]
                 except:
                     val = None
-                SearchKeyVal.objects.create(url=self, key=key, val=val)
+                search_key = SearchKeyVal.objects.create(key=key, val=val)
+                self.search_key_vals.add(search_key)
+            self.save() # save added m2m records
+        else:
+            super(Url, self).save(*args, **kwargs)
 
 
     def getUrls(options):
@@ -261,9 +268,6 @@ class UrlPath(models.Model):
     Url path 'segments' and order
     """
     created_date = models.DateTimeField(auto_now_add=True)
-    url = models.ForeignKey(Url,
-                            related_name='url_path_url',
-                            on_delete=models.CASCADE)
     sequence = models.IntegerField(default=0)
     path = models.CharField(max_length=255)
 
@@ -271,7 +275,7 @@ class UrlPath(models.Model):
         ordering = ['sequence',]
 
     def __str__(self):
-        return '%s: %s' % (self.path, self.url,)
+        return '%s: %s' % (self.path, self.sequence,)
 
 
 class SearchKeyVal(models.Model):
@@ -279,9 +283,6 @@ class SearchKeyVal(models.Model):
     url.location.search key -> val
     """
     created_date = models.DateTimeField(auto_now_add=True)
-    url = models.ForeignKey(Url,
-                            related_name='search_key_val_url',
-                            on_delete=models.CASCADE)
     key = models.CharField(max_length=128)
     val = models.CharField(max_length=255, null=True, blank=True)
 
@@ -764,6 +765,7 @@ class UrlFilterPart(models.Model):
     prop = models.CharField(max_length=16, choices=LOCATION_PROPS)
     # key will only be used when one is filtering for a specific search_key
     filter_key = models.CharField(max_length=128, null=True, blank=True)
+    filter_path_index = models.IntegerField(null=True, blank=True)
     filter_val = models.CharField(max_length=128)
     url_filter = models.ForeignKey('UrlFilter',
                                    related_name='url_filter_part_url_filter',
@@ -781,7 +783,7 @@ class UrlFilter(models.Model):
     """
     created_date = models.DateTimeField(auto_now_add=True, editable=False)
     modified_date = models.DateTimeField(auto_now=True, editable=False)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
 
     class Meta:
@@ -800,9 +802,43 @@ class UrlFilter(models.Model):
         # TODO: test for search_key and path_segment and search the related
         #       models:
 
-        or_condition = Q()
+        and_condition = Q()
         for part in filter_parts:
-            for key, value in part.items():
-                or_condition.add(Q(**{key: value}), Q.OR)
+            # import ipdb; ipdb.set_trace()
+            query_obj = self.make_query_object(part)
+            and_condition.add(Q(**query_obj), Q.AND)
 
-                query_set = Url.objects.filter(or_condition)
+        query_set = Url.objects.filter(and_condition).distinct()
+
+        return query_set
+
+    def make_query_object(self, part):
+        """
+        create an object that can be used in a Q() and_condition
+        """
+        if part.prop == 'path_segment':
+            # return a path_segment object to query aginst
+            # the M2M relationship
+            if part.filter_path_index is not None:
+                obj = {
+                    'url_paths__sequence': part.filter_path_index,
+                    'url_paths__path': part.filter_val
+                }
+
+                return obj
+            else:
+                # this should match any path segment in any sequence
+                obj = {
+                    'url_paths__path': part.filter_val
+                }
+
+                return obj
+        elif part.prop == 'search_key':
+            # TODO: not supporting search_key until required
+            #       by issues, enhancement requests
+            return {}
+        else:
+            obj = {}
+            obj[part.prop] = part.filter_val
+
+            return obj
