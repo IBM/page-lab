@@ -182,17 +182,16 @@ class Url(models.Model):
                     i = i + 1
 
             for query in loc.query.split('&'):
-                for pair in query:
-                    kv = pair.split('=')
-                    try:
-                        key = kv[0]
-                    except:
-                        continue
-                    try:
-                        val = kv[1]
-                    except:
-                        val = None
-                    SearchKeyVal.objects.create(url=self, key=key, val=val)
+                kv = query.split('=')
+                try:
+                    key = kv[0]
+                except:
+                    continue
+                try:
+                    val = kv[1]
+                except:
+                    val = None
+                SearchKeyVal.objects.create(url=self, key=key, val=val)
 
 
     def getUrls(options):
