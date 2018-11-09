@@ -234,10 +234,7 @@ def about(request):
 ##
 ##
 def reports_browse(request, filter_slug=''):
-    try:
-        filter = UrlFilter.objects.get(slug=filter_slug)
-    except UrlFilter.DoesNotExist:
-        filter = None
+    filter = UrlFilter.get_filter_safe(filter_slug)
     ids = list(filter.run_query().values_list('id', flat=True)) if filter != None else [] 
 
     urls = Url.getUrls({
@@ -297,10 +294,7 @@ def reports_dashboard(request, filter_slug=''):
     ## Vars here allow for easy future update to scope data to any set of URLs, instead of all.
     ## This way NONE OF THE THINGS IN "CONTEXT" need to be touched.
     ## Simple change the scope/queries of these two vars.
-    try:
-        filter = UrlFilter.objects.get(slug=filter_slug)
-    except UrlFilter.DoesNotExist:
-        filter = None
+    filter = UrlFilter.get_filter_safe(filter_slug)
     if filter != None:
       urls = filter.run_query()
       urlKpiAverages = UrlKpiAverage.getFilteredAverages(urls)

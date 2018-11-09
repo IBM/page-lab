@@ -806,6 +806,12 @@ class UrlFilter(models.Model):
     def __str__(self):
         return "%s" % (self.name)
 
+    def get_filter_safe(filter_slug):
+        try:
+            return UrlFilter.objects.get(slug=filter_slug)
+        except UrlFilter.DoesNotExist:
+            return None
+
     def run_query(self):
         """
         get all of the filter parts and create a set of urls
