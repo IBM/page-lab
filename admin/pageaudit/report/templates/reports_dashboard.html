@@ -33,8 +33,16 @@
 
 	<div class="ibm-fluid ibm-fullwidth">	
         <div class="ibm-col-12-12"> 
-            
+                        
             <div class="ibm-center">
+                {% if filter != None %}
+                    <h1 class="ibm-h1">Current filter: {{ filter.name }}</h1>
+                    <div style="margin-bottom: 20px">
+                        <a href="{% url 'plr:reports_browse' %}{{ filter.slug }}">
+                            Jump to report-card view
+                        </a>
+                    </div>
+                {% endif %}
                 <p class="ibm-h4 ibm-padding-bottom-1 ibm-bold">Average scores across <span class="ibm-light">{{ urlCountTested|withComma }}</span> tested URLs</p>
                 
                     <div class="pl-avg-donut ibm-margin-bottom-2">

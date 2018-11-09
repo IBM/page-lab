@@ -26,7 +26,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from pageaudit.settings import ADMINS_EMAIL_TO_SMS
 from .helpers import *
-from .models import LighthouseDataRaw, LighthouseRun, Url, UrlKpiAverage
+from .models import LighthouseDataRaw, LighthouseRun, Url, UrlKpiAverage, UrlFilter, UrlFilterPart
 
 ERROR = 'error'
 SUCCESS = 'success'
@@ -233,11 +233,17 @@ def about(request):
 ##  /report/browse/
 ##
 ##
-def reports_browse(request):
+def reports_browse(request, filter_slug=''):
+    try:
+        filter = UrlFilter.objects.get(slug=filter_slug)
+    except UrlFilter.DoesNotExist:
+        filter = None
+    ids = list(filter.run_query().values_list('id', flat=True)) if filter != None else [] 
 
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
         'sortorder': request.GET.get('sortorder'),
+        'ids': ids
     })
     
     ## Pagination is AWESOME:  https://docs.djangoproject.com/en/2.0/topics/pagination/
@@ -254,15 +260,24 @@ def reports_browse(request):
         'sortorder': request.GET.get('sortorder', 'desc'),
         'viewdata': viewData,
         'hasNextPage': urlsToShow.has_next(),
+        'filter': filter
     }
-    
     return render(request, 'reports_browse.html', context)
 
+##
+## /report/filters
+##
+def reports_filters(request):
+    url_filter_list = UrlFilter.objects.all()
+    filter_sets = []
+    for url_filter in url_filter_list:
+      filter_sets.append((url_filter, UrlFilterPart.objects.filter(url_filter=url_filter)))
+    return render(request, 'reports_filters.html', {'filter_sets': filter_sets})
 
 ##
 ##  /report/dashboard/
 ##
-def reports_dashboard(request):
+def reports_dashboard(request, filter_slug=''):
     
     reportBuckets = {
         'fcp': {
@@ -282,14 +297,22 @@ def reports_dashboard(request):
     ## Vars here allow for easy future update to scope data to any set of URLs, instead of all.
     ## This way NONE OF THE THINGS IN "CONTEXT" need to be touched.
     ## Simple change the scope/queries of these two vars.
-    urlKpiAverages = UrlKpiAverage.objects.all()
-    urls = Url.objects.all()
-    
+    try:
+        filter = UrlFilter.objects.get(slug=filter_slug)
+    except UrlFilter.DoesNotExist:
+        filter = None
+    if filter != None:
+      urls = filter.run_query()
+      urlKpiAverages = UrlKpiAverage.getFilteredAverages(urls)
+    else:
+      urls = Url.objects.all()
+      urlKpiAverages = UrlKpiAverage.objects.all()
     
     ## Get a bunch of counts to chart.
     ## Nothing here should be changed unless we add a new data point to chart.
     context = {
         'urlCountTested': urls.count(),
+        'filter': filter,
         
         'urlGlobalPerfAvg': round(urlKpiAverages.aggregate(Avg('performance_score'))['performance_score__avg']),
         'urlGlobalA11yAvg': round(urlKpiAverages.aggregate(Avg('accessibility_score'))['accessibility_score__avg']),

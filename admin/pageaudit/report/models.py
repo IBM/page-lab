@@ -212,7 +212,7 @@ class Url(models.Model):
 
         defSortby = "date"
         defSortorder = "-"
-        defFilter = None
+        defUrlIds = []
 
         ## Sort by.
         try:
@@ -233,10 +233,18 @@ class Url(models.Model):
         except Exception as ex:
             userSortorder = defSortorder
 
+        try:
+            urlIds = options['ids']
+        except Exception as ex:
+            urlIds = defUrlIds
+
         ## Map sortorder field to proper query filter condition.
         querySortorder = "" if userSortorder == "asc" else defSortorder
 
-        return Url().haveValidRuns().prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").order_by(querySortorder + querySortby)
+        urls = Url().haveValidRuns().prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").order_by(querySortorder + querySortby)
+        if len(urlIds) > 0:
+            urls = urls.filter(id__in=urlIds)
+        return urls
 
     def getKpiAverages(self):
         try:
@@ -397,6 +405,11 @@ class UrlKpiAverage(models.Model):
     def __str__(self):
         return '%s' % (self.url.url,)
 
+    def getFilteredAverages(urls):
+        try:
+          return UrlKpiAverage.objects.filter(url_id__in=list(urls.values_list('id', flat=True)))
+        except Exception as ex:
+          return UrlKpiAverage.objects.all()
 
 ## FUTURE USE:
 # class LighthouseConfig(models.Model):
@@ -785,6 +798,7 @@ class UrlFilter(models.Model):
     modified_date = models.DateTimeField(auto_now=True, editable=False)
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
+    slug = models.SlugField(max_length=50)
 
     class Meta:
         ordering = ['name']

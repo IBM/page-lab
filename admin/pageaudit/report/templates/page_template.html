@@ -164,6 +164,7 @@
                                     <li role="presentation" class="{% block menuHomeClass %}{% endblock %}"><a role="menuitem" href="{% url 'plr:home' %}">Find reports</a></li>
                                     <li role="presentation" class="{% block menuBrowseClass %}{% endblock %}"><a role="menuitem" href="{% url 'plr:reports_browse' %}">Browse reports</a></li>
                                     <li role="presentation" class="{% block menuDashboardClass %}{% endblock %}"><a role="menuitem" href="{% url 'plr:reports_dashboard' %}">Heads-up display</a></li>
+                                    <li role="presentation" class="{% block menuFiltersClass %}{% endblock %}"><a role="menuitem" href="{% url 'plr:reports_filters' %}">Browse filters</a></li>
                                     
                                     {% get_flatpages as flatpages %}
                                     {% for page in flatpages %}

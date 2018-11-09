@@ -10,8 +10,9 @@ from .views import *
 ## So {% url 'plr:home' %} points to the "/report/" URL using "home" view
 urlpatterns = [
     url(r'^$', home, name='home'),
-    url(r'^browse/$', reports_browse, name='reports_browse'),
-    url(r'^dashboard/$', reports_dashboard, name='reports_dashboard'),
+    url(r'^browse/(?P<filter_slug>\S+)?$', reports_browse, name='reports_browse'),
+    url(r'^dashboard/(?P<filter_slug>\S+)?$', reports_dashboard, name='reports_dashboard'),
+    url(r'^filters/$', reports_filters, name='reports_filters'),
     url(r'^urls/datatable/$', reports_urls_datatable, name='reports_urls_datatable'),
     url(r'^urls/detail/(?P<id>[\d-]+)/$', reports_urls_detail, name='reports_urls_detail'),
     

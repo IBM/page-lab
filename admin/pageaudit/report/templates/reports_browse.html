@@ -127,6 +127,14 @@
 
 		<div class="ibm-fluid ibm-fullwidth">
             <div class="ibm-col-12-12">
+              {% if filter != None %}
+                    <h3 class="ibm-h3">Current filter: {{ filter.name }}</h1>
+                    <div style="padding-left: 20px; padding-bottom: 30px;">
+                        <a href="{% url 'plr:reports_dashboard' %}{{ filter.slug }}">
+                            Jump to dashboard view
+                        </a>
+                    </div>
+                {% endif %}
                 <form id="pl-sortform" aria-label="Sort data listing" action="" method="get">
                     
                     
