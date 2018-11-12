@@ -82,7 +82,7 @@
             
             
             {% block leadspace %}
-                <div class="pl-leadspace bg-black pv4">
+                <div class="pl-leadspace bg-black pv4 w-100 ph3">
 			        <h1 class="f1 tc mt0 green">{% block pageTitle %}{% endblock %}</h1>
 			        {% block pageSubtitle %}{% endblock %}
 			    </div>
@@ -90,23 +90,16 @@
             
             
             {% if request.session.showMessage %}
-                <div class="ibm-fluid ibm-fullwidth">
-                    <div class="ibm-col-12-12">
-                        <p class="ibm-margin-bottom-1 {{ request.session.showMessage.class }}">{{ request.session.showMessage.text|safe }}</p>
-                    </div>
-                </div>
+                <p class="mb3 {{ request.session.showMessage.class }}">{{ request.session.showMessage.text|safe }}</p>
             {% endif %}
             
             
             {% block content %} {% endblock %}
             
             
-            <div class="ibm-fluid ibm-fullwidth ibm-padding-top-1">
-                <div class="ibm-col-12-6 ibm-padding-top-2"></div>
-                <div class="ibm-col-12-6 ibm-padding-top-2">
-                    <p class="ibm-right ibm-left-small ibm-padding-bottom-0">Made with <br>
-                         <a style="display:inline-block;transform:translate3d(0,-3px,0);"  href="https://www.postgresql.org/" target="_blank"><img src="{% static 'report/postgresql-logo.gif' %}" width="120" height="25" title="PostgreSQL: The world's most advanced open source relational database" alt="Made with PostgreSQL"></a> <span style="display:inline-block;transform:translate3d(0,-12px,0)">+</span> <a style="display:inline-block;" href="https://www.djangoproject.com/" target="_blank"><img src="{% static 'report/django-logo.gif' %}" width="100" height="35" title="Django makes it easier to build better Web apps more quickly and with less code." alt="Made with Django"></a></p>
-                </div>
+            <div class="w-100 pt2 ph3">
+                <p class="tr ibm-left-small pb0">Made with <br>
+                     <a style="display:inline-block;transform:translate3d(0,-3px,0);"  href="https://www.postgresql.org/" target="_blank"><img src="{% static 'report/postgresql-logo.gif' %}" width="120" height="25" title="PostgreSQL: The world's most advanced open source relational database" alt="Made with PostgreSQL"></a> <span style="display:inline-block;transform:translate3d(0,-12px,0)">+</span> <a style="display:inline-block;" href="https://www.djangoproject.com/" target="_blank"><img src="{% static 'report/django-logo.gif' %}" width="100" height="35" title="Django makes it easier to build better Web apps more quickly and with less code." alt="Made with Django"></a></p>
             </div>
             
         </main>

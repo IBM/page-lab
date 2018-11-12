@@ -2,10 +2,10 @@
 {% load beautify %}
 {% load scoredisplayoptions %}
 
-<div class="ibm-col-large-12-4 ibm-col-xlarge-12-3 ibm-col-medium-12-6 ibm-center ibm-flex ibm-margin-bottom-1">
+<div class="ibm-col-large-12-4 ibm-col-xlarge-12-3 ibm-col-medium-12-6 tc ibm-flex mb3">
 	
 	{% if url.url_kpi_average %}
-    	<a href="{% url 'plr:reports_urls_detail' id=url.id %}" title="View details" class="pl-reportcard ibm-fullwidth ibm-blocklink ibm-padding-content">
+    	<a href="{% url 'plr:reports_urls_detail' id=url.id %}" title="View details" class="pl-reportcard w-100 ibm-blocklink ibm-padding-content">
         	<div class="pl-compare-cbcon">
         		<span class="ibm-checkbox-wrapper ibm-small">
                     <input class="ibm-styled-checkbox" id="id_{{ url.id }}" type="checkbox" value="{{ url.id }}" /> 
@@ -13,9 +13,9 @@
                 </span>	    
         	</div>
         	
-        	<div style="margin-bottom: 10px !important;" class="ibm-center"><img src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="100"></div>
+        	<div style="margin-bottom: 10px !important;" class="tc"><img src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="100"></div>
             
-            <div style="margin-bottom: 10px !important;" class="ibm-center">
+            <div style="margin-bottom: 10px !important;" class="tc">
                 {% if viewdata == "a11yscore" %}
                     {% include "url_compare_table_score.html" with scoreValue=url.url_kpi_average.accessibility_score %}
                 {% elif viewdata == "seoscore" %}
@@ -31,8 +31,8 @@
     	</a>
     	
     {% else %}
-        <div class="ibm-fullwidth ibm-padding-content">
-        	<div style="margin-bottom: 10px !important; position:relative;" class="ibm-center">
+        <div class="w-100 ibm-padding-content">
+        	<div style="margin-bottom: 10px !important; position:relative;" class="tc">
             	<div class="pl-reportcard-notests">
                 	<p class="ibm-nospacing ibm-textcolor-white-core">No tests<br>have been<br>run yet</p>
                 </div>
