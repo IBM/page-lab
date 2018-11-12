@@ -176,17 +176,7 @@
                                     <option value="seoscore" {% if viewdata == 'seoscore' %}selected="selected"{% endif %}>SEO score</option>
                                 </select>
                             </div>
-
-                            <div class="ibm-margin-bottom-1" style="margin-right: 15px; display: inline-block;">
-                                <p class="ibm-bold" style="padding-bottom: 10px;">Filter:</p>
-                                <select id="url-filter">
-                                    <option value="">&nbsp;</option>
-                                    {% for url_filter in filters %}
-                                        <option value="{{ url_filter.slug }}" {% if filter.slug == url_filter.slug %}selected="selected"{% endif %}>{{ url_filter.name }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                                    
+                            {% include "url_filter_select.html" with filter=filter filters=filters %}
                             <div class="ibm-margin-bottom-1" style="margin-right: 60px; display: inline-block;">
                                 <p class="ibm-ind-link">
                                     <a id="apply" class="ibm-forward-link" href="####">Apply</a>
