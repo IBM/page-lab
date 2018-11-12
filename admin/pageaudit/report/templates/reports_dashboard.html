@@ -11,23 +11,6 @@
 
 {% block menuDashboardClass %}ibm-highlight{% endblock %}
 
-{% block extraFiles %}
-<script>
-  (function ($, IBM) {
-    function setApplyHandler() {
-      $('#apply').click((e) => {
-          e.preventDefault();
-          $('#pl-sortform').attr('action', `{% url 'plr:reports_dashboard' %}${$('#url-filter').val()}`).submit();
-      });
-    }
-
-    $(function () {
-        setApplyHandler();              
-    });
-  })(jQuery, IBMCore);
-</script>
-{% endblock %}
-
 {% block content %}
 
     <style> 
@@ -55,7 +38,7 @@
 	<div class="ibm-fluid ibm-fullwidth">	
         <div class="ibm-col-12-12">
             <form id="pl-sortform" aria-label="Sort data listing" action="" method="get">
-                {% include "url_filter_select.html" with filter=filter filters=filters %}
+                {% include "url_filter_select.html" with filter=filter filters=filters view_name='plr:reports_dashboard' %}
                 <div class="ibm-margin-bottom-1" style="margin-right: 60px; display: inline-block;">
                     <p class="ibm-ind-link">
                         <a id="apply" class="ibm-forward-link" href="####">Apply</a>

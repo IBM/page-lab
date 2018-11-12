@@ -1,3 +1,18 @@
+<script>
+  (function ($, IBM) {
+    function setApplyHandler() {
+      $('#apply').click((e) => {
+          e.preventDefault();
+          $('#pl-sortform').attr('action', `{% url view_name %}${$('#url-filter').val()}`).submit();
+      });
+    }
+
+    $(function () {
+        setApplyHandler();
+    });
+  })(jQuery, IBMCore)
+</script>
+
 <div class="ibm-margin-bottom-1" style="margin-right: 15px; display: inline-block;">
     <p class="ibm-bold" style="padding-bottom: 10px;">URL Filter:</p>
     <select id="url-filter">
