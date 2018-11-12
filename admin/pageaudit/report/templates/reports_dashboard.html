@@ -11,6 +11,28 @@
 
 {% block menuDashboardClass %}ibm-highlight{% endblock %}
 
+{% block extraFiles %}
+<script>
+  (function ($, IBM) {
+    function setApplyHandler() {
+      /*
+        Just need to get this to run.
+      */
+      $('#apply').click((e) => {
+          e.preventDefault();
+          $('#pl-sortform').attr('action', `{% url 'plr:reports_dashboard' %}${$('#url-filter').val()}`).submit();
+      });
+
+    }
+
+    $(function () {
+        console.log('in here')
+        setApplyHandler();              
+    });
+  })(jQuery, IBMCore);
+</script>
+{% endblock %}
+
 {% block content %}
 
     <style> 
@@ -27,21 +49,33 @@
             line-height: 100px;
             width: 100px;
         }
+
+        #pl-sortform {
+          padding-left: 28%;
+        }
         
     </style>
 
 
 	<div class="ibm-fluid ibm-fullwidth">	
-        <div class="ibm-col-12-12"> 
+        <div class="ibm-col-12-12">
+            <form id="pl-sortform" aria-label="Sort data listing" action="" method="get">
+                <div class="ibm-margin-bottom-1" style="margin-right: 15px; display: inline-block;">
+                    <p class="ibm-bold" style="padding-bottom: 10px;">Filter:</p>
+                    <select id="url-filter">
+                        <option value="">&nbsp;</option>
+                        {% for url_filter in filters %}
+                          <option value="{{ url_filter.slug }}" {% if filter.slug == url_filter.slug %}selected="selected"{% endif %}>{{ url_filter.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="ibm-margin-bottom-1" style="margin-right: 60px; display: inline-block;">
+                    <p class="ibm-ind-link">
+                        <a id="apply" class="ibm-forward-link" href="####">Apply</a>
+                    </p>
+                </div>
+            </form>
             <div class="ibm-center">
-                {% if filter != None %}
-                    <h1 class="ibm-h1">Current filter: {{ filter.name }}</h1>
-                    <div style="margin-bottom: 20px">
-                        <a href="{% url 'plr:reports_browse' %}{{ filter.slug }}">
-                            Jump to report-card view
-                        </a>
-                    </div>
-                {% endif %}
                 <p class="ibm-h4 ibm-padding-bottom-1 ibm-bold">Average scores across <span class="ibm-light">{{ urlCountTested|withComma }}</span> tested URLs</p>
                 
                     <div class="pl-avg-donut ibm-margin-bottom-2">

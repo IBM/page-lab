@@ -83,6 +83,13 @@
             function setupLoadMore () {
                 $loadmoreContainer.find("button")[0].addEventListener("click", loadItems);
             }
+
+            function setApplyHandler() {
+              $('#apply').click((e) => {
+                  e.preventDefault();
+                  $('#pl-sortform').attr('action', `{% url 'plr:reports_browse' %}${$('#url-filter').val()}`).submit();
+              });
+            }
             
             function loadItems () {
                 $.ajax({
@@ -107,6 +114,7 @@
             $(function () {
                 $loadmoreContainer = $("#pl-loadmore");
                 $cardContainer = $("#pl-cards-container");
+                setApplyHandler();
                 if ($loadmoreContainer[0]) {
                     setupLoadMore();
                 }
@@ -127,16 +135,7 @@
 
 		<div class="ibm-fluid ibm-fullwidth">
             <div class="ibm-col-12-12">
-                {% if filter != None %}
-                    <h3 class="ibm-h3">Current filter: {{ filter.name }}</h1>
-                    <div style="padding-left: 20px; padding-bottom: 30px;">
-                        <a href="{% url 'plr:reports_dashboard' %}{{ filter.slug }}">
-                            Jump to dashboard view
-                        </a>
-                    </div>
-                {% endif %}
                 <form id="pl-sortform" aria-label="Sort data listing" action="" method="get">
-                    
                     
 <!--
                             <div class="ibm-margin-bottom-1" style="margin-right: 60px; display: inline-block;">
@@ -177,11 +176,20 @@
                                     <option value="seoscore" {% if viewdata == 'seoscore' %}selected="selected"{% endif %}>SEO score</option>
                                 </select>
                             </div>
+
+                            <div class="ibm-margin-bottom-1" style="margin-right: 15px; display: inline-block;">
+                                <p class="ibm-bold" style="padding-bottom: 10px;">Filter:</p>
+                                <select id="url-filter">
+                                    <option value="">&nbsp;</option>
+                                    {% for url_filter in filters %}
+                                        <option value="{{ url_filter.slug }}" {% if filter.slug == url_filter.slug %}selected="selected"{% endif %}>{{ url_filter.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                                     
                             <div class="ibm-margin-bottom-1" style="margin-right: 60px; display: inline-block;">
                                 <p class="ibm-ind-link">
-                                    <a class="ibm-forward-link" href="####" onclick="jQuery('#pl-sortform').submit();return false;">Apply</a>
-                                    
+                                    <a id="apply" class="ibm-forward-link" href="####">Apply</a>
                                 </p>
                             </div>
                         

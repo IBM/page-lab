@@ -257,7 +257,8 @@ def reports_browse(request, filter_slug=''):
         'sortorder': request.GET.get('sortorder', 'desc'),
         'viewdata': viewData,
         'hasNextPage': urlsToShow.has_next(),
-        'filter': filter
+        'filter': filter,
+        'filters': UrlFilter.objects.all()
     }
     return render(request, 'reports_browse.html', context)
 
@@ -307,6 +308,7 @@ def reports_dashboard(request, filter_slug=''):
     context = {
         'urlCountTested': urls.count(),
         'filter': filter,
+        'filters': UrlFilter.objects.all(),
         
         'urlGlobalPerfAvg': round(urlKpiAverages.aggregate(Avg('performance_score'))['performance_score__avg']),
         'urlGlobalA11yAvg': round(urlKpiAverages.aggregate(Avg('accessibility_score'))['accessibility_score__avg']),
