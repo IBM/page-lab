@@ -1,0 +1,114 @@
+{% load static %}
+{% load bannernotification %}
+{% load flatpages %}
+{% load pageview %}
+{% load flatpages_nav_highlight %}
+{% load inline_static_tags %}
+
+{% trackPageView %}
+
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+    <head>
+        <meta charset="UTF-8">
+
+        <!--
+                                                                   
+        88888888ba,    88                                                     
+        88      `"8b   ""                                                     
+        88        `8b                                                         
+        88         88  88  ,adPPYYba,  8b,dPPYba,    ,adPPYb,d8   ,adPPYba,   
+        88         88  88  ""     `Y8  88P'   `"8a  a8"    `Y88  a8"     "8a  
+        88         8P  88  ,adPPPPP88  88       88  8b       88  8b       d8  
+        88      .a8P   88  88,    ,88  88       88  "8a,   ,d88  "8a,   ,a8"  
+        88888888Y"'    88  `"8bbdP"Y8  88       88   `"YbbdP"Y8   `"YbbdP"'   
+                      ,88                            aa,    ,88               
+                    888P"                             "Y8bbdP"               
+         
+        -->        
+        
+            
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="index,follow">
+        <meta name="description" content="Web page page, monitoring, testing and reporting toolshed.">
+        <meta name="keywords" content="Web platform, web page, performance, lighthouse, google, python, django">
+        <meta name="geo.country" content="US">
+        <meta name="dcterms.date" content="2018-11-01">
+        
+        <title>PageLab {% block browserTitle %}{% endblock %}</title>
+        
+        
+        <link href="{% static 'report/design/tachyons.min.css' %}" rel="stylesheet">
+        <link href="{% static 'report/design/site-custom.css' %}" rel="stylesheet">
+        
+		<style>
+			.pl-leadspace {
+			    background: #000 url({% static 'report/leadspace1.svg' %}) no-repeat 95% 100% / 11%;
+			}
+		</style>
+
+
+		<script src="{% static 'report/design/jquery-3.3.1.min.js' %}"></script>
+		<script src="{% static 'report/design/site-custom.js' %}"></script>
+
+        {% block extraFiles %} {% endblock %}
+    
+    </head>
+    
+    <body class="helvetica">
+            
+        {% bannerNotification %}
+            
+        <main role="main" aria-label="PageLab content">
+                
+            <nav role="navigation" aria-label="PageLab">
+                <div class="ibm-sitenav-menu-container ibm-alternate-dark">
+                    <div class="ibm-sitenav-menu-name"><a href="{% url 'plr:home' %}">PageLab</a></div>
+                    <div class="ibm-sitenav-menu-list">
+                        <ul role="menubar">
+                            <li role="presentation" class="{% block menuHomeClass %}{% endblock %}"><a role="menuitem" href="{% url 'plr:home' %}">Find reports</a></li>
+                            <li role="presentation" class="{% block menuBrowseClass %}{% endblock %}"><a role="menuitem" href="{% url 'plr:reports_browse' %}">Browse reports</a></li>
+                            <li role="presentation" class="{% block menuDashboardClass %}{% endblock %}"><a role="menuitem" href="{% url 'plr:reports_dashboard' %}">Heads-up display</a></li>
+                            
+                            {% get_flatpages as flatpages %}
+                            {% for page in flatpages %}
+                                {% highlight_nav_item page.url as highlight_flag %}
+                                <li role="presentation" {% if highlight_flag %}class="ibm-highlight"{% endif %}><a href="{{ FORCE_SCRIPT_NAME }}/report/pages{{ page.url }}">{{ page.title }}</a></li>
+                            {% endfor %}                                    
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            
+            
+            {% block leadspace %}
+                <div class="pl-leadspace bg-black pv4">
+			        <h1 class="f1 tc mt0 green">{% block pageTitle %}{% endblock %}</h1>
+			        {% block pageSubtitle %}{% endblock %}
+			    </div>
+            {% endblock %}
+            
+            
+            {% if request.session.showMessage %}
+                <div class="ibm-fluid ibm-fullwidth">
+                    <div class="ibm-col-12-12">
+                        <p class="ibm-margin-bottom-1 {{ request.session.showMessage.class }}">{{ request.session.showMessage.text|safe }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            
+            
+            {% block content %} {% endblock %}
+            
+            
+            <div class="ibm-fluid ibm-fullwidth ibm-padding-top-1">
+                <div class="ibm-col-12-6 ibm-padding-top-2"></div>
+                <div class="ibm-col-12-6 ibm-padding-top-2">
+                    <p class="ibm-right ibm-left-small ibm-padding-bottom-0">Made with <br>
+                         <a style="display:inline-block;transform:translate3d(0,-3px,0);"  href="https://www.postgresql.org/" target="_blank"><img src="{% static 'report/postgresql-logo.gif' %}" width="120" height="25" title="PostgreSQL: The world's most advanced open source relational database" alt="Made with PostgreSQL"></a> <span style="display:inline-block;transform:translate3d(0,-12px,0)">+</span> <a style="display:inline-block;" href="https://www.djangoproject.com/" target="_blank"><img src="{% static 'report/django-logo.gif' %}" width="100" height="35" title="Django makes it easier to build better Web apps more quickly and with less code." alt="Made with Django"></a></p>
+                </div>
+            </div>
+            
+        </main>
+    </body>
+</html>

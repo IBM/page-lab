@@ -1,4 +1,4 @@
-{% extends "page_template.html" %}
+{% extends "page_template_tach.html" %}
 
 {% load beautify %}
 {% load static %}
@@ -6,38 +6,20 @@
 
 {% block pageTitle %} PageLab {% endblock  %}
 
-{% block pageSubtitle %} <p>Automated controlled test reports providing insights for effective user experiences.</p> {% endblock  %}
-
 {% block menuHomeClass %}ibm-highlight{% endblock %}
 
 
-{% block extraFiles %}
-        
-        <style>
-            
-            .pl-leadspace {
-                padding: 0 20px;
-            }
-            
-            .ibm-grid-small .pl-leadspace {
-                padding: 20px;
-            }
-            
-        </style>
-        
-{% endblock %}
+{% block leadspacem %}
 
-{% block leadspace %}
+    <div class="bg-black pv5 pl-leadspace">
+        <h1 class="f1 tc mt0 green">PageLab</h1>
+        <p class="f4 tc white-70">Automated controlled test reports providing insights for effective user experiences.</p> 
+    </div>
 
 {% endblock %}
+
 
 {% block content %}
-    <div class="pl-leadspace ibm-padding-top-3 ibm-padding-bottom-3 ibm-flex ibm-hidden-bg-small ibm-fluid ibm-fullwidth ibm-margin-bottom-2 ibm-background-black-core">
-        <div class="ibm-center ibm-fullwidth" style="align-self:center;">
-            <h1 class="ibm-h1 ibm-medium ibm-h2-small ibm-bold"><span class="ibm-textcolor-green-30">PageLab</span></h1>
-            <p class="ibm-textcolor-gray-30 ibm-padding-bottom-0">Automated controlled test reports providing insights for effective user experiences.</p> 
-        </div>
-    </div>
 
 	<div class="ibm-fluid ibm-center ibm-fullwidth" style="min-height: 40vh;">
         <div class="ibm-col-12-12 ibm-center-block" style="max-width:800px;">
