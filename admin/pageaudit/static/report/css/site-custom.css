@@ -12,6 +12,22 @@ html, body, button, input, select, textarea {
 }
 
 
+/**
+    Site navigation bar
+**/
+.pl-sitenav a {
+    position: relative;
+}
+.pl-sitenav .pl-highlight:after {
+    background: #19a974;
+    content: "";
+    height: 4px;
+    width: 100%;
+    display: block;
+    position: absolute;
+    bottom: 0;
+}
+
 /** 
     Leadspace
 **/
