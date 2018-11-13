@@ -40,72 +40,12 @@
         
         <title>PageLab {% block browserTitle %}{% endblock %}</title>
 
-        <link href="{% static 'report/design/www.css' %}" rel="stylesheet">
-        <link href="{% static 'report/design/grid-fluid.css' %}" rel="stylesheet">
-        <link href="{% static 'report/design/tables.css' %}" rel="stylesheet">
+        <link href="{% static 'report/css/www.css' %}" rel="stylesheet">
+        <link href="{% static 'report/css/grid-fluid.css' %}" rel="stylesheet">
+        <link href="{% static 'report/css/tables.css' %}" rel="stylesheet">
         
-        <style>
-            
-            /** 
-                Image via Wikimedia Commons: 
-                    https://commons.wikimedia.org/wiki/File:Mad_scientist_transparent_background.svg 
-                Modified gloves by: Michael Santelia.
-            **/
-            
-            .pl-leadspace {
-                background: #000 url({% static 'report/leadspace1.svg' %}) no-repeat 95% 100% / 11%;
-                min-height: 160px;
-            }
-            
-            .ibm-grid-medium .pl-leadspace {
-                background-size: 18%;
-            }
-            
-            #ibm-footer .ibm-fluid {
-                max-width: 100%;
-                width: 100%;
-            }
-            
-            /** Force table links to be blue **/
-            a.ibm-linkcolor-default {
-                color: #4178be !important;
-                text-decoration: none !important;
-            }
-            a.ibm-linkcolor-default:hover {
-                text-decoration: underline !important;
-            }
-            
-            .pl-perfscore {
-                border-radius: 100%;
-                border: transparent 5px solid;
-                display: inline-block;
-                height: 35px;
-                line-height: 35px;
-                padding: 10px;
-                text-align: center;
-                width: 35px;
-            }
-            
-            .pl-goodscore {
-                border-color: #008000;
-            }
-
-            .pl-avgscore {
-                border-color: #f4a000;
-            }
-            
-            .pl-poorscore {
-                border-color: #e71d32;
-            }
-
-            
-            /* top align "icon after" icons when link text wraps. */
-            .ibm-ind-link a.ibm-icon-after::after {
-                top: 0;
-            }
-
-        </style>    
-
+        <link href="{% static 'report/css/site-custom.css' %}" rel="stylesheet">
+        
         <script>
             window.digitalData = {
                 page: {
@@ -131,7 +71,7 @@
             
         </script>
         
-        <script src="{% static 'report/design/www.js' %}"></script>
+        <script src="{% static 'report/js/www.js' %}"></script>
         
         {% block extraFiles %} {% endblock %}
     
@@ -201,7 +141,7 @@
                         <div class="ibm-col-12-6 ibm-padding-top-2"></div>
                         <div class="ibm-col-12-6 ibm-padding-top-2">
                             <p class="ibm-right ibm-left-small ibm-padding-bottom-0">Made with <br>
-                                 <a style="display:inline-block;transform:translate3d(0,-3px,0);"  href="https://www.postgresql.org/" target="_blank"><img src="{% static 'report/postgresql-logo.gif' %}" width="120" height="25" title="PostgreSQL: The world's most advanced open source relational database" alt="Made with PostgreSQL"></a> <span style="display:inline-block;transform:translate3d(0,-12px,0)">+</span> <a style="display:inline-block;" href="https://www.djangoproject.com/" target="_blank"><img src="{% static 'report/django-logo.gif' %}" width="100" height="35" title="Django makes it easier to build better Web apps more quickly and with less code." alt="Made with Django"></a></p>
+                                 <a style="display:inline-block;transform:translate3d(0,-3px,0);"  href="https://www.postgresql.org/" target="_blank"><img src="{% static 'report/img/postgresql-logo.gif' %}" width="120" height="25" title="PostgreSQL: The world's most advanced open source relational database" alt="Made with PostgreSQL"></a> <span style="display:inline-block;transform:translate3d(0,-12px,0)">+</span> <a style="display:inline-block;" href="https://www.djangoproject.com/" target="_blank"><img src="{% static 'report/img/django-logo.gif' %}" width="100" height="35" title="Django makes it easier to build better Web apps more quickly and with less code." alt="Made with Django"></a></p>
                         </div>
                     </div>
                 </div>
