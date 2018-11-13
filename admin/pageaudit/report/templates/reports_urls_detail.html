@@ -45,10 +45,10 @@
 
 {% block content %}
 
-        <div class="ibm-fluid ibm-flex ibm-fullwidth">
-            <div class="ibm-col-12-3 ibm-col-xlarge-12-2 ibm-margin-bottom-1">
+        <div class="ph3 ibm-fluid ibm-flex w-100">
+            <div class="ibm-col-12-3 ibm-col-xlarge-12-2 mb3">
 
-            	<p class="ibm-margin-bottom-1">
+            	<p class="mb3">
                     <a href="{{ url1.url }}" title="View page in new window" target="_blank"><img class="ibm-downsize" src="data:image/png;base64,{{ url1.lighthouse_run.thumbnail_image }}" width="155" style="border: 1px solid #c7c7c7;"></a>
                 </p>
             	
@@ -59,12 +59,12 @@
         </div>
         
         
-        <div class="ibm-fluid ibm-fullwidth ibm-margin-top-2">
+        <div class="ph3 ibm-fluid w-100 ibm-margin-top-2">
             <div class="ibm-col-12-12"><div class="ibm-rule ibm-gray-30 ibm-alternate"><hr></div></div>
         </div>
         
-        <div class="ibm-fluid ibm-margin-top-2">
-            <div class="ibm-col-12-12 ibm-center">
+        <div class="ph3 ibm-fluid ibm-margin-top-2">
+            <div class="ibm-col-12-12 tc">
                 <h4 class="ibm-h4 ibm-bold">Average scores across <span class="ibm-light">{{ lighthouseRuns.count }}</span> test runs</h4>
             
                 <div class="pl-url-detail-donut ibm-margin-bottom-2">
@@ -85,7 +85,7 @@
         </div>
         
                 
-        <div class="ibm-margin-top-2 ibm-fluid ibm-flex ibm-fullwidth">
+        <div class="ibm-margin-top-2 ph3 ibm-fluid ibm-flex w-100">
             <div class="ibm-col-12-6">
                 <h4 class="ibm-bold">Average KPIs &nbsp; <span style="position: relative;margin-top:-2px;" class="ibm-information-link ibm-textcolor-blue-60" data-widget="tooltip" title="Standard indicators of a page's performance."><span class="ibm-access">Key performance indicators</span></span></h4>
                 
@@ -93,57 +93,57 @@
                     <tbody>
                         <tr>
                             <td class="ibm-bold">Last tested:</td>
-                            <td class="ibm-right" style="width:200px;">{{ url1.lighthouse_run.created_date }}</td>
+                            <td class="tr" style="width:200px;">{{ url1.lighthouse_run.created_date }}</td>
                         </tr>
                         
                         <tr>
                             <td class="ibm-bold">Total size:</td>
-                            <td class="ibm-right">{{ url1.url_kpi_average.total_byte_weight|kbToMb }}</td>
+                            <td class="tr">{{ url1.url_kpi_average.total_byte_weight|kbToMb }}</td>
                         </tr>
                         
                         <tr>
                             <td class="ibm-bold"># of network requests:</td>
-                            <td class="ibm-right">{{ url1.url_kpi_average.number_network_requests|withComma }}</td>
+                            <td class="tr">{{ url1.url_kpi_average.number_network_requests|withComma }}</td>
                         </tr>
                         
                         <tr>
                             <td class="ibm-bold">Time to first byte:</td>
-                            <td class="ibm-right">{{ url1.url_kpi_average.time_to_first_byte|withComma }} ms</td>
+                            <td class="tr">{{ url1.url_kpi_average.time_to_first_byte|withComma }} ms</td>
                         </tr>
                         
                         <tr>
                             <td class="ibm-bold">DOM content loaded:</td>
-                            <td class="ibm-right">{{ url1.url_kpi_average.dom_content_loaded|withComma }} ms</td>
+                            <td class="tr">{{ url1.url_kpi_average.dom_content_loaded|withComma }} ms</td>
                         </tr>
                         
                         <tr>
                             <td class="ibm-bold">First contentful paint:</td>
-                            <td class="ibm-right">{{ url1.url_kpi_average.first_contentful_paint|withComma }} ms</td>
+                            <td class="tr">{{ url1.url_kpi_average.first_contentful_paint|withComma }} ms</td>
                         </tr>
                         
                         <tr>
                             <td class="ibm-bold">First meaningful paint:</td>
-                            <td class="ibm-right">{{ url1.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
+                            <td class="tr">{{ url1.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
                         </tr>
                         
                         <tr>
                             <td class="ibm-bold">DOM loaded:</td>
-                            <td class="ibm-right">{{ url1.url_kpi_average.dom_loaded|withComma }} ms</td>
+                            <td class="tr">{{ url1.url_kpi_average.dom_loaded|withComma }} ms</td>
                         </tr>
                        
                         <tr>
                             <td class="ibm-bold">Fully interactive:</td>
-                            <td class="ibm-right">{{ url1.url_kpi_average.interactive|withComma }} ms</td>
+                            <td class="tr">{{ url1.url_kpi_average.interactive|withComma }} ms</td>
                         </tr>
                         
                         <tr>
                             <td class="ibm-bold"># of redirects:</td>
-                            <td class="ibm-right">{{ url1.lighthouse_run.redirect_hops|withComma }}</td>
+                            <td class="tr">{{ url1.lighthouse_run.redirect_hops|withComma }}</td>
                         </tr>
                         
                         <tr>
                             <td class="ibm-bold">Wasted redirect time:</td>
-                            <td class="ibm-right">{{ url1.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
+                            <td class="tr">{{ url1.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
                         </tr>
                         
                     </tbody>
@@ -169,8 +169,8 @@
                             {% if measure.duration > 0 %}
                             <tr>
                                 <td>{{ measure.name }}</td>
-                                <td class="ibm-right">{{ measure.start_time|withComma }} ms</td>
-                                <td class="ibm-right">{{ measure.duration|withComma }} ms</td>
+                                <td class="tr">{{ measure.start_time|withComma }} ms</td>
+                                <td class="tr">{{ measure.duration|withComma }} ms</td>
                             </tr>    
                             {% endif %}
                         {% endfor %}
@@ -181,16 +181,16 @@
         </div>
         
         
-        <div class="ibm-fluid ibm-fullwidth ibm-margin-top-3 ibm-margin-bottom-2">
+        <div class="ph3 ibm-fluid w-100 ibm-margin-top-3 ibm-margin-bottom-2">
             <div class="ibm-col-12-12"><div class="ibm-rule ibm-gray-30 ibm-alternate"><hr></div></div>
         </div>
         
         
-        <div class="ibm-fluid ibm-fullwidth">
+        <div class="ph3 ibm-fluid w-100">
             <div class="ibm-col-12-6"><p class="ibm-h4 ibm-bold">Test runs history</p></div>
-            <div class="ibm-col-12-6 ibm-right ibm-left-small" id="pl-exportbuttons"></div>
+            <div class="ibm-col-12-6 tr ibm-left-small" id="pl-exportbuttons"></div>
         </div> 
-        <div class="ibm-fluid ibm-fullwidth">
+        <div class="ph3 ibm-fluid w-100">
             <div class="ibm-col-12-12">
                 <table id="pl-rundata-kpis" data-tablerowselector="enable" data-column-defs='[{"targets":"no-sort","orderable":false}]' data-order='[]' class="ibm-data-table ibm-padding-small ibm-small ibm-altrows" data-widget="datatable" data-col-reorder="true" data-info="true" data-ordering="true" data-paging="true" data-searching="true" data-page-length="10" data-buttons='["excel"]' data-dom="lBfrtip">
     	            <thead>
@@ -258,7 +258,7 @@
                 var $tablewidgetContainer = $scope.parent(),
                     $buttonCon = $tablewidgetContainer.find(".dt-buttons");
                 
-                $buttonCon.removeClass("dt-buttons").addClass("ibm-btn-row").appendTo("#pl-exportbuttons").prepend('<span class="ibm-bold ibm-margin-bottom-1" style="display:inline-block;margin-right:20px;">Export table</span>');
+                $buttonCon.removeClass("dt-buttons").addClass("ibm-btn-row").appendTo("#pl-exportbuttons").prepend('<span class="ibm-bold mb3" style="display:inline-block;margin-right:20px;">Export table</span>');
                
                 $buttonCon.find("button").addClass("ibm-btn-pri ibm-btn-blue-50 ibm-btn-small")[0].addEventListener("click", function () {
                     emailSelectedApps();

@@ -1,7 +1,6 @@
 
-(function ($, IBM) {
-    window.pl = window.pl || {};
-    window.pl.compare = {};
+(function ($, PL) {
+    var compare = PL.namespace(PL, "compare");
     
     var $compareTray, 
         $compareTrayBody,
@@ -10,10 +9,10 @@
         compareLs = {
             keyName: "pagelabCompare",
             get: function () {
-                return IBM.common.util.storage.getItem(this.keyName);
+                return PL.util.storage.getItem(this.keyName);
             },
             set: function (arr) {
-                return IBM.common.util.storage.setItem(this.keyName, arr);
+                return PL.util.storage.setItem(this.keyName, arr);
             },
             add: function (id) {
                 var id = parseInt(id,10),
@@ -39,7 +38,7 @@
             }
         };
         
-    window.pl.compareLs = compareLs;
+    compare.storage = compareLs;
     
     /**
         Called whenever we add/remove an item, this shows or hides the tray.
@@ -143,7 +142,7 @@
         @method populateCompareTrayFromStorage
         @param $checkboxes {DOM elements/jQuery obj} A list of checkbox elements to test if one needs to be pre-checked.
     **/
-    pl.compare.preselectCheckbox = preselectCheckbox;
+    compare.preselectCheckbox = preselectCheckbox;
     function preselectCheckbox ($checkboxes) {
         $checkboxes.each(function () {
            var checkbox = this;
@@ -201,7 +200,7 @@
         @param $elContainer {DOM/jQuery object} DOM element to search thru and bind checkboxes 
           to be able to add/remove items to the compare tray.
     **/
-    pl.compare.setupCompareCheckboxes = setupCompareCheckboxes;
+    compare.setupCompareCheckboxes = setupCompareCheckboxes;
     function setupCompareCheckboxes ($elContainer) {
        $elContainer.on("change", "input", function (evt) {
             // If the box is checked, and there's an available slot, add the URL.
@@ -286,4 +285,4 @@
     });  
     
     
-})(jQuery, IBMCore);
+})(jQuery, PL);

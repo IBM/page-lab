@@ -1,4 +1,4 @@
-{% extends "page_template.html" %}
+{% extends "page_template_tach.html" %}
 
 {% load beautify %}
 {% load static %}
@@ -6,56 +6,31 @@
 
 {% block pageTitle %} PageLab {% endblock  %}
 
-{% block pageSubtitle %} <p>Automated controlled test reports providing insights for effective user experiences.</p> {% endblock  %}
-
 {% block menuHomeClass %}ibm-highlight{% endblock %}
 
 
-{% block extraFiles %}
-        
-        <style>
-            
-            .pl-leadspace {
-                padding: 0 20px;
-            }
-            
-            .ibm-grid-small .pl-leadspace {
-                padding: 20px;
-            }
-            
-        </style>
-        
-{% endblock %}
+{% block leadspacem %}
 
-{% block leadspace %}
-
-{% endblock %}
-
-{% block content %}
-    <div class="pl-leadspace ibm-padding-top-3 ibm-padding-bottom-3 ibm-flex ibm-hidden-bg-small ibm-fluid ibm-fullwidth ibm-margin-bottom-2 ibm-background-black-core">
-        <div class="ibm-center ibm-fullwidth" style="align-self:center;">
-            <h1 class="ibm-h1 ibm-medium ibm-h2-small ibm-bold"><span class="ibm-textcolor-green-30">PageLab</span></h1>
-            <p class="ibm-textcolor-gray-30 ibm-padding-bottom-0">Automated controlled test reports providing insights for effective user experiences.</p> 
-        </div>
+    <div class="bg-black pv5 pl-leadspace">
+        <h1 class="f1 tc mt0 orange">PageLab</h1>
+        <p class="f4 tc white-70">Automated controlled test reports providing insights for effective user experiences.</p> 
     </div>
 
-	<div class="ibm-fluid ibm-center ibm-fullwidth" style="min-height: 40vh;">
-        <div class="ibm-col-12-12 ibm-center-block" style="max-width:800px;">
+{% endblock %}
 
-            <form action="" method="GET">
-                
-                <div class="ibm-padding-bottom-2" style="position: relative;">
-                    <input id="pl-url-search" class="ibm-fullwidth ibm-styled-input" type="text" autocomplete="off" placeholder="Find a report by URL" value="" aria-label="Find a report by URL">
-                    <div style="position: absolute;width:100%;" class="ibm-fadeout ibm-left" id="pl-typeahead-container"></div>
-                </div>
-                
-                <p class="ibm-btn-row"><button class="ibm-btn-pri ibm-btn-green-50">View report</button>
-                    <span style="display: inline-block;margin: 0 20px 20px 0;">or</span>
-                    <a href="{% url 'plr:reports_browse'%}" class="ibm-btn-sec ibm-btn-blue-50">Browse all URL reports</a>
-                </p>
-            </form>
 
-        </div>
+{% block content %}
+
+	<div class="ph3 mt5 tl tc-ns w-100 mw7-ns center">
+        <form action="" method="GET">
+            <div class="pb4" style="position: relative;">
+                <input id="pl-url-search" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" autocomplete="off" placeholder="Find a report by URL" value="" aria-label="Find a report by URL">
+                <div style="position: absolute;width:100%;" class="ibm-fadeout ibm-left" id="pl-typeahead-container"></div>
+            </div>
+            
+            <p><button class="f6 input-reset ph3 pv2 mr3 mb2 dib white bg-dark-green hover-bg-green bg-dark-green ba bw0 pointer">View report</button><span style="display: inline-block;margin: 0 20px 20px 0;">or</span><a href="{% url 'plr:reports_browse'%}" class="f6 link ph3 pv2 mb2 dib white hover-bg-blue bg-dark-blue ba">Browse all URL reports</a>
+            </p>
+        </form>
 	</div>
 	
 	

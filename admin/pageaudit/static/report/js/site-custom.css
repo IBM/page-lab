@@ -1,0 +1,29 @@
+/**
+    Image via Wikimedia Commons: 
+        https://commons.wikimedia.org/wiki/File:Mad_scientist_transparent_background.svg 
+    Modified gloves by: Michael Santelia.
+**/
+
+.pl-perfscore {
+    border-radius: 100%;
+    border: transparent 5px solid;
+    display: inline-block;
+    height: 35px;
+    line-height: 35px;
+    padding: 10px;
+    text-align: center;
+    width: 35px;
+}
+
+.pl-goodscore {
+    border-color: #008000;
+}
+
+.pl-avgscore {
+    border-color: #f4a000;
+}
+
+.pl-poorscore {
+    border-color: #e71d32;
+}
+

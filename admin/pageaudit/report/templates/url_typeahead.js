@@ -153,7 +153,7 @@
 		$inputField = $("#pl-url-search");
 		$searchForm = $inputField.closest("form");
 		$typeaheadContainer = $("#pl-typeahead-container");
-		$typeaheadUl = $('<ul class="ibm-dropdown-menu ibm-padding-small ibm-padding-bottom-0" role="listbox" aria-live="polite" aria-label="Suggestions"></ul>');
+		$typeaheadUl = $('<ul class="ibm-dropdown-menu ibm-padding-small pb0" role="listbox" aria-live="polite" aria-label="Suggestions"></ul>');
 
         $searchForm.on("submit", function (evt) {
             evt.preventDefault();
