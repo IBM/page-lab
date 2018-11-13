@@ -11,7 +11,7 @@ from .helpers import *
 
 
 ## Custom Url object filters mapped to functions.
-## These are chainable preset filters instead of using .all or .filter() all the time
+## These are chainable preset filters instead o fusing .all or .filter() all the time
 class UrlQueryset(models.QuerySet):
     """
         Gets all active URLs to run.
@@ -268,11 +268,11 @@ class UrlPath(models.Model):
     Url path 'segments' and order
     """
     created_date = models.DateTimeField(auto_now_add=True)
-    sequence = models.IntegerField(default=0)
+    sequence = models.IntegerField(default=0, null=True, blank=True)
     path = models.CharField(max_length=255)
 
     class Meta:
-        ordering = ['sequence',]
+        ordering = ['path',]
 
     def __str__(self):
         return '%s: %s' % (self.path, self.sequence,)
