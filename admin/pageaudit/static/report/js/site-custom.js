@@ -1,5 +1,3 @@
-var PL = {};
-
 (function ($, PL) {
 
 	// Core namespace utility
@@ -106,8 +104,9 @@ var PL = {};
 		@method setItem
 		@param key {String} The name of the key to use for this data store in localStorage.
 		@param value {String} The value/data to store in localStorage.
-		@param [lifetime] {String} The storage item's TTL (time to live), in <strong>SECONDS</strong>. AKA: How long until it expires.
-		 If lifetime is not supplied, the storage item TTL is session-only.
+		@param [lifetime] {String} The storage item's TTL (time to live), in <strong>SECONDS</strong>. 
+		  AKA: How long until it expires.
+		  If lifetime is not supplied, the storage item TTL is session-only.
 		@return {Boolean} True if localStorage is supported, else false.
 	**/
 	me.setItem = function (key, value, lifetime) {

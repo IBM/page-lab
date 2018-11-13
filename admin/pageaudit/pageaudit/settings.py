@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django.contrib.sites',
     'report',
-    'inline_static',
     'django_extensions',
     'dbbackup',
 ]

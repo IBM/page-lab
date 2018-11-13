@@ -3,7 +3,6 @@
 {% load flatpages %}
 {% load pageview %}
 {% load flatpages_nav_highlight %}
-{% load inline_static_tags %}
 
 {% trackPageView %}
 
@@ -38,18 +37,23 @@
         <title>PageLab {% block browserTitle %}{% endblock %}</title>
         
         
-        <link href="{% static 'report/design/tachyons.min.css' %}" rel="stylesheet">
-        <link href="{% static 'report/design/site-custom.css' %}" rel="stylesheet">
+        <link href="{% static 'report/css/tachyons.min.css' %}" rel="stylesheet">
+        <link href="{% static 'report/css/site-custom.css' %}" rel="stylesheet">
         
-		<style>
-			.pl-leadspace {
-			    background: #000 url({% static 'report/leadspace1.svg' %}) no-repeat 95% 100% / 11%;
-			}
-		</style>
-
-
-		<script src="{% static 'report/design/jquery-3.3.1.min.js' %}"></script>
-		<script src="{% static 'report/design/site-custom.js' %}"></script>
+        <script>
+            // Setup global NS and add trick to use dynamic URLs in static JS/CSS files URLs.
+            window.PL = {
+                'urls': {
+                    'static_path': '{% get_static_prefix %}',
+                    'api_get_compareinfo': '{% url 'plr:api_get_compareinfo' %}',
+                    'home': '{% url 'plr:home' %}'
+                }
+            };
+        </script>
+        
+		<script src="{% static 'report/js/jquery-3.3.1.min.js' %}"></script>
+		<script src="{% static 'report/js/site-custom.js' %}"></script>
+		<script src="{% static 'report/js/compare.js' %}"></script>
 
         {% block extraFiles %} {% endblock %}
     
@@ -99,7 +103,7 @@
             
             <div class="w-100 pt2 ph3">
                 <p class="tr ibm-left-small pb0">Made with <br>
-                     <a style="display:inline-block;transform:translate3d(0,-3px,0);"  href="https://www.postgresql.org/" target="_blank"><img src="{% static 'report/postgresql-logo.gif' %}" width="120" height="25" title="PostgreSQL: The world's most advanced open source relational database" alt="Made with PostgreSQL"></a> <span style="display:inline-block;transform:translate3d(0,-12px,0)">+</span> <a style="display:inline-block;" href="https://www.djangoproject.com/" target="_blank"><img src="{% static 'report/django-logo.gif' %}" width="100" height="35" title="Django makes it easier to build better Web apps more quickly and with less code." alt="Made with Django"></a></p>
+                     <a style="display:inline-block;transform:translate3d(0,-3px,0);"  href="https://www.postgresql.org/" target="_blank"><img src="{% static 'report/img/postgresql-logo.gif' %}" width="120" height="25" title="PostgreSQL: The world's most advanced open source relational database" alt="Made with PostgreSQL"></a> <span style="display:inline-block;transform:translate3d(0,-12px,0)">+</span> <a style="display:inline-block;" href="https://www.djangoproject.com/" target="_blank"><img src="{% static 'report/img/django-logo.gif' %}" width="100" height="35" title="Django makes it easier to build better Web apps more quickly and with less code." alt="Made with Django"></a></p>
             </div>
             
         </main>
