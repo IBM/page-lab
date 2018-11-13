@@ -4,6 +4,17 @@
     Modified gloves by: Michael Santelia.
 **/
 
+/** 
+    Default text color
+**/
+html, body, button, input, select, textarea {
+    color: #323232;
+}
+
+
+/** 
+    Leadspace
+**/
 .pl-leadspace {
     background: #000 url(../img/leadspace.svg) no-repeat 95% 100% / 11%;
     min-height: 160px;
@@ -13,10 +24,7 @@
     background-size: 18%;
 }
 
-#ibm-footer .ibm-fluid {
-    max-width: 100%;
-    width: 100%;
-}
+
 
 /** Force table links to be blue **/
 a.ibm-linkcolor-default {
@@ -27,6 +35,10 @@ a.ibm-linkcolor-default:hover {
     text-decoration: underline !important;
 }
 
+
+/** 
+    Perf. score circles.
+**/
 .pl-perfscore {
     border-radius: 100%;
     border: transparent 5px solid;
@@ -51,7 +63,102 @@ a.ibm-linkcolor-default:hover {
 }
 
 
+
 /* top align "icon after" icons when link text wraps. */
 .ibm-ind-link a.ibm-icon-after::after {
     top: 0;
 }
+
+
+
+/**
+    Typeahead drop-down menu list.
+    This class is intended to go on the <ul>.
+**/
+.pl-dropdown-menu {
+	li {
+		padding: 0;
+		white-space: nowrap;
+
+		&::before  {
+			content: none;
+		}
+
+		+ li {
+			padding-top: 0;
+		}
+	}
+
+	a {
+		display: block;
+		padding: 7px 10px;
+		position: relative;
+		text-decoration: none;
+	}
+
+	// On hover, focus, and then with pl-highlight class (used with keyboard in typeahead dropdown)
+	.pl-highlight a,
+	a:hover,
+	a:focus {
+		color: #fff;
+		text-decoration: none;
+	}
+}
+
+
+.pl-dropdown-menu li {
+    padding: 0;
+    white-space: nowrap;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 579px) {
+    .pl-dropdown-menu li {
+        white-space: normal;
+    }
+}
+
+.pl-dropdown-menu li::before {
+    content: none;
+}
+
+.pl-dropdown-menu li+li {
+    padding-top: 0;
+}
+
+.pl-dropdown-menu a {
+    color: #323232;
+    display: block;
+    padding: 7px 10px;
+    position: relative;
+    text-decoration: none;
+}
+
+.pl-dropdown-menu .pl-highlight a,
+.pl-dropdown-menu a:hover,
+.pl-dropdown-menu a:focus {
+    background-color: #357edd;
+    color: #fff;
+    text-decoration: none;
+}
+
+
+.hover-b--current:hover,
+.hover-b--current:focus  {
+	border-color: currentColor;
+}
+
+/**
+    Effects
+**/
+.pl-fadein {
+	visibility: visible;
+	opacity: 1;
+	transition: opacity .4s;
+}
+
+.pl-fadeout {
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0s 0.4s, opacity 0.4s;
+}
+

@@ -6,16 +6,21 @@
 
 {% block pageTitle %} PageLab {% endblock  %}
 
+
 {% block menuHomeClass %}ibm-highlight{% endblock %}
 
 
-{% block leadspacem %}
+{% block extraFiles %}
+    <script src="{% static 'report/js/compare.js' %}"></script>
+    <script src="{% static 'report/js/url_typeahead.js' %}"></script>
+{% endblock %}
 
+
+{% block leadspace %}
     <div class="bg-black pv5 pl-leadspace">
-        <h1 class="f1 tc mt0 orange">PageLab</h1>
-        <p class="f4 tc white-70">Automated controlled test reports providing insights for effective user experiences.</p> 
+        <h1 class="f1 tc mt0 green">PageLab</h1>
+        <p class="f5 tc white-80">Automated controlled test reports providing insights for effective user experiences.</p> 
     </div>
-
 {% endblock %}
 
 
@@ -24,11 +29,11 @@
 	<div class="ph3 mt5 tl tc-ns w-100 mw7-ns center">
         <form action="" method="GET">
             <div class="pb4" style="position: relative;">
-                <input id="pl-url-search" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" autocomplete="off" placeholder="Find a report by URL" value="" aria-label="Find a report by URL">
-                <div style="position: absolute;width:100%;" class="ibm-fadeout ibm-left" id="pl-typeahead-container"></div>
+                <input id="pl-url-search" class="hover-b--current input-reset ba b--black-20 pa2 db w-100" type="text" autocomplete="off" placeholder="Find a report by URL" value="" aria-label="Find a report by URL">
+                <div style="position: absolute;" class="w-100 pa0 pl-fadeout bg-white tl bl br bb" id="pl-typeahead-container"></div>
             </div>
             
-            <p><button class="f6 input-reset ph3 pv2 mr3 mb2 dib white bg-dark-green hover-bg-green bg-dark-green ba bw0 pointer">View report</button><span style="display: inline-block;margin: 0 20px 20px 0;">or</span><a href="{% url 'plr:reports_browse'%}" class="f6 link ph3 pv2 mb2 dib white hover-bg-blue bg-dark-blue ba">Browse all URL reports</a>
+            <p><button class="dib pointer mb3 fw5 ph4 pv3 br2 bw1 ba b--green bg-white green hover-bg-green hover-white bg-animate hover-b--green">View report</button><span class="dib mh4 mb3">or</span><a href="{% url 'plr:reports_browse'%}" class="dib link pointer mr3 fw5 ph4 pv3 br2 bw1 ba b--blue bg-white blue hover-bg-blue hover-white bg-animate hover-b--blue">Browse all URL reports</a>
             </p>
         </form>
 	</div>
@@ -36,11 +41,4 @@
 	
 	{% include "compare_tray.html" %}
 
-
-    <script>        
-        {% include "url_typeahead.js" %}
-        {% include "compare.js" %}
-    </script>
-
-    
 {% endblock %}

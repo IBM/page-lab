@@ -46,6 +46,8 @@
                 'urls': {
                     'static_path': '{% get_static_prefix %}',
                     'api_get_compareinfo': '{% url 'plr:api_get_compareinfo' %}',
+                    'api_get_urlid': '{% url 'plr:api_get_urlid' %}',
+                    'api_url_typeahead': '{% url 'plr:api_url_typeahead' %}',
                     'home': '{% url 'plr:home' %}'
                 }
             };
@@ -53,16 +55,16 @@
         
 		<script src="{% static 'report/js/jquery-3.3.1.min.js' %}"></script>
 		<script src="{% static 'report/js/site-custom.js' %}"></script>
-		<script src="{% static 'report/js/compare.js' %}"></script>
 
         {% block extraFiles %} {% endblock %}
     
     </head>
     
+    
     <body class="helvetica">
             
         {% bannerNotification %}
-            
+        
         <main role="main" aria-label="PageLab content">
                 
             <nav role="navigation" aria-label="PageLab">
