@@ -5,16 +5,17 @@
 **/
 
 /** 
-    Default text color
+    Default text color ("dark-gray" class)
 **/
 html, body, button, input, select, textarea {
-    color: #323232;
+    color: #333;
 }
 
 
-/**
+
+/************************************************
     Site navigation bar
-**/
+************************************************/
 .pl-sitenav a {
     position: relative;
 }
@@ -28,9 +29,11 @@ html, body, button, input, select, textarea {
     bottom: 0;
 }
 
-/** 
+
+
+/************************************************
     Leadspace
-**/
+************************************************/
 .pl-leadspace {
     background: #000 url(../img/leadspace.svg) no-repeat 95% 100% / 11%;
     min-height: 160px;
@@ -42,28 +45,18 @@ html, body, button, input, select, textarea {
 
 
 
-/** Force table links to be blue **/
-a.ibm-linkcolor-default {
-    color: #4178be !important;
-    text-decoration: none !important;
-}
-a.ibm-linkcolor-default:hover {
-    text-decoration: underline !important;
-}
-
-
-/** 
+/************************************************
     Perf. score circles.
-**/
+************************************************/
 .pl-perfscore {
     border-radius: 100%;
     border: transparent 5px solid;
     display: inline-block;
-    height: 35px;
+    height: 65px;
     line-height: 35px;
     padding: 10px;
     text-align: center;
-    width: 35px;
+    width: 65px;
 }
 
 .pl-goodscore {
@@ -80,17 +73,10 @@ a.ibm-linkcolor-default:hover {
 
 
 
-/* top align "icon after" icons when link text wraps. */
-.ibm-ind-link a.ibm-icon-after::after {
-    top: 0;
-}
-
-
-
-/**
+/************************************************
     Typeahead drop-down menu list.
     This class is intended to go on the <ul>.
-**/
+************************************************/
 .pl-dropdown-menu {
 	li {
 		padding: 0;
@@ -112,7 +98,6 @@ a.ibm-linkcolor-default:hover {
 		text-decoration: none;
 	}
 
-	// On hover, focus, and then with pl-highlight class (used with keyboard in typeahead dropdown)
 	.pl-highlight a,
 	a:hover,
 	a:focus {
@@ -120,7 +105,6 @@ a.ibm-linkcolor-default:hover {
 		text-decoration: none;
 	}
 }
-
 
 .pl-dropdown-menu li {
     padding: 0;
@@ -152,20 +136,16 @@ a.ibm-linkcolor-default:hover {
 .pl-dropdown-menu .pl-highlight a,
 .pl-dropdown-menu a:hover,
 .pl-dropdown-menu a:focus {
-    background-color: #357edd;
+    background-color: #357edd; /** blue **/
     color: #fff;
     text-decoration: none;
 }
 
 
-.hover-b--current:hover,
-.hover-b--current:focus  {
-	border-color: currentColor;
-}
 
-/**
+/************************************************
     Effects
-**/
+************************************************/
 .pl-fadein {
 	visibility: visible;
 	opacity: 1;
@@ -177,4 +157,81 @@ a.ibm-linkcolor-default:hover {
 	opacity: 0;
 	transition: visibility 0s 0.4s, opacity 0.4s;
 }
+
+/** Makes a border color match the text color, on hover. **/
+.hover-b--current:hover,
+.hover-b--current:focus  {
+	border-color: currentColor;
+}
+
+
+
+/************************************************
+    Reports browse/list page
+************************************************/
+
+/* Add slight delay so fly-bys aren't so annoying. */
+.pl-reportcard {
+    transition: border .4s .15s;
+}
+
+.pl-reportcard-notests {
+    background: rgba(0,0,0,0.75);
+    box-sizing: border-box;
+    left: 50%;
+    padding: 16px;
+    position: absolute;
+    top: 40%;
+    transform: translate3d(-50%,-50%,0);
+    width: 120px;
+}
+
+.pl-reportcard {
+    background: #fff;
+    position: relative;
+}
+
+.pl-reportcard img {
+    border: 1px solid #c7c7c7;
+}
+
+/* Add slight delay so fly-bys aren't so annoying. */
+.pl-compare-cbcon input,
+.pl-compare-cbcon label {
+    transition: opacity .4s .15s;
+    opacity: 0;
+}
+.pl-reportcard:hover .pl-compare-cbcon *,
+.pl-compare-cbcon input:checked,
+.pl-compare-cbcon input:checked + label {
+    opacity: 1;
+}
+
+.checkbox:checked + .checkbox-wrapper {
+  background-color: #357edd; /** blue **/
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgOCA4IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA4IDgiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTYuNCwxTDUuNywxLjdMMi45LDQuNUwyLjEsMy43TDEuNCwzTDAsNC40bDAuNywwLjdsMS41LDEuNWwwLjcsMC43bDAuNy0wLjdsMy41LTMuNWwwLjctMC43TDYuNCwxTDYuNCwxeiINCgkvPg0KPC9zdmc+DQo=);
+  background-size: 75% 75%;
+}
+
+/************************************************
+    Select 2 updates to match site design 
+    I know !important is bad but way less CSS to do here using them.
+************************************************/
+.select2-results__option--highlighted {
+    background-color: #357edd !important;
+}
+.select2-container .select2-selection--single {
+    height: 37px !important;
+}
+.select2-selection__rendered {
+    line-height: 37px !important;
+    padding-right: 22px !important;
+}
+.select2-selection__arrow {
+    right: 3px !important;
+    top: 7px !important;
+}
+
+
+
 

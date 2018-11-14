@@ -2,20 +2,19 @@
 {% load beautify %}
 {% load scoredisplayoptions %}
 
-<div class="ibm-col-large-12-4 ibm-col-xlarge-12-3 ibm-col-medium-12-6 tc ibm-flex mb3">
-	
 	{% if url.url_kpi_average %}
-    	<a href="{% url 'plr:reports_urls_detail' id=url.id %}" title="View details" class="pl-reportcard w-100 ibm-blocklink ibm-padding-content">
-        	<div class="pl-compare-cbcon">
-        		<span class="ibm-checkbox-wrapper ibm-small">
-                    <input class="ibm-styled-checkbox" id="id_{{ url.id }}" type="checkbox" value="{{ url.id }}" /> 
-                    <label for="id_{{ url.id }}" class="ibm-field-label">Compare</label>
-                </span>	    
+    	<a style="width: 350px;" class="dib tc mb3 w-100 dark-gray hover-b--current ba b--white pl-reportcard f6 no-underline w-100 pa3" href="{% url 'plr:reports_urls_detail' id=url.id %}" title="View details">
+        	<div class="pl-compare-cbcon absolute right-0 mr3 z-3">
+        		<label class="relative flex items-center">
+        		    <input class="absolute z-5 w-100 h-100 o-0 input-reset pointer checkbox" type="checkbox">
+        		    <span class="relative z-4 dib w1 h1 bg-mid-gray overflow-hidden br1 v-mid bg-animate bg-center checkbox-wrapper"></span>
+                    <div class="dib ml2 lh-solid">Compare</div>
+                </label>    
         	</div>
         	
         	<div style="margin-bottom: 10px !important;" class="tc"><img src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="100"></div>
             
-            <div style="margin-bottom: 10px !important;" class="tc">
+            <div class="mb2 tc">
                 {% if viewdata == "a11yscore" %}
                     {% include "url_compare_table_score.html" with scoreValue=url.url_kpi_average.accessibility_score %}
                 {% elif viewdata == "seoscore" %}
@@ -25,13 +24,13 @@
                 {% endif %}
             </div>
     
-        	<p class="ibm-small ibm-word-break">{{ url.url|noprotocol }}
-            	<br>Last run: <span class="ibm-textcolor-gray-50">{{ url.lighthouse_run.created_date }}</span>
+        	<p class="f6">{{ url.url|noprotocol }}
+            	<br>Last run: <span class="mid-gray">{{ url.lighthouse_run.created_date }}</span>
         	</p>
     	</a>
     	
     {% else %}
-        <div class="w-100 ibm-padding-content">
+        <div style="width: 350px;" class="tc mb3 w-100"s 
         	<div style="margin-bottom: 10px !important; position:relative;" class="tc">
             	<div class="pl-reportcard-notests">
                 	<p class="ibm-nospacing ibm-textcolor-white-core">No tests<br>have been<br>run yet</p>
@@ -43,4 +42,3 @@
     	</div>  
 
     {% endif %}
-</div>

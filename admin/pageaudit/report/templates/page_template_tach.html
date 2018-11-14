@@ -69,7 +69,7 @@
         
         <main role="main" aria-label="PageLab content">
 
-            <nav class="{{ templateHelpers.classes.horizontalSpace }} pl-sitenav bg-black bb bw1">
+            <nav class="{{ templateHelpers.classes.horizontalSpace }} pl-sitenav bg-black bb">
                 <a class="{{ templateHelpers.classes.navItem }} green b" href="{% url 'plr:home' %}">PageLab</a>
                 <a class="{{ templateHelpers.classes.navItem }} {% block menuHomeClass %}{% endblock %}" href="{% url 'plr:home' %}">Find reports</a>
                 <a class="{{ templateHelpers.classes.navItem }} {% block menuBrowsereportsClass %}{% endblock %}" href="{% url 'plr:reports_browse' %}">Browse reports</a>
@@ -83,25 +83,23 @@
             </nav>
             
             {% block leadspace %}
-                <div class="pl-leadspace bg-black pv4 w-100 ph3">
-			        <h1 class="f1 tc mt0 green">{% block pageTitle %}{% endblock %}</h1>
+                <div class="{{ templateHelpers.classes.grid }} pl-leadspace bg-black pv4">
+			        <h1 class="f2 mt0 green">{% block pageTitle %}{% endblock %}</h1>
 			        {% block pageSubtitle %}{% endblock %}
 			    </div>
             {% endblock %}
             
             
             {% if request.session.showMessage %}
-                <p class="mb3 {{ request.session.showMessage.class }}">{{ request.session.showMessage.text|safe }}</p>
+                <p class="{{ templateHelpers.classes.grid }} mb3 {{ request.session.showMessage.class }}">{{ request.session.showMessage.text|safe }}</p>
             {% endif %}
             
             
             {% block content %} {% endblock %}
             
             
-            <div class="{{ templateHelpers.classes.grid }}">
-                <p class="tr ibm-left-small pb0">Made with <br>
-                     <a style="display:inline-block;transform:translate3d(0,-3px,0);"  href="https://www.postgresql.org/" target="_blank"><img src="{% static 'report/img/postgresql-logo.gif' %}" width="120" height="25" title="PostgreSQL: The world's most advanced open source relational database" alt="Made with PostgreSQL"></a> <span style="display:inline-block;transform:translate3d(0,-12px,0)">+</span> <a style="display:inline-block;" href="https://www.djangoproject.com/" target="_blank"><img src="{% static 'report/img/django-logo.gif' %}" width="100" height="35" title="Django makes it easier to build better Web apps more quickly and with less code." alt="Made with Django"></a></p>
-            </div>
+            <p class="tr-ns tl {{ templateHelpers.classes.grid }}">Made with <br>
+                <a class="dib" style="transform:translate3d(0,-3px,0);" href="https://www.postgresql.org/" target="_blank"><img src="{% static 'report/img/postgresql-logo.gif' %}" width="120" height="25" title="PostgreSQL: The world's most advanced open source relational database" alt="Made with PostgreSQL"></a> <span class="dib" style="transform:translate3d(0,-12px,0)">+</span> <a class="dib" href="https://www.djangoproject.com/" target="_blank"><img src="{% static 'report/img/django-logo.gif' %}" width="100" height="35" title="Django makes it easier to build better Web apps more quickly and with less code." alt="Made with Django"></a></p>
             
         </main>
     </body>

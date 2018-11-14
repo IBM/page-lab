@@ -17,7 +17,7 @@
 
 
 {% block leadspace %}
-    <div class="bg-black pv5 pl-leadspace {{ templateHelpers.classes.horizontalSpace }}">
+    <div class="{{ templateHelpers.classes.grid }} bg-black pv5 pl-leadspace">
         <h1 class="f1 tc mt0 green">PageLab</h1>
         <p class="f5 tc white-80">Automated controlled test reports providing insights for effective user experiences.</p> 
     </div>
@@ -26,14 +26,14 @@
 
 {% block content %}
 
-	<div class="{{ templateHelpers.classes.gridHorizontalSpacing }} mt5 tl tc-ns w-100 mw7-ns center">
+	<div class="{{ templateHelpers.classes.grid }} tl tc-ns w-100 mw7-ns center">
         <form action="" method="GET">
-            <div class="pb4" style="position: relative;">
+            <div class="mv4 pv2" style="position: relative;">
                 <input id="pl-url-search" class="hover-b--current input-reset ba b--black-20 pa2 db w-100" type="text" autocomplete="off" placeholder="Find a report by URL" value="" aria-label="Find a report by URL">
                 <div style="position: absolute;" class="w-100 pa0 pl-fadeout bg-white tl bl br bb" id="pl-typeahead-container"></div>
             </div>
             
-            <p><button class="{{ templateHelpers.classes.viewReport }}">View report</button><span class="dib mh4 mb3">or</span><a href="{% url 'plr:reports_browse'%}" class="{{ templateHelpers.classes.viewAll }} link">Browse all URL reports</a>
+            <p><button class="{{ templateHelpers.classes.button }} {{ templateHelpers.classes.bluePriButton }}">View report</button><span class="dib mh4 mb3">or</span><a href="{% url 'plr:reports_browse'%}" class="{{ templateHelpers.classes.button }} {{ templateHelpers.classes.blueSecButton }} link">Browse all URL reports</a>
             </p>
         </form>
 	</div>
