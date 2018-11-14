@@ -29,7 +29,7 @@
         }
 
         #pl-sortform {
-          padding-left: 28%;
+          padding-left: 35%;
         }
         
     </style>
@@ -37,8 +37,9 @@
 
 	<div class="ibm-fluid ibm-fullwidth">	
         <div class="ibm-col-12-12">
+            {% include "switch_filter_view.html" with filter=filter view_name='browse' %}
             <form id="pl-sortform" aria-label="Sort data listing" action="" method="get">
-                {% include "url_filter_select.html" with filter=filter filters=filters view_name='plr:reports_dashboard' %}
+                {% include "url_filter_select.html" with filter=filter filters=filters view_name='dashboard' %}
                 <div class="ibm-margin-bottom-1" style="margin-right: 60px; display: inline-block;">
                     <p class="ibm-ind-link">
                         <a id="apply" class="ibm-forward-link" href="####">Apply</a>

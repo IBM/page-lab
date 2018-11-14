@@ -127,6 +127,7 @@
 
 		<div class="ibm-fluid ibm-fullwidth">
             <div class="ibm-col-12-12">
+                {% include "switch_filter_view.html" with filter=filter view_name='dashboard' %}
                 <form id="pl-sortform" aria-label="Sort data listing" action="" method="get">
                     
 <!--
@@ -168,7 +169,7 @@
                                     <option value="seoscore" {% if viewdata == 'seoscore' %}selected="selected"{% endif %}>SEO score</option>
                                 </select>
                             </div>
-                            {% include "url_filter_select.html" with filter=filter filters=filters view_name='plr:reports_browse' %}
+                            {% include "url_filter_select.html" with filter=filter filters=filters view_name='browse' %}
                             <div class="ibm-margin-bottom-1" style="margin-right: 60px; display: inline-block;">
                                 <p class="ibm-ind-link">
                                     <a id="apply" class="ibm-forward-link" href="####">Apply</a>
