@@ -10,7 +10,7 @@
             <label for="id_{{ url.id }}" class="relative flex items-center pointer pa2 pr3 pl4">Compare</label>    
     	</div>
     	<a style="width: 350px;" class="dib tc mb3 w-100 dark-gray ba b--white pl-reportcard f6 no-underline w-100 pa3" href="{% url 'plr:reports_urls_detail' id=url.id %}" title="View details">
-        	<div style="margin-bottom: 10px !important;" class="tc"><img src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="100"></div>
+        	<div class="mb3 tc"><img src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="100"></div>
             
             <div class="mb2 tc">
                 {% if viewdata == "a11yscore" %}
@@ -29,14 +29,14 @@
     	
     {% else %}
         <div style="width: 350px;" class="tc mb3 w-100"s 
-        	<div style="margin-bottom: 10px !important; position:relative;" class="tc">
+        	<div class="mb3 tc">
             	<div class="pl-reportcard-notests">
-                	<p class="ibm-nospacing ibm-textcolor-white-core">No tests<br>have been<br>run yet</p>
+                	<p class="white">No tests<br>have been<br>run yet</p>
                 </div>
-            	<div><img src="{% static 'report/img/notests.png' %}" width="120"></div>
+            	<div><img src="{% static 'report/img/notests.png' %}" width="100"></div>
         	</div>
             
-        	<p class="ibm-small ibm-word-break">{{ url.url|noprotocol }}</p>
+        	<p class="f6">{{ url.url|noprotocol }}</p>
     	</div>  
 
     {% endif %}

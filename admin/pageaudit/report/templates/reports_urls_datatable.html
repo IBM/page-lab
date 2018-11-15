@@ -67,7 +67,7 @@
         (function ($, IBM) {
             
             function adjustExportButtons () {
-                $buttonCon = $(".dt-buttons").removeClass("dt-buttons").addClass("ibm-btn-row").appendTo("#pl-exportbuttons").prepend('<span class="ibm-bold mb3" style="display:inline-block;margin-right:20px;">Export table</span>');
+                $buttonCon = $(".dt-buttons").removeClass("dt-buttons").addClass("ibm-btn-row").appendTo("#pl-exportbuttons").prepend('<span class="ibm-bold mb3 dib mr3">Export table</span>');
                
                 $buttonCon.find("button").addClass("ibm-btn-pri ibm-btn-blue-50 ibm-btn-small")[0].addEventListener("click", function () {
                     emailSelectedApps();
