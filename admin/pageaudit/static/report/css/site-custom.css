@@ -4,11 +4,23 @@
     Modified gloves by: Michael Santelia.
 **/
 
+
+/**
+    Theme vars to use
+**/
+:root {
+    --gold: #ffb700;
+    --text-color: #333;
+    --blue: #357edd;
+    --site-color: var(--gold);
+}
+
+
 /** 
     Default text color ("dark-gray" class)
 **/
 html, body, button, input, select, textarea {
-    color: #333;
+    color: var(--text-color);
 }
 
 
@@ -20,7 +32,8 @@ html, body, button, input, select, textarea {
     position: relative;
 }
 .pl-sitenav .pl-highlight:after {
-    background: #19a974;
+    background: var(--site-color);
+    
     content: "";
     height: 4px;
     width: 100%;
@@ -126,7 +139,7 @@ html, body, button, input, select, textarea {
 }
 
 .pl-dropdown-menu a {
-    color: #323232;
+    color: var(--text-color);
     display: block;
     padding: 7px 10px;
     position: relative;
@@ -136,7 +149,7 @@ html, body, button, input, select, textarea {
 .pl-dropdown-menu .pl-highlight a,
 .pl-dropdown-menu a:hover,
 .pl-dropdown-menu a:focus {
-    background-color: #357edd; /** blue **/
+    background-color: var(--blue);
     color: #fff;
     text-decoration: none;
 }
@@ -186,7 +199,7 @@ html, body, button, input, select, textarea {
 }
 
 .pl-compare-cbcon:hover * {
-    color: #357edd;
+    color: var(--blue);
 }
 
 
@@ -196,7 +209,7 @@ html, body, button, input, select, textarea {
     I know !important is bad but way less CSS to do here using them.
 ************************************************/
 .select2-results__option--highlighted {
-    background-color: #357edd !important;
+    background-color: var(--blue) !important;
 }
 .select2-container .select2-selection--single {
     height: 37px !important;
@@ -235,7 +248,7 @@ html, body, button, input, select, textarea {
 
 .hover-b--blue:hover,
 .hover-b--blue:focus  {
-	border-color: #357edd;
+	border-color: var(--blue);
 }
 
 

@@ -70,7 +70,7 @@
         <main role="main" aria-label="PageLab content">
 
             <nav class="{{ templateHelpers.classes.horizontalSpace }} pl-sitenav bg-black bb">
-                <a class="{{ templateHelpers.classes.navItem }} green b" href="{% url 'plr:home' %}">PageLab</a>
+                <a class="{{ templateHelpers.classes.navItem }} {{ templateHelpers.classes.siteColor }} b" href="{% url 'plr:home' %}">PageLab</a>
                 <a class="{{ templateHelpers.classes.navItem }} {% block menuHomeClass %}{% endblock %}" href="{% url 'plr:home' %}">Find reports</a>
                 <a class="{{ templateHelpers.classes.navItem }} {% block menuBrowsereportsClass %}{% endblock %}" href="{% url 'plr:reports_browse' %}">Browse reports</a>
                 <a class="{{ templateHelpers.classes.navItem }} {% block menuDashboardClass %}{% endblock %}" href="{% url 'plr:reports_dashboard' %}">Heads-up display</a>
@@ -84,7 +84,7 @@
             
             {% block leadspace %}
                 <div class="{{ templateHelpers.classes.grid }} pl-leadspace bg-black pv4">
-			        <h1 class="f2 mt0 green">{% block pageTitle %}{% endblock %}</h1>
+			        <h1 class="f2 mt0 {{ templateHelpers.classes.siteColor }}">{% block pageTitle %}{% endblock %}</h1>
 			        {% block pageSubtitle %}{% endblock %}
 			    </div>
             {% endblock %}
