@@ -27,6 +27,7 @@ def getTemplateHelpers(context):
             'grid': horizontalSpace + ' w-100',
             'navItem': 'link near-white f6 f5-ns dib mr4 pv3 hover-green',
             'rounded': rounded,
+            'tableListCell': 'pv3 pr4 bb b--black-20',
             'viewAll': commonButton + ' b--blue bg-white hover-bg-blue blue hover-white link',
             'viewReport': commonButton + ' b--dark-green bg-green hover-bg-dark-green white',
         }

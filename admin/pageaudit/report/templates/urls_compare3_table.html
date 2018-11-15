@@ -2,100 +2,100 @@
 {% load beautify %}
 {% load static %}
 
-                <table class="ibm-data-table ibm-no-highlight">
+                <table cellspacing="0">
                     <tbody>
                         <tr>
-                            <td class="ibm-bold" style="width:200px;"></td>
+                            <td class="b" style="width:200px;"></td>
                             <td style="min-width: 25%;"><img src="data:image/png;base64,{{ url1.lighthouse_run.thumbnail_image }}" width="150" style="border: 1px solid #c7c7c7;" class="ibm-downsize"></td>
                             <td style="min-width: 25%;"><img src="data:image/png;base64,{{ url2.lighthouse_run.thumbnail_image }}" width="150" style="border: 1px solid #c7c7c7;" class="ibm-downsize"></td>
                             <td style="min-width: 25%;"><img src="data:image/png;base64,{{ url3.lighthouse_run.thumbnail_image }}" width="150" style="border: 1px solid #c7c7c7;" class="ibm-downsize"></td>
                         </tr>
                         <tr>
-                            <td class="ibm-bold"></td>
-                            <td class="ibm-ind-link"><a class="ibm-external-link ibm-word-break-all ibm-icon-after" href="{{ url1.url }}" target="_blank">{{ url1.url|noprotocol }}</a></td>
-                            <td class="ibm-ind-link"><a class="ibm-external-link ibm-word-break-all ibm-icon-after" href="{{ url2.url }}" target="_blank">{{ url2.url|noprotocol }}</a></td>
-                            <td class="ibm-ind-link"><a class="ibm-external-link ibm-word-break-all ibm-icon-after" href="{{ url3.url }}" target="_blank">{{ url3.url|noprotocol }}</a></td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}"></td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}"><a class="" href="{{ url1.url }}" target="_blank">{{ url1.url|noprotocol }}</a></td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}"><a class="" href="{{ url2.url }}" target="_blank">{{ url2.url|noprotocol }}</a></td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}"><a class="" href="{{ url3.url }}" target="_blank">{{ url3.url|noprotocol }}</a></td>
                         </tr>
                         
                         <tr>
-                            <td class="ibm-bold">Last tested:</td>
-                            <td>{{ url1.lighthouse_run.created_date }}</td>
-                            <td>{{ url2.lighthouse_run.created_date }}</td>
-                            <td>{{ url3.lighthouse_run.created_date }}</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Last tested:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url1.lighthouse_run.created_date }}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url2.lighthouse_run.created_date }}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url3.lighthouse_run.created_date }}</td>
                         </tr>
                         
                         <tr>
-                            <td></td>
-                            <td class="ibm-bold">URL KPI averages</td>
-                            <td class="ibm-bold">URL KPI averages</td>
-                            <td class="ibm-bold">URL KPI averages</td>	
+                            <td class="{{ templateHelpers.classes.tableListCell }}"></td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">URL KPI averages</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">URL KPI averages</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">URL KPI averages</td>	
                         </tr>
                         
                         
                         <tr>
-                            <td class="ibm-bold">Performance score:</td>
-                            <td>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.performance_score %}</td>
-                            <td>{% include "url_compare_table_score.html" with scoreValue=url2.url_kpi_average.performance_score %}</td>
-                            <td>{% include "url_compare_table_score.html" with scoreValue=url3.url_kpi_average.performance_score %}</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Performance score:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.performance_score %}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{% include "url_compare_table_score.html" with scoreValue=url2.url_kpi_average.performance_score %}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{% include "url_compare_table_score.html" with scoreValue=url3.url_kpi_average.performance_score %}</td>
                         </tr>
 
                         <tr>
-                            <td class="ibm-bold">Accessibility score:</td>
-                            <td>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.accessibility_score %}</td>
-                            <td>{% include "url_compare_table_score.html" with scoreValue=url2.url_kpi_average.accessibility_score %}</td>
-                            <td>{% include "url_compare_table_score.html" with scoreValue=url3.url_kpi_average.accessibility_score %}</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Accessibility score:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.accessibility_score %}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{% include "url_compare_table_score.html" with scoreValue=url2.url_kpi_average.accessibility_score %}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{% include "url_compare_table_score.html" with scoreValue=url3.url_kpi_average.accessibility_score %}</td>
                         </tr>
 
                         <tr>
-                            <td class="ibm-bold">SEO score:</td>
-                            <td>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.seo_score %}</td>
-                            <td>{% include "url_compare_table_score.html" with scoreValue=url2.url_kpi_average.seo_score %}</td>
-                            <td>{% include "url_compare_table_score.html" with scoreValue=url3.url_kpi_average.seo_score %}</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">SEO score:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.seo_score %}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{% include "url_compare_table_score.html" with scoreValue=url2.url_kpi_average.seo_score %}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{% include "url_compare_table_score.html" with scoreValue=url3.url_kpi_average.seo_score %}</td>
                         </tr>
 
                         <tr>
-                            <td class="ibm-bold">Total size:</td>
-                            <td>{{ url1.url_kpi_average.total_byte_weight|kbToMb }}</td>
-                            <td>{{ url2.url_kpi_average.total_byte_weight|kbToMb }}</td>
-                            <td>{{ url3.url_kpi_average.total_byte_weight|kbToMb }}</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Total size:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.total_byte_weight|kbToMb }}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url2.url_kpi_average.total_byte_weight|kbToMb }}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url3.url_kpi_average.total_byte_weight|kbToMb }}</td>
                         </tr>
                         
                         <tr>
-                            <td class="ibm-bold"># of network requests:</td>
-                            <td>{{ url1.url_kpi_average.number_network_requests|withComma }}</td>
-                            <td>{{ url2.url_kpi_average.number_network_requests|withComma }}</td>
-                            <td>{{ url3.url_kpi_average.number_network_requests|withComma }}</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}"># of network requests:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.number_network_requests|withComma }}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url2.url_kpi_average.number_network_requests|withComma }}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url3.url_kpi_average.number_network_requests|withComma }}</td>
                         </tr>
                         
                         <tr>
-                            <td class="ibm-bold">Time to first byte:</td>
-                            <td>{{ url1.url_kpi_average.time_to_first_byte|withComma }} ms</td>
-                            <td>{{ url2.url_kpi_average.time_to_first_byte|withComma }} ms</td>
-                            <td>{{ url3.url_kpi_average.time_to_first_byte|withComma }} ms</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Time to first byte:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.time_to_first_byte|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url2.url_kpi_average.time_to_first_byte|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url3.url_kpi_average.time_to_first_byte|withComma }} ms</td>
                         </tr>
                         
                         <tr>
-                            <td class="ibm-bold">DOM content loaded:</td>
-                            <td>{{ url1.url_kpi_average.dom_content_loaded|withComma }} ms</td>
-                            <td>{{ url2.url_kpi_average.dom_content_loaded|withComma }} ms</td>
-                            <td>{{ url3.url_kpi_average.dom_content_loaded|withComma }} ms</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">DOM content loaded:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.dom_content_loaded|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url2.url_kpi_average.dom_content_loaded|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url3.url_kpi_average.dom_content_loaded|withComma }} ms</td>
                         </tr>
                         
                         <tr>
-                            <td class="ibm-bold">Masthead onscreen:</td>
-                            <td>{% if url1.url_kpi_average.masthead_onscreen != 0 %}
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Masthead onscreen:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{% if url1.url_kpi_average.masthead_onscreen != 0 %}
                                     {{ url1.url_kpi_average.masthead_onscreen|withComma }} ms
                                 {% else %}
                                     N/A
                                 {% endif %}
                             </td>
-                            <td>{% if url2.url_kpi_average.masthead_onscreen != 0 %}
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{% if url2.url_kpi_average.masthead_onscreen != 0 %}
                                     {{ url2.url_kpi_average.masthead_onscreen|withComma }} ms
                                 {% else %}
                                     N/A
                                 {% endif %}
                             </td>
-                            <td>{% if url3.url_kpi_average.masthead_onscreen != 0 %}
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{% if url3.url_kpi_average.masthead_onscreen != 0 %}
                                     {{ url3.url_kpi_average.masthead_onscreen|withComma }} ms
                                 {% else %}
                                     N/A
@@ -104,51 +104,51 @@
                         </tr>
                         
                         <tr>
-                            <td class="ibm-bold">DOM loaded:</td>
-                            <td>{{ url1.url_kpi_average.dom_loaded|withComma }} ms</td>
-                            <td>{{ url2.url_kpi_average.dom_loaded|withComma }} ms</td>
-                            <td>{{ url3.url_kpi_average.dom_loaded|withComma }} ms</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">DOM loaded:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.dom_loaded|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url2.url_kpi_average.dom_loaded|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url3.url_kpi_average.dom_loaded|withComma }} ms</td>
                         </tr>
 
                         <tr>
-                            <td class="ibm-bold">First contentful paint:</td>
-                            <td>{{ url1.url_kpi_average.first_contentful_paint|withComma }} ms</td>
-                            <td>{{ url2.url_kpi_average.first_contentful_paint|withComma }} ms</td>
-                            <td>{{ url3.url_kpi_average.first_contentful_paint|withComma }} ms</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">First contentful paint:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.first_contentful_paint|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url2.url_kpi_average.first_contentful_paint|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url3.url_kpi_average.first_contentful_paint|withComma }} ms</td>
                         </tr>
                         
                         <tr>
-                            <td class="ibm-bold">First meaningful paint:</td>
-                            <td>{{ url1.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
-                            <td>{{ url2.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
-                            <td>{{ url3.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">First meaningful paint:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url2.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url3.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
                         </tr>
                         
                         <tr>
-                            <td class="ibm-bold">Fully interactive:</td>
-                            <td>{{ url1.url_kpi_average.interactive|withComma }} ms</td>
-                            <td>{{ url2.url_kpi_average.interactive|withComma }} ms</td>
-                            <td>{{ url3.url_kpi_average.interactive|withComma }} ms</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Fully interactive:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.interactive|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url2.url_kpi_average.interactive|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url3.url_kpi_average.interactive|withComma }} ms</td>
                         </tr>
 
                         <tr>
-                            <td class="ibm-bold"># of redirects:</td>
-                            <td>{{ url1.lighthouse_run.redirect_hops|withComma }}</td>
-                            <td>{{ url2.lighthouse_run.redirect_hops|withComma }}</td>
-                            <td>{{ url3.lighthouse_run.redirect_hops|withComma }}</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}"># of redirects:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url1.lighthouse_run.redirect_hops|withComma }}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url2.lighthouse_run.redirect_hops|withComma }}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url3.lighthouse_run.redirect_hops|withComma }}</td>
                         </tr>
                         
                         <tr>
-                            <td class="ibm-bold">Wasted redirect time:</td>
-                            <td>{{ url1.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
-                            <td>{{ url2.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
-                            <td>{{ url3.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Wasted redirect time:</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url2.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ url3.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
                         </tr>
                         <tr>
-                            <td></td>
-                            <td class="ibm-ind-link"><a class="ibm-forward-link ibm-icon-after ibm-linkcolor-default" href="{% url 'plr:reports_urls_detail' id=url1.id %}">Full report record</a></td>
-                            <td class="ibm-ind-link"><a class="ibm-forward-link ibm-icon-after ibm-linkcolor-default" href="{% url 'plr:reports_urls_detail' id=url2.id %}">Full report record</a></td>
-                            <td class="ibm-ind-link"><a class="ibm-forward-link ibm-icon-after ibm-linkcolor-default" href="{% url 'plr:reports_urls_detail' id=url3.id %}">Full report record</a></td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}"></td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}"><a class="" href="{% url 'plr:reports_urls_detail' id=url1.id %}">Full report record</a></td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}"><a class="" href="{% url 'plr:reports_urls_detail' id=url2.id %}">Full report record</a></td>
+                            <td class="{{ templateHelpers.classes.tableListCell }}"><a class="" href="{% url 'plr:reports_urls_detail' id=url3.id %}">Full report record</a></td>
                         </tr>
 
                     </tbody>

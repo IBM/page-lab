@@ -1,4 +1,4 @@
-{% extends "page_template.html" %}
+{% extends "page_template_tach.html" %}
 
 {% load beautify %}
 {% load static %}
@@ -22,14 +22,12 @@
 
 {% block content %}
 
-        <div class="ph3 ibm-fluid w-100">
-            <div class="ibm-col-12-12">
-                {% if not url3 %}
-                    {% include "urls_compare2_table.html" %}
-                {% else %}
-                    {% include "urls_compare3_table.html" %}
-                {% endif %}
-            </div>
+        <div class="{{ templateHelpers.classes.grid }} mt4">
+            {% if not url3 %}
+                {% include "urls_compare2_table.html" %}
+            {% else %}
+                {% include "urls_compare3_table.html" %}
+            {% endif %}
         </div>
         
 
