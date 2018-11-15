@@ -45,10 +45,6 @@
         }
         
         
-        #pl-compare-header {
-            padding-top: 8px;
-        }
-        
         /* Default: 'compare' link hidden, plain text shown. */
         .pl-compare-comparelink-con .pl-compare-plaintext {
             cursor: not-allowed;
@@ -69,25 +65,25 @@
     </style>
     
 
-    <div id="pl-compare" class="ibm-hidden-small">
-        <div id="pl-compare-header" class="ibm-background-gray-80 ph3 ibm-fluid w-100">
-            <div class="ibm-col-12-4">
-                <p id="pl-compare-openclose" class="ibm-ind-link ibm-icononly pb0"><a href="#" class="pl-compare-closetray ibm-nospacing ibm-minimize-link ibm-textcolor-white-core">Close tray</a><a href="#" class="pl-compare-opentray ibm-nospacing ibm-maximize-link ibm-textcolor-white-core">Open tray</a></p>
+    <div id="pl-compare" class="dn-s">
+        <div id="pl-compare-header" class="flex bg-black-90 {{ templateHelpers.classes.grid }}">
+            <div class="w-33 dib">
+                <p id="pl-compare-openclose"><a href="#" class="pl-compare-closetray light-gray no-underline">Close tray</a><a href="#" class="pl-compare-opentray white no-underline">Open tray</a></p>
             </div>
-            <div class="ibm-col-12-4">
+            <div class="w-33 dib">
                 <p class="pl-compare-comparelink-con tc pb0">
-                    <span class="pl-compare-hotlink"><a class="pl-compare-comparelink ibm-light ibm-textcolor-white-core" href="#">Compare</a></span>
-                    <span class="pl-compare-plaintext ibm-light ibm-textcolor-white-core">Compare</span>
+                    <span class="pl-compare-hotlink"><a class="pl-compare-comparelink light-gray no-underline" href="#">Compare</a></span>
+                    <span class="pl-compare-plaintext gray no-underline">Compare</span>
                 </p>
             </div>
-            <div class="ibm-col-12-4">
-                <p class="tr pb0"><a class="pl-compare-clearall ibm-textcolor-white-core ibm-light" href="#">Clear all</a></p>
+            <div class="w-33 dib">
+                <p class="tr pb0"><a class="pl-compare-clearall light-gray no-underline" href="#">Clear all</a></p>
             </div>
         </div>
         
-        
-        <div id="pl-compare-body" class="ph3 ibm-fluid w-100 ibm-background-white-core ibm-padding-top-1">
+        <div id="pl-compare-body" class="{{ templateHelpers.classes.grid }} bg-white pv2">
             
-        </div> 
-            
+        </div>
     </div>
+    
+    
