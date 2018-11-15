@@ -185,6 +185,10 @@ html, body, button, input, select, textarea {
     opacity: 1;
 }
 
+.pl-compare-cbcon:hover * {
+    color: #357edd;
+}
+
 
 
 /************************************************
@@ -227,6 +231,11 @@ html, body, button, input, select, textarea {
 .hover-b--current:hover,
 .hover-b--current:focus  {
 	border-color: currentColor;
+}
+
+.hover-b--blue:hover,
+.hover-b--blue:focus  {
+	border-color: #357edd;
 }
 
 

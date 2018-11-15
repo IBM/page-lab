@@ -2,12 +2,12 @@
 {% load beautify %}
 {% load scoredisplayoptions %}
 
-<div class="relative pl-card-con ba b--transparent hover-b--current mr3 mb3">
+<div class="relative pl-card-con ba b--transparent hover-b--blue mr3 mb3">
     
 	{% if url.url_kpi_average %}
     	<div class="pl-compare-cbcon absolute right-0 z-3 top-1 f6">
     		<input id="id_{{ url.id }}" value="{{ url.id }}" class="absolute z-5 h-100 o-0 w1 pointer" type="checkbox" style="right: 80px;">
-            <label for="id_{{ url.id }}" class="relative flex items-center pointer pa2 pr3 pl4 hover-blue">Compare</label>    
+            <label for="id_{{ url.id }}" class="relative flex items-center pointer pa2 pr3 pl4">Compare</label>    
     	</div>
     	<a style="width: 350px;" class="dib tc mb3 w-100 dark-gray ba b--white pl-reportcard f6 no-underline w-100 pa3" href="{% url 'plr:reports_urls_detail' id=url.id %}" title="View details">
         	<div style="margin-bottom: 10px !important;" class="tc"><img src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="100"></div>
