@@ -144,34 +144,11 @@ html, body, button, input, select, textarea {
 
 
 /************************************************
-    Effects
-************************************************/
-.pl-fadein {
-	visibility: visible;
-	opacity: 1;
-	transition: opacity .4s;
-}
-
-.pl-fadeout {
-	visibility: hidden;
-	opacity: 0;
-	transition: visibility 0s 0.4s, opacity 0.4s;
-}
-
-/** Makes a border color match the text color, on hover. **/
-.hover-b--current:hover,
-.hover-b--current:focus  {
-	border-color: currentColor;
-}
-
-
-
-/************************************************
     Reports browse/list page
 ************************************************/
 
 /* Add slight delay so fly-bys aren't so annoying. */
-.pl-reportcard {
+.pl-card-con {
     transition: border .4s .15s;
 }
 
@@ -201,17 +178,14 @@ html, body, button, input, select, textarea {
     transition: opacity .4s .15s;
     opacity: 0;
 }
-.pl-reportcard:hover .pl-compare-cbcon *,
+
+.pl-card-con:hover .pl-compare-cbcon *,
 .pl-compare-cbcon input:checked,
 .pl-compare-cbcon input:checked + label {
     opacity: 1;
 }
 
-.checkbox:checked + .checkbox-wrapper {
-  background-color: #357edd; /** blue **/
-  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgOCA4IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA4IDgiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTYuNCwxTDUuNywxLjdMMi45LDQuNUwyLjEsMy43TDEuNCwzTDAsNC40bDAuNywwLjdsMS41LDEuNWwwLjcsMC43bDAuNy0wLjdsMy41LTMuNWwwLjctMC43TDYuNCwxTDYuNCwxeiINCgkvPg0KPC9zdmc+DQo=);
-  background-size: 75% 75%;
-}
+
 
 /************************************************
     Select 2 updates to match site design 
@@ -233,5 +207,26 @@ html, body, button, input, select, textarea {
 }
 
 
+
+/************************************************
+    Effects
+************************************************/
+.pl-fadein {
+	visibility: visible;
+	opacity: 1;
+	transition: opacity .4s;
+}
+
+.pl-fadeout {
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0s 0.4s, opacity 0.4s;
+}
+
+/** Makes a border color match the text color, on hover. **/
+.hover-b--current:hover,
+.hover-b--current:focus  {
+	border-color: currentColor;
+}
 
 
