@@ -19,18 +19,19 @@
         
         (function ($) {
             
-            var $loadmoreContainer, $cardContainer, pageNum = 1;
+            var $sortForm, $loadmoreContainer, $cardContainer, pageNum = 1;
             
             
             function setupLoadMore () {
-                $loadmoreContainer.find("button")[0].addEventListener("click", loadItems);
+                $loadmoreContainer.find("button")[0].addEventListener("click", loadMoreCards);
             }
             
-            function loadItems () {
+            
+            function loadMoreCards () {
                 $.ajax({
                     url: "{% url 'plr:api_home_items' %}?page=" + (pageNum + 1),
                     dataType: "json",
-                    data: $("#pl-sortform").serialize(),
+                    data: $sortform.serialize(),
                     success: function (data) {
                         $cardContainer.append(data.resultsHtml);
                         
@@ -46,9 +47,12 @@
                });
             }
             
+            
             $(function () {
-                $loadmoreContainer = $("#pl-loadmore");
                 $cardContainer = $("#pl-cards-container");
+                $loadmoreContainer = $("#pl-loadmore");
+                $sortForm = $("#pl-sortform");
+                
                 if ($loadmoreContainer[0]) {
                     setupLoadMore();
                 }
@@ -72,10 +76,10 @@
 
 {% block content %}
 
-	<div class="{{ templateHelpers.classes.grid }}">
+	<div class="{{ templateHelpers.classes.grid }} mt4">
         <form id="pl-sortform" aria-label="Sort data listing" action="" method="get">
             <div class="mb3 dib mr2">
-                <p class="b">Sort:</p>
+                <p class="b mt0">Sort:</p>
                 <select name="sortby" aria-label="Select a field">
                     <option value="url" {% if sortby == 'url' %}selected="selected"{% endif %}>URL</option>
                     <option value="date" {% if sortby == 'date' %}selected="selected"{% endif %}>Last test date</option>
@@ -94,7 +98,7 @@
             
         
             <div class="mb3 dib mr4">
-                <p class="b">Show:</p>
+                <p class="b mt0">Show:</p>
                 <select name="viewdata" aria-label="Select an order">
                     <option value="perfscore" {% if viewdata == 'perfscore' %}selected="selected"{% endif %}>Performance score</option>
                     <option value="a11yscore" {% if viewdata == 'a11yscore' %}selected="selected"{% endif %}>Accessibility score</option>

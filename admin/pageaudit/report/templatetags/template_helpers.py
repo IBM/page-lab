@@ -24,13 +24,17 @@ def getTemplateHelpers(context):
             'bluePriButton': bluePriButton,
             'blueSecButton': blueSecButton,
             'greenPriButton': greenPriButton,
-            'horizontalSpace': horizontalSpace,
             'grid': horizontalSpace + ' w-100',
+            'horizontalSpace': horizontalSpace,
+            'imageBorder': 'ba b--black-20',
             'navItem': 'link near-white f6 f5-ns dib mr4 pv3 hover-%s' % (siteColor),
             'rounded': rounded,
             'siteColor': siteColor,
             'tableListCell': 'pv3 pr4 bb b--black-20',
             'viewAll': commonButton + ' b--blue bg-white hover-bg-blue blue hover-white link',
             'viewReport': commonButton + ' b--dark-green bg-green hover-bg-dark-green white',
+        },
+        'html': {
+            'hr': '<div class="' + horizontalSpace + ' w-100 mv5"><div class="bb b--silver"></div></div>'
         }
     }

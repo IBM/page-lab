@@ -205,27 +205,6 @@ html, body, button, input, select, textarea {
 
 
 /************************************************
-    Select 2 updates to match site design 
-    I know !important is bad but way less CSS to do here using them.
-************************************************/
-.select2-results__option--highlighted {
-    background-color: var(--blue) !important;
-}
-.select2-container .select2-selection--single {
-    height: 37px !important;
-}
-.select2-selection__rendered {
-    line-height: 37px !important;
-    padding-right: 22px !important;
-}
-.select2-selection__arrow {
-    right: 3px !important;
-    top: 7px !important;
-}
-
-
-
-/************************************************
     Effects
 ************************************************/
 .pl-fadein {
@@ -252,3 +231,60 @@ html, body, button, input, select, textarea {
 }
 
 
+
+/************************************************
+    Plugin/widgets overrides
+************************************************/
+
+
+/************************************************
+    Select 2 updates to match site design 
+    I know !important is bad but way less CSS here by using it.
+************************************************/
+.select2-results__option--highlighted {
+    background-color: var(--blue) !important;
+}
+.select2-container .select2-selection--single {
+    height: 37px !important;
+}
+.select2-selection__rendered {
+    line-height: 37px !important;
+    padding-right: 22px !important;
+}
+.select2-selection__arrow {
+    right: 3px !important;
+    top: 7px !important;
+}
+
+
+.dataTable thead th {
+    text-align: left;
+    vertical-align: top;
+}
+
+.dataTable.hover tbody tr:hover,
+.dataTable.display tbody tr:hover,
+.dataTable.display tbody tr:hover > .sorting_1,
+.dataTable.order-column.hover tbody tr:hover > .sorting_1 {
+    background-color: #cdecff !important;
+}
+
+.dataTable thead .sorting,
+.dataTable thead .sorting_asc,
+.dataTable thead .sorting_desc {
+    background-position: -1px 11px !important;
+}
+
+
+.dataTable thead .sorting_asc {
+    background-position: -1px 13px !important;
+}
+
+.dataTable thead .no-sort {
+    background: none !important;
+}
+  
+.dataTables_length {
+    margin-bottom: 2rem;
+}
+    

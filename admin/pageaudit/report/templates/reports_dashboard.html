@@ -36,17 +36,17 @@
             <div class="tc">
                 <p class="ibm-h4 ibm-padding-bottom-1 ibm-bold">Average scores across <span class="ibm-light">{{ urlCountTested|withComma }}</span> tested URLs</p>
                 
-                    <div class="pl-avg-donut ibm-margin-bottom-2">
+                    <div class="pl-avg-donut mb4">
                         {% include "url_compare_table_score.html" with scoreValue=urlGlobalPerfAvg %}
-                        <p class="ibm-margin-top-1 ibm-h4">Performance</p>
+                        <p class="mt2 ibm-h4">Performance</p>
                     </div>
-                    <div class="pl-avg-donut ibm-margin-bottom-2">
+                    <div class="pl-avg-donut mb4">
                         {% include "url_compare_table_score.html" with scoreValue=urlGlobalA11yAvg %}
-                        <p class="ibm-margin-top-1 ibm-h4">Accessibility</p>
+                        <p class="mt2 ibm-h4">Accessibility</p>
                     </div>
-                    <div class="pl-avg-donut ibm-margin-bottom-2">
+                    <div class="pl-avg-donut mb4">
                         {% include "url_compare_table_score.html" with scoreValue=urlGlobalSeoAvg %}
-                        <p class="ibm-margin-top-1 ibm-h4">SEO</p>
+                        <p class="mt2 ibm-h4">SEO</p>
                     </div>
                 
             </div>

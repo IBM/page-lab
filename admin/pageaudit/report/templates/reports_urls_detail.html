@@ -1,4 +1,4 @@
-{% extends "page_template.html" %}
+{% extends "page_template_tach.html" %}
 
 {% load beautify %}
 {% load static %}
@@ -10,11 +10,10 @@
 
 
 {% block pageSubtitle %} 
-    <p class="ibm-ind-link"><a class="ibm-icon-after ibm-light ibm-textcolor-white-core ibm-external-link ibm-word-break-all" href="{{ url1.url }}" title="View page in new window" target="_blank">{{ url1.url|noprotocol }}</a></p>
-    <div class="pl-compare-checkbox-con ibm-alternate-background">
-    	<span class="ibm-checkbox-wrapper ibm-small">
-            <input class="ibm-styled-checkbox" id="id_{{ url1.id }}" value="{{ url1.id }}" type="checkbox"> 
-            <label for="id_{{ url1.id }}" class="ibm-field-label">Compare</label>
+    <p><a class="light-blue no-underline underline-hover animate-hover" href="{{ url1.url }}" title="View page in new window" target="_blank">{{ url1.url|noprotocol }}</a></p>
+    <div class="pl-compare-checkbox-con pt2">
+    	<span class="f6">
+            <input id="id_{{ url1.id }}" type="checkbox" value="{{ url1.id }}" class="w1 dib pointer" style="transform: scale(1.1);"><label for="id_{{ url1.id }}" class="ml1 relative dib pointer hover-light-blue light-gray">Compare</label>
         </span>                       
     </div>
  {% endblock  %}
@@ -32,9 +31,9 @@
         .pl-url-detail-donut .pl-perfscore {
             border-width: 10px;
             font-size: 2rem;
-            height: 60px;
+            height: 100px;
             line-height: 60px;
-            width: 60px;
+            width: 100px;
         }
         
     </style>
@@ -44,222 +43,236 @@
 
 {% block content %}
 
-        <div class="ph3 ibm-fluid ibm-flex w-100">
-            <div class="ibm-col-12-3 ibm-col-xlarge-12-2 mb3">
+    <div class="{{ templateHelpers.classes.grid }} mt5 cf">
+        <div class="fl w-100 w-20-ns tc tl-ns mb3">
 
-            	<p class="mb3">
-                    <a href="{{ url1.url }}" title="View page in new window" target="_blank"><img class="ibm-downsize ba b--black-20" src="data:image/png;base64,{{ url1.lighthouse_run.thumbnail_image }}" width="155"></a>
-                </p>
-            	
-            </div>
-            <div class="ibm-col-12-9 ibm-col-xlarge-12-10">
-                <div id="linechart"></div>
-            </div>            
+        	<p class="mb3 mt0">
+                <a href="{{ url1.url }}" title="View page in new window" target="_blank"><img class="{{ templateHelpers.classes.imageBorder }}" src="data:image/png;base64,{{ url1.lighthouse_run.thumbnail_image }}" width="155"></a>
+            </p>
+        	
+        </div>
+        <div class="fl w-100 w-80-ns mb3">
+            <div id="linechart"></div>
+        </div>            
+    </div>
+    
+    
+    {{ templateHelpers.html.hr|safe }}
+    
+    
+    <div class="{{ templateHelpers.classes.grid }} tc">
+        <h4 class="f4 b mb4">Average scores across <code class="fw4 dark-red">{{ lighthouseRuns.count }}</code> test runs</h4>
+    
+        <div class="pl-url-detail-donut mb4">
+            <div>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.performance_score %}</div>
+            <p class="f4 mt3">Performance</p>
         </div>
         
-        
-        <div class="ph3 ibm-fluid w-100 ibm-margin-top-2">
-            <div class="ibm-col-12-12"><div class="ibm-rule ibm-gray-30 ibm-alternate"><hr></div></div>
+        <div class="pl-url-detail-donut mb4">
+            <div>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.accessibility_score %}</div>
+            <p class="f4 mt3">Accessibility</p>
         </div>
         
-        <div class="ph3 ibm-fluid ibm-margin-top-2">
-            <div class="ibm-col-12-12 tc">
-                <h4 class="ibm-h4 ibm-bold">Average scores across <span class="ibm-light">{{ lighthouseRuns.count }}</span> test runs</h4>
+        <div class="pl-url-detail-donut mb4">
+            <div>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.seo_score %}</div>
+            <p class="f4 mt3">SEO</p>
+        </div>
+    </div>
+    
             
-                <div class="pl-url-detail-donut ibm-margin-bottom-2">
-                    <div>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.performance_score %}</div>
-                    <p class="ibm-h4 ibm-margin-top-1">Performance</p>
-                </div>
-                
-                <div class="pl-url-detail-donut ibm-margin-bottom-2">
-                    <div>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.accessibility_score %}</div>
-                    <p class="ibm-h4 ibm-margin-top-1">Accessibility</p>
-                </div>
-                
-                <div class="pl-url-detail-donut ibm-margin-bottom-2">
-                    <div>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.seo_score %}</div>
-                    <p class="ibm-h4 ibm-margin-top-1">SEO</p>
-                </div>
-            </div>
-        </div>
-        
-                
-        <div class="ibm-margin-top-2 ph3 ibm-fluid ibm-flex w-100">
-            <div class="ibm-col-12-6">
-                <h4 class="ibm-bold">Average KPIs &nbsp; <span style="position: relative;margin-top:-2px;" class="ibm-information-link ibm-textcolor-blue-60" data-widget="tooltip" title="Standard indicators of a page's performance."><span class="ibm-access">Key performance indicators</span></span></h4>
-                
-                <table class="ibm-data-table">
-                    <tbody>
-                        <tr>
-                            <td class="ibm-bold">Last tested:</td>
-                            <td class="tr" style="width:200px;">{{ url1.lighthouse_run.created_date }}</td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="ibm-bold">Total size:</td>
-                            <td class="tr">{{ url1.url_kpi_average.total_byte_weight|kbToMb }}</td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="ibm-bold"># of network requests:</td>
-                            <td class="tr">{{ url1.url_kpi_average.number_network_requests|withComma }}</td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="ibm-bold">Time to first byte:</td>
-                            <td class="tr">{{ url1.url_kpi_average.time_to_first_byte|withComma }} ms</td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="ibm-bold">DOM content loaded:</td>
-                            <td class="tr">{{ url1.url_kpi_average.dom_content_loaded|withComma }} ms</td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="ibm-bold">First contentful paint:</td>
-                            <td class="tr">{{ url1.url_kpi_average.first_contentful_paint|withComma }} ms</td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="ibm-bold">First meaningful paint:</td>
-                            <td class="tr">{{ url1.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="ibm-bold">DOM loaded:</td>
-                            <td class="tr">{{ url1.url_kpi_average.dom_loaded|withComma }} ms</td>
-                        </tr>
-                       
-                        <tr>
-                            <td class="ibm-bold">Fully interactive:</td>
-                            <td class="tr">{{ url1.url_kpi_average.interactive|withComma }} ms</td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="ibm-bold"># of redirects:</td>
-                            <td class="tr">{{ url1.lighthouse_run.redirect_hops|withComma }}</td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="ibm-bold">Wasted redirect time:</td>
-                            <td class="tr">{{ url1.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
-                        </tr>
-                        
-                    </tbody>
-                </table>
+    <div class="{{ templateHelpers.classes.grid }} cf">
+        <div class="fl w-100 w-50-l mb4">
+            <h4 class="f4 b">Average KPIs</h4>
+            
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}">Last tested:</td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}" style="width:200px;">{{ url1.lighthouse_run.created_date }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}">Total size:</td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.total_byte_weight|kbToMb }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"># of network requests:</td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.number_network_requests|withComma }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}">Time to first byte:</td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.time_to_first_byte|withComma }} ms</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}">DOM content loaded:</td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.dom_content_loaded|withComma }} ms</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}">First contentful paint:</td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.first_contentful_paint|withComma }} ms</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}">First meaningful paint:</td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}">DOM loaded:</td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.dom_loaded|withComma }} ms</td>
+                    </tr>
+                   
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}">Fully interactive:</td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.interactive|withComma }} ms</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"># of redirects:</td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.lighthouse_run.redirect_hops|withComma }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}">Wasted redirect time:</td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
 
-            </div>
+        </div>
+        
+        <div class="fl w-100 w-50-l mb4">
+            <h4 class="f4 b">Average user timing measures</h4>
             
-            <div class="ibm-col-12-6">
-                <h4 class="ibm-bold">Average user timing measures &nbsp; <span style="margin-top:-2px;" class="ibm-information-link ibm-textcolor-blue-60 relative" data-widget="tooltip" title="Custom user timing measures from any JS on the page. Only non-zero durations are shown. These do not necessarily show the cause of page performance issues."><span class="ibm-access">Only non-zero values</span></span></h4>
-                
-                <table class="ibm-data-table">
-                    <thead>
+            <table>
+                <thead>
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}">Name</td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}">Start</td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}">Duration</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {# Skip measures that are zero duration because they don't make a difference #}
+                    
+                    {% for measure in url1.user_timing_measure_avg_url.all %}
+                        {% if measure.duration > 0 %}
                         <tr>
-                            <td>Name</td>
-                            <td>Start</td>
-                            <td>Duration</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {# Skip measures that are zero duration because they don't make a difference #}
-                        
-                        {% for measure in url1.user_timing_measure_avg_url.all %}
-                            {% if measure.duration > 0 %}
-                            <tr>
-                                <td>{{ measure.name }}</td>
-                                <td class="tr">{{ measure.start_time|withComma }} ms</td>
-                                <td class="tr">{{ measure.duration|withComma }} ms</td>
-                            </tr>    
-                            {% endif %}
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ measure.name }}</td>
+                            <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ measure.start_time|withComma }} ms</td>
+                            <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ measure.duration|withComma }} ms</td>
+                        </tr>    
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+    {{ templateHelpers.html.hr|safe }}
+    
+    
+    <div class="{{ templateHelpers.classes.grid }} mt5 mb4 cf">
+        <div class="fl w-100 w-50-ns"><p class="f4 b">Test runs history</p></div>
+        <div class="fl w-100 w-50-ns" id="pl-exportbuttons"></div>
+    </div>
+     
+    <div id="pl-rundata-kpis" class="{{ templateHelpers.classes.grid }} cf">
+        <table class="f6 hover display stripe" style="width:100%!important;" data-column-defs='[{"targets":"no-sort","orderable":false}]' data-buttons='["excel"]' data-dom="lBfrtip">
+            <thead>
+	            <th scope="col" class="no-sort"></th>
+                <th>Test time</th>
+                <th>Performance score</th>
+                <th>Accessibility score</th>
+                <th>SEO score</th>
+                <th>Size (KB)</th>
+                <th>Network requests</th>
+                <th>Time to first byte (ms)</th>
+                <th>DOM content loaded (ms)</th>
+                <th>First contentful paint (ms)</th>
+                <th>First meaningful paint (ms)</th>
+                <th>DOM loaded (ms)</th>
+                <th>Fully interactive (ms)</th>
+                <th># redirects</th>
+                <th>Wasted redirect time</th>
+            </thead>
             
-        </div>
-        
-        
-        <div class="ph3 ibm-fluid w-100 ibm-margin-top-3 ibm-margin-bottom-2">
-            <div class="ibm-col-12-12"><div class="ibm-rule ibm-gray-30 ibm-alternate"><hr></div></div>
-        </div>
-        
-        
-        <div class="ph3 ibm-fluid w-100">
-            <div class="ibm-col-12-6"><p class="ibm-h4 ibm-bold">Test runs history</p></div>
-            <div class="ibm-col-12-6 tr ibm-left-small" id="pl-exportbuttons"></div>
-        </div> 
-        <div class="ph3 ibm-fluid w-100">
-            <div class="ibm-col-12-12">
-                <table id="pl-rundata-kpis" data-tablerowselector="enable" data-column-defs='[{"targets":"no-sort","orderable":false}]' data-order='[]' class="ibm-data-table ibm-padding-small ibm-small ibm-altrows" data-widget="datatable" data-col-reorder="true" data-info="true" data-ordering="true" data-paging="true" data-searching="true" data-page-length="10" data-buttons='["excel"]' data-dom="lBfrtip">
-    	            <thead>
-    		            <th scope="col" class="no-sort"></th>
-                        <th>Test time</th>
-                        <th>Performance score</th>
-                        <th>Accessibility score</th>
-                        <th>SEO score</th>
-                        <th>Size (KB)</th>
-                        <th>Network requests</th>
-                        <th>Time to first byte (ms)</th>
-                        <th>DOM content loaded (ms)</th>
-                        <th>First contentful paint (ms)</th>
-                        <th>First meaningful paint (ms)</th>
-                        <th>DOM loaded (ms)</th>
-                        <th>Fully interactive (ms)</th>
-                        <th># redirects</th>
-                        <th>Wasted redirect time</th>
-    	            </thead>
-    	            
-    	            <tbody>
-    		            {% for lighthouseRun in lighthouseRuns %}
-    		                <tr>
-        		                <td>{{ forloop.counter }}</td>
-        		                <td>{{ lighthouseRun.created_date }}</td>
-        		                <td>{{ lighthouseRun.performance_score }}</td>
-        		                <td>{{ lighthouseRun.accessibility_score }}</td>
-        		                <td>{{ lighthouseRun.seo_score }}</td>
-        		                <td>{{ lighthouseRun.total_byte_weight|byteToKb }}</td>
-        		                <td>{{ lighthouseRun.number_network_requests }}</td>
-        		                <td>{{ lighthouseRun.time_to_first_byte }}</td>
-        		                <td>{{ lighthouseRun.dom_loaded }}</td>
-        		                <td>{{ lighthouseRun.first_contentful_paint }}</td>
-        		                <td>{{ lighthouseRun.first_meaningful_paint }}</td>
-        		                <td>{{ lighthouseRun.dom_content_loaded }}</td>
-        		                <td>{{ lighthouseRun.interactive }}</td>
-        		                <td>{{ lighthouseRun.redirect_hops }}</td>
-        		                <td>{{ lighthouseRun.redirect_wasted_ms }}</td>
-    		                </tr>
-    		            {% endfor %}
-    	            </tbody>
-                </table>
-            </div>
-        </div>
+            <tbody>
+	            {% for lighthouseRun in lighthouseRuns %}
+	                <tr>
+		                <td>{{ forloop.counter }}</td>
+		                <td>{{ lighthouseRun.created_date }}</td>
+		                <td>{{ lighthouseRun.performance_score }}</td>
+		                <td>{{ lighthouseRun.accessibility_score }}</td>
+		                <td>{{ lighthouseRun.seo_score }}</td>
+		                <td>{{ lighthouseRun.total_byte_weight|byteToKb }}</td>
+		                <td>{{ lighthouseRun.number_network_requests }}</td>
+		                <td>{{ lighthouseRun.time_to_first_byte }}</td>
+		                <td>{{ lighthouseRun.dom_loaded }}</td>
+		                <td>{{ lighthouseRun.first_contentful_paint }}</td>
+		                <td>{{ lighthouseRun.first_meaningful_paint }}</td>
+		                <td>{{ lighthouseRun.dom_content_loaded }}</td>
+		                <td>{{ lighthouseRun.interactive }}</td>
+		                <td>{{ lighthouseRun.redirect_hops }}</td>
+		                <td>{{ lighthouseRun.redirect_wasted_ms }}</td>
+	                </tr>
+	            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 
     <link href="{% static 'report/css/c3.min.css' %}" rel="stylesheet">   
+        
+    <link href="{% static 'report/css/select2.min.css' %}" rel="stylesheet"/>
     
-	<script src="{% static 'report/js/tables.js' %}"></script>
-    <script src="{% static 'report/js/datatables/dataTables.buttons.min.js' %}"></script>
+    <link href="{% static 'report/css/datatables/jquery.dataTables.min.css' %}" rel="stylesheet">   
+    <link href="{% static 'report/css/datatables/colReorder.dataTables.min.css' %}" rel="stylesheet">   
+    <link href="{% static 'report/css/datatables/responsive.dataTables.min.css' %}" rel="stylesheet">   
+
+	<script src="{% static 'report/js/datatables/jquery.datatables.min.js' %}"></script>
+    <script src="{% static 'report/js/datatables/datatables.buttons.min.js' %}"></script>
     <script src="{% static 'report/js/datatables/buttons.flash.min.js' %}"></script>
-    <script src="{% static 'report/js/datatables/jszip.min.js' %}"></script>
     <script src="{% static 'report/js/datatables/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'report/js/datatables/datatables.colReorder.min.js' %}"></script>
+    <script src="{% static 'report/js/datatables/datatables.responsive.min.js' %}"></script>
+    <script src="{% static 'report/js/datatables/jszip.min.js' %}"></script>
+
+    <script src="{% static 'report/js/select2.min.js' %}"></script>
 
     <script src="{% static 'report/js/d3.v4.min.js' %}"></script>
     <script src="{% static 'report/js/c3.min.js' %}"></script>
 
+    <script src="{% static 'report/js/compare.js' %}"></script>
+
     <script>
 
-        {% include "compare.js" %}
-
-        (function ($, IBM) {
+        (function ($) {
+            
+            var datatableSettings = {
+                    colReorder: true,
+                    info: true,
+                    ordering: true,
+                    paging: true,
+                    pageLength: 10,
+                    responsive: true,
+                    scrollCollapse: true,
+                    searching: true
+                };
             
             function adjustExportButtons ($scope) {
                 var $tablewidgetContainer = $scope.parent(),
                     $buttonCon = $tablewidgetContainer.find(".dt-buttons");
                 
-                $buttonCon.removeClass("dt-buttons").addClass("ibm-btn-row").appendTo("#pl-exportbuttons").prepend('<span class="ibm-bold mb3" style="display:inline-block;margin-right:20px;">Export table</span>');
+                $buttonCon.removeClass("dt-buttons").appendTo("#pl-exportbuttons").prepend('<span class="b mb3" style="display:inline-block;margin-right:20px;">Export table</span>');
                
-                $buttonCon.find("button").addClass("ibm-btn-pri ibm-btn-blue-50 ibm-btn-small")[0].addEventListener("click", function () {
+                $buttonCon.find("button").addClass("{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }}")[0].addEventListener("click", function () {
                     emailSelectedApps();
                 })
             }
@@ -294,12 +307,14 @@
             createHistoryLineChart();
 
             $(function(){
+                $("#pl-rundata-kpis table").DataTable(datatableSettings);
+                $("#pl-rundata-kpis").find("select").select2();
                 adjustExportButtons($("#pl-rundata-kpis"));
-                pl.compare.setupCompareCheckboxes($(".pl-compare-checkbox-con"));
-                pl.compare.preselectCheckbox($(".pl-compare-checkbox-con").find("input"));
+                PL.compare.setupCompareCheckboxes($(".pl-compare-checkbox-con"));
+                PL.compare.preselectCheckbox($(".pl-compare-checkbox-con").find("input"));
             });
             
-        })(jQuery, IBMCore);        
+        })(jQuery);        
         
     </script>
 
