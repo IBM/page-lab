@@ -30,7 +30,10 @@ def load_urls_into_db(path):
         urlObj.save()
 
 
-def write_report_csv(path, date_since=None, include_user_timing=False):
+def write_report_csv(path,
+                     date_since=None,
+                     date_from=None,
+                     include_user_timing=False):
     if not path:
         print('path is required')
         return
@@ -59,17 +62,31 @@ def write_report_csv(path, date_since=None, include_user_timing=False):
             "user_timing_data"
         ])
 
-        if date_since:
-            if date_since['month'] and date_since['day'] and date_since['year']:
-                m = date_since['month']
-                d = date_since['day']
-                y = date_since['year']
-                run_data = LighthouseRun.objects.filter(created_date__gte=datetime.date(y, m, d))
-            else:
-                raise Exception('date_since requires month day and year properties')
+        if date_since or date_from:
+            if date_since:
+                if date_since['month'] and date_since['day'] and date_since['year']:
+                    m = date_since['month']
+                    d = date_since['day']
+                    y = date_since['year']
+                    run_data = LighthouseRun.objects.filter(created_date__gte=datetime.date(y, m, d))
+
+                else:
+                    raise Exception('date_since requires month day and year properties')
+            if date_from:
+                if date_from['month'] and date_from['day'] and date_from['year']:
+                    m = date_from['month']
+                    d = date_from['day']
+                    y = date_from['year']
+                    if run_data:
+                        run_data = run_data.filter(created_date__lte=datetime.date(y, m, d))
+                    else:
+                        run_data = LighthouseRun.objects.filter(created_date__lte=datetime.date(y, m, d))
+                else:
+                    raise Exception('date_from requires month day and year properties')
         else:
             run_data = LighthouseRun.objects.all()
 
+        print('Found %s records' % run_data.count())
         for run in run_data:
             if include_user_timing:
                 try:
@@ -115,4 +132,3 @@ def update_urls(path):
             urlObj.save()
         except Exception as ex:
             print(ex)
-
