@@ -1,4 +1,5 @@
 import csv
+import datetime
 
 field_names=['url', 'url2', 'views', 'hist', 'sequence',]
 
@@ -32,7 +33,7 @@ def load_urls_into_db(path):
 
 def write_report_csv(path,
                      date_since=None,
-                     date_from=None,
+                     date_to=None,
                      include_user_timing=False):
     if not path:
         print('path is required')
@@ -62,7 +63,7 @@ def write_report_csv(path,
             "user_timing_data"
         ])
 
-        if date_since or date_from:
+        if date_since or date_to:
             if date_since:
                 if date_since['month'] and date_since['day'] and date_since['year']:
                     m = date_since['month']
@@ -72,11 +73,11 @@ def write_report_csv(path,
 
                 else:
                     raise Exception('date_since requires month day and year properties')
-            if date_from:
-                if date_from['month'] and date_from['day'] and date_from['year']:
-                    m = date_from['month']
-                    d = date_from['day']
-                    y = date_from['year']
+            if date_to:
+                if date_to['month'] and date_to['day'] and date_to['year']:
+                    m = date_to['month']
+                    d = date_to['day']
+                    y = date_to['year']
                     if run_data:
                         run_data = run_data.filter(created_date__lte=datetime.date(y, m, d))
                     else:
