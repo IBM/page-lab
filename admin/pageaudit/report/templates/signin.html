@@ -8,9 +8,9 @@
 
 {% block content %}
 
-	<div class="{ templateHelpers.classes.grid }}">				
+	<div class="{{ templateHelpers.classes.grid }}">				
 		{% if error %}
-			<div class="mb3 red">{{ error|safe }}</div>
+			<div class="mb3 mt4 red">{{ error|safe }}</div>
 		{% endif %}
 		
 		{% include "auth_form.html" %}

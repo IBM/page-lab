@@ -462,7 +462,7 @@ def signin(request):
         else:
             context = {
                 'form': AuthenticationForm,
-                'error': 'DOH! It looks like you are not a valid user in the system. Contact a sys admin',
+                'error': 'Woops! It looks like you are not a valid user in the system. Contact an admin.',
             }
             
             response = render(request, 'signin.html', context)
