@@ -28,7 +28,7 @@
             width: 230px;
         }
        
-        .pl-url-detail-donut .pl-perfscore {
+        .pl-url-detail-donut .pl-audit-score {
             border-width: 10px;
             font-size: 2rem;
             height: 100px;
@@ -64,17 +64,17 @@
         <h4 class="f4 b mb4">Average scores across <code class="fw4 dark-red">{{ lighthouseRuns.count }}</code> test runs</h4>
     
         <div class="pl-url-detail-donut mb4">
-            <div>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.performance_score %}</div>
+            <div>{% include "audit_score_donut.html" with scoreValue=url1.url_kpi_average.performance_score %}</div>
             <p class="f4 mt3">Performance</p>
         </div>
         
         <div class="pl-url-detail-donut mb4">
-            <div>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.accessibility_score %}</div>
+            <div>{% include "audit_score_donut.html" with scoreValue=url1.url_kpi_average.accessibility_score %}</div>
             <p class="f4 mt3">Accessibility</p>
         </div>
         
         <div class="pl-url-detail-donut mb4">
-            <div>{% include "url_compare_table_score.html" with scoreValue=url1.url_kpi_average.seo_score %}</div>
+            <div>{% include "audit_score_donut.html" with scoreValue=url1.url_kpi_average.seo_score %}</div>
             <p class="f4 mt3">SEO</p>
         </div>
     </div>

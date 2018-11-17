@@ -54,7 +54,7 @@ html, body, button, input, select, textarea {
 /************************************************************************************************
     Audit score donuts.
 ************************************************************************************************/
-.pl-perfscore {
+.pl-audit-score {
     border-radius: 100%;
     border: transparent 5px solid;
     display: inline-block;

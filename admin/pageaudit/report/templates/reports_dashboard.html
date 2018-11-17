@@ -22,7 +22,7 @@
             width: 230px;
         }
        
-        .pl-avg-donut .pl-perfscore {
+        .pl-avg-donut .pl-audit-score {
             border-width: 14px;
             font-size: 2.5rem;
             height: 148px;
@@ -176,15 +176,15 @@
         <p class="f4 b pb2">Average scores across <code class="fw4 dark-red">{{ urlCountTested|withComma }}</code> tested URLs</p>
         
         <div class="pl-avg-donut mb4">
-            {% include "url_compare_table_score.html" with scoreValue=urlGlobalPerfAvg %}
+            {% include "audit_score_donut.html" with scoreValue=urlGlobalPerfAvg %}
             <p class="f4 mt3">Performance</p>
         </div>
         <div class="pl-avg-donut mb4">
-            {% include "url_compare_table_score.html" with scoreValue=urlGlobalA11yAvg %}
+            {% include "audit_score_donut.html" with scoreValue=urlGlobalA11yAvg %}
             <p class="f4 mt3">Accessibility</p>
         </div>
         <div class="pl-avg-donut mb4">
-            {% include "url_compare_table_score.html" with scoreValue=urlGlobalSeoAvg %}
+            {% include "audit_score_donut.html" with scoreValue=urlGlobalSeoAvg %}
             <p class="f4 mt3">SEO</p>
         </div>
     </div>
