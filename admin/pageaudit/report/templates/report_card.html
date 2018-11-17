@@ -1,3 +1,4 @@
+{% load define %}
 {% load static %}
 {% load beautify %}
 {% load scoredisplayoptions %}
@@ -14,11 +15,11 @@
             
             <div class="mb2 tc">
                 {% if viewdata == "a11yscore" %}
-                    {% url.url_kpi_average.accessibility_score as score %}
+                    {% define url.url_kpi_average.accessibility_score as score %}
                 {% elif viewdata == "seoscore" %}
-                    {% url.url_kpi_average.seo_score as score %}
+                    {% define url.url_kpi_average.seo_score as score %}
                 {% else %}
-                    {% url.url_kpi_average.performance_score as score %}
+                    {% define url.url_kpi_average.performance_score as score %}
                 {% endif %}
                 
                 {% include "url_compare_table_score.html" with scoreValue=score %}
