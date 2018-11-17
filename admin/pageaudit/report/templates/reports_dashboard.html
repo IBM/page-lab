@@ -176,15 +176,15 @@
         <p class="f4 b pb2">Average scores across <code class="fw4 dark-red">{{ urlCountTested|withComma }}</code> tested URLs</p>
         
         <div class="pl-avg-donut mb4">
-            {% include "audit_score_donut.html" with scoreValue=urlGlobalPerfAvg %}
+            {% include "partials/audit_score_donut.html" with scoreValue=urlGlobalPerfAvg %}
             <p class="f4 mt3">Performance</p>
         </div>
         <div class="pl-avg-donut mb4">
-            {% include "audit_score_donut.html" with scoreValue=urlGlobalA11yAvg %}
+            {% include "partials/audit_score_donut.html" with scoreValue=urlGlobalA11yAvg %}
             <p class="f4 mt3">Accessibility</p>
         </div>
         <div class="pl-avg-donut mb4">
-            {% include "audit_score_donut.html" with scoreValue=urlGlobalSeoAvg %}
+            {% include "partials/audit_score_donut.html" with scoreValue=urlGlobalSeoAvg %}
             <p class="f4 mt3">SEO</p>
         </div>
     </div>

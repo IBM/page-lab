@@ -116,7 +116,7 @@
 	
 	<div id="pl-cards-container" class="{{ templateHelpers.classes.grid }} mt4 flex flex-wrap center">
         {% for url in urls %}
-            {% include "report_card.html" with url=url %}
+            {% include "partials/report_card.html" with url=url %}
         {% endfor %}	  
 	</div>
 	
@@ -127,7 +127,7 @@
     	</div>
     {% endif %}	
 	
-	{% include "compare_tray.html" %}
+	{% include "partials/compare_tray.html" %}
 	
 	
 {% endblock %}

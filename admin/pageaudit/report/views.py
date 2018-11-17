@@ -143,7 +143,7 @@ def api_get_compareinfo(request):
     
     ## Create the HTML snippet.
     if urlObj:
-        html = render_to_string('compare_item.html', {'url':urlObj})
+        html = render_to_string('partials/compare_item.html', {'url':urlObj})
     
     
     ## Send it back to the requestor.
@@ -179,7 +179,7 @@ def api_home_items(request):
     }
     
     
-    html = render_to_string('home_load_items.html', context)
+    html = render_to_string('partials/home_load_items.html', context)
     
     return JsonResponse({
             'pageNum': urlsToShow.number,
