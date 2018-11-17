@@ -14,12 +14,15 @@
             
             <div class="mb2 tc">
                 {% if viewdata == "a11yscore" %}
-                    {% include "url_compare_table_score.html" with scoreValue=url.url_kpi_average.accessibility_score %}
+                    {% url.url_kpi_average.accessibility_score as score %}
                 {% elif viewdata == "seoscore" %}
-                    {% include "url_compare_table_score.html" with scoreValue=url.url_kpi_average.seo_score %}
+                    {% url.url_kpi_average.seo_score as score %}
                 {% else %}
-                    {% include "url_compare_table_score.html" with scoreValue=url.url_kpi_average.performance_score %}
+                    {% url.url_kpi_average.performance_score as score %}
                 {% endif %}
+                
+                {% include "url_compare_table_score.html" with scoreValue=score %}
+                
             </div>
     
         	<p class="f6">{{ url.url|noprotocol }}
