@@ -359,19 +359,6 @@ def reports_urls_compare(request, id1, id2, id3=None):
 
 
 ##
-##  /report/urls/datatable/
-##
-##  Dumps lastest run for EVERY URL into a datatable.
-##
-def reports_urls_datatable(request):
-    context = {
-        'urls': Url().haveValidRuns().prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").all(),
-    }
-    
-    return render(request, 'reports_urls_datatable.html', context)
-
-
-##
 ##  /report/urls/detail/<id>/
 ##
 ##  Report detail for a given URL, include run history.

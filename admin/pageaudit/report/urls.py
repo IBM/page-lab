@@ -12,7 +12,6 @@ urlpatterns = [
     url(r'^$', home, name='home'),
     url(r'^browse/$', reports_browse, name='reports_browse'),
     url(r'^dashboard/$', reports_dashboard, name='reports_dashboard'),
-    url(r'^urls/datatable/$', reports_urls_datatable, name='reports_urls_datatable'),
     url(r'^urls/detail/(?P<id>[\d-]+)/$', reports_urls_detail, name='reports_urls_detail'),
     
     ## First 2 IDs are required, 3rd is optional, more than 3 is wrong.

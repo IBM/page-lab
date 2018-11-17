@@ -42,8 +42,6 @@ DBBACKUP_FILENAME_TEMPLATE = 'pagelab-{datetime}.{extension}'
 
 FORCE_SCRIPT_NAME = os.getenv('DJANGO_FORCE_SCRIPT_NAME', '/pagelab')
 
-IBM_BRANDING = os.getenv('DJANGO_IBM_BRANDING', False)
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -92,7 +90,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'report.context_processors.global_settings',
             ],
         },
     },

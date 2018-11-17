@@ -1,17 +1,11 @@
-{% extends "page_template.html" %}
+{% extends "page_template_tach.html" %}
 
 {% block pageTitle %} Lost and (not) found {% endblock  %}
 
 {% block content %}
 
-	<div class="mb4">
-		<div class="ph3 ibm-fluid w-100">
-	    	<div class="ibm-col-12-12">
-		    	
-		    	<p class="ibm-important">Woops, whatever you were looking for isn't here. Try going back or starting from the <a href="{% url 'plr:home' %}" class="ibm-underline">home page</a>.</p>
-							
-		    </div>
-		</div>
+	<div class="mb4 mt4 {{ templateHelpers.classes.grid }}">
+	   <p class="b">Woops, whatever you were looking for isn't here. Try going back or starting from the <a href="{% url 'plr:home' %}" class="underline">home page</a>.</p>
 	</div>
 	
 {% endblock %}

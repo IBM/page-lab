@@ -5,9 +5,9 @@
 **/
 
 
-/**
-    Theme vars to use
-**/
+/************************************************************************************************
+    Site style vars and base setup
+************************************************************************************************/
 :root {
     --gold: #ffb700;
     --text-color: #333;
@@ -15,10 +15,7 @@
     --site-color: var(--gold);
 }
 
-
-/** 
-    Default text color ("dark-gray" class)
-**/
+/** Default text color (dark-gray) **/
 html, body, button, input, select, textarea {
     color: var(--text-color);
 }
@@ -294,11 +291,6 @@ html, body, button, input, select, textarea {
 
 
 /************************************************************************************************
-    Plugin/widgets overrides
-************************************************************************************************/
-
-
-/************************************************************************************************
     Select 2 updates to match site design 
     I know !important is bad but way less CSS here by using it.
 ************************************************************************************************/
@@ -318,6 +310,9 @@ html, body, button, input, select, textarea {
 }
 
 
+/************************************************************************************************
+    Datatable style overrides.
+************************************************************************************************/
 .dataTable thead th {
     text-align: left;
     vertical-align: top;
@@ -349,3 +344,22 @@ html, body, button, input, select, textarea {
     margin-bottom: 2rem;
 }
     
+    
+/************************************************************************************************
+    Helpers
+************************************************************************************************/
+.pl-resize {
+    height: auto !important;
+    width: 100%;
+}
+
+.pl-downsize {
+    height: auto !important;
+    max-width: 100% !important;
+}
+
+.pl-word-break-all {
+    word-break: break-all;
+}
+
+

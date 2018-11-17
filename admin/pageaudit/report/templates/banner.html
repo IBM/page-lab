@@ -3,19 +3,19 @@
     {% if banner.banner_type == "info" %}
         <div class="ph3 bg-dark-blue">
             <div class="tc pv2 {{ templateHelpers.classes.grid }}">
-                <p class="ibm-ind-link ibm-small pb0 ibm-textcolor-white-core"><span class="ibm-icon-nolink ibm-information-link">{{ banner.banner_text }}</span></p>
+                <p class="f6 pb0 white">{{ banner.banner_text }}</p>
             </div>
         </div>
     {% elif banner.banner_type == "warn" %}
         <div class="ph3 bg-gold">
             <div class="tc pv2 {{ templateHelpers.classes.grid }}">
-                <p class="ibm-ind-link ibm-small pb0"><span class="ibm-icon-nolink ibm-caution-link">{{ banner.banner_text }}</span></p>
+                <p class="f6 pb0">{{ banner.banner_text }}</p>
             </div>
         </div>
     {% elif banner.banner_type == "alert" %}
         <div class="ph3 bg-dark-red">
             <div class="tc pv2 {{ templateHelpers.classes.grid }}">
-                <p class="ibm-ind-link ibm-small pb0 ibm-textcolor-white-core"><span class="ibm-icon-nolink ibm-alert-link">{{ banner.banner_text }}</span></p>
+                <p class="f6 pb0 white">{{ banner.banner_text }}</p>
             </div>
         </div>
    {% endif %}

@@ -4,12 +4,12 @@
 // https://github.com/WPO-Foundation/webpagetest/blob/master/www/settings/connectivity.ini.sample
 // https://github.com/GoogleChrome/lighthouse/blob/8f500e00243e07ef0a80b39334bedcc8ddc8d3d0/lighthouse-core/config/constants.js#L19-L26
 
-// AVG GLOBAL IBM WEB VISITOR profile
-// Using 4G option from URL above, adjusted based on our "global average" visits, 
+// AVG GLOBAL WEB VISITOR profile according to Akamai global speed reports.
+// Using 4G option from URL above, adjusted based on "global average" visits, 
 //  countries + cross-reference Akamai state-of-the-internet quarterly report.
 // CPUslowdown.. if we are to assume it's "the factor slowdown of machine this is running on"...
 //  considering we're running this on the server... 3 seems good. 4 is what they use for 3g mobile.
-const throttlingAvgIbmer = {
+const throttlingAvgUser = {
     rttMs: 75,
     requestLatencyMs: 150,
     downloadThroughputKbps: 10000,
@@ -37,7 +37,7 @@ module.exports = {
     extends: 'lighthouse:default',
     settings: {
         throttlingMethod: 'simulate',
-        throttling: throttlingAvgIbmer,
+        throttling: throttlingAvgUser,
         onlyCategories: ['performance','accessibility', 'seo',],
         disableDeviceEmulation: false,
     },

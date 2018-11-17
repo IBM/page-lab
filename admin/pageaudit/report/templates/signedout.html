@@ -1,4 +1,4 @@
-{% extends "page_template.html" %}
+{% extends "page_template_tach.html" %}
 
 {% block statsFile %} {% endblock %}
 
@@ -8,12 +8,8 @@
 
 {% block content %}
 
-	<div class="ph3 ibm-fluid w-100">
-		<div class="ibm-col-12-12">
-		
-			<p>You have been signed out successfully.</p>
-
-		</div>
+	<div class="{ templateHelpers.classes.grid }}">
+		<p>You have been signed out successfully.</p>
 	</div>
 
 

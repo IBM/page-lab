@@ -1,4 +1,4 @@
-{% extends "page_template.html" %}
+{% extends "page_template_tach.html" %}
 
 {% block statsFile %} {% endblock %}
 
@@ -8,16 +8,12 @@
 
 {% block content %}
 
-	<div class="ph3 ibm-fluid w-100">
-		<div class="ibm-col-12-12">
-					
-			{% if error %}
-				<div class="mb3 ibm-error">{{ error|safe }}</div>
-			{% endif %}
-			
-			{% include "auth_form.html" %}
-
-		</div>
+	<div class="{ templateHelpers.classes.grid }}">				
+		{% if error %}
+			<div class="mb3 red">{{ error|safe }}</div>
+		{% endif %}
+		
+		{% include "auth_form.html" %}
 	</div>
 	
 

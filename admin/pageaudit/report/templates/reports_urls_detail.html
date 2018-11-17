@@ -270,7 +270,7 @@
                 var $tablewidgetContainer = $scope.parent(),
                     $buttonCon = $tablewidgetContainer.find(".dt-buttons");
                 
-                $buttonCon.removeClass("dt-buttons").appendTo("#pl-exportbuttons").prepend('<span class="b mb3" style="display:inline-block;margin-right:20px;">Export table</span>');
+                $buttonCon.removeClass("dt-buttons").addClass("tr").appendTo("#pl-exportbuttons").prepend('<span class="b mb3 dib mr3">Export table</span>');
                
                 $buttonCon.find("button").addClass("{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }}")[0].addEventListener("click", function () {
                     emailSelectedApps();
