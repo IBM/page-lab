@@ -32,7 +32,7 @@
                 $.ajax({
                     url: "{% url 'plr:api_home_items' %}?page=" + (pageNum + 1),
                     dataType: "json",
-                    data: $sortform.serialize(),
+                    data: $sortForm.serialize(),
                     success: function (data) {
                         $cardContainer.append(data.resultsHtml);
                         
