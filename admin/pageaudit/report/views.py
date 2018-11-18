@@ -31,9 +31,19 @@ from .models import LighthouseDataRaw, LighthouseRun, Url, UrlKpiAverage
 ERROR = 'error'
 SUCCESS = 'success'
 
+
+
+########################################################################
+########################################################################
 ##
+##  WSRs for Node app
 ##
-##  WSR VIEWS
+########################################################################
+########################################################################
+
+
+##
+##  /collect/report/
 ##
 ##
 @csrf_exempt
@@ -65,6 +75,10 @@ def collect_report(request):
                 })
 
 
+##
+##  /queue/
+##
+##
 def get_urls(request):
     """
     Get a list of URLS to process
@@ -161,6 +175,7 @@ def api_get_compareinfo(request):
 ##  Lazy loader.
 ##  Called by 'load more' button on bottom of page.
 ##
+##
 def api_home_items(request):
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
@@ -201,6 +216,7 @@ def api_home_items(request):
 ##
 ##  /report/test/
 ##
+##
 def test(request):
 
     context = {}
@@ -213,20 +229,12 @@ def test(request):
 ##
 ##  Home page.
 ##
+##
 def home(request):
 
     context = {}
     
     return render(request, 'home.html', context)
-
-
-##
-##  /report/about/
-##
-##  Staple page on all apps.
-##
-def about(request):
-    return render(request, 'about.html')
 
 
 ##
@@ -262,6 +270,7 @@ def reports_browse(request):
 ##
 ##  /report/dashboard/
 ##
+##
 def reports_dashboard(request):
     
     reportBuckets = {
@@ -289,7 +298,7 @@ def reports_dashboard(request):
     ## Get a bunch of counts to chart.
     ## Nothing here should be changed unless we add a new data point to chart.
     context = {
-        'urlCountTested': urls.count(),
+        'urlCountTested': Url().haveValidRuns().count(),
         
         'urlGlobalPerfAvg': round(urlKpiAverages.aggregate(Avg('performance_score'))['performance_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
         'urlGlobalA11yAvg': round(urlKpiAverages.aggregate(Avg('accessibility_score'))['accessibility_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
@@ -316,21 +325,10 @@ def reports_dashboard(request):
 
 
 ##
-##  /report/faqs/
-##
-##  Home page.
-##
-def faqs(request):
-
-    context = {}
-    
-    return render(request, 'faqs.html', context)
-
-
-##
 ##  /report/urls/compare/<id1>/<id2>/<id3>?/
 ##
 ##  Compares 2 (required) or optional 3rd URL report side-by-side.
+##
 ##
 def reports_urls_compare(request, id1, id2, id3=None):
     
@@ -362,6 +360,7 @@ def reports_urls_compare(request, id1, id2, id3=None):
 ##  /report/urls/detail/<id>/
 ##
 ##  Report detail for a given URL, include run history.
+##
 ##
 def reports_urls_detail(request, id):
     try:
@@ -411,6 +410,7 @@ def reports_urls_detail(request, id):
 ##  Report detail for a given URL, include run history.
 ##  Lists every run for every URL. HUGE. Used as export view to see all data.
 ##
+##
 def reports_urls_detail_all(request):
     context = {
         'lighthouseRuns': LighthouseRun.objects.all(),
@@ -423,6 +423,7 @@ def reports_urls_detail_all(request):
 ##  /report/signin/
 ##
 ##  Sign in page.
+##
 ##
 def signin(request):
     global siteGlobals
@@ -477,6 +478,7 @@ def signin(request):
 ##  Signed out page.
 ##
 ##  Page that shows AFTER you have successfully signed out.
+##
 ##
 def signedout(request):
     return render(request, 'signedout.html')
