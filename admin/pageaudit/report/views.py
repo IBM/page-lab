@@ -84,7 +84,7 @@ def get_urls(request):
     Get a list of URLS to process
     """
     urls = []
-    qs = Url.objects.allActive().order_by('-id')
+    qs = Url.objects.allActive().order_by('id')
     
     for url in qs:
         urls.append({'url': url.url, 'id': url.id})
