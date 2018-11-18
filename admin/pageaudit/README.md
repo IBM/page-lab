@@ -8,7 +8,7 @@
 
 * node 8+
 * python 3+
-* postgres 10+
+* postgres 9.6+
 * 
 * [PageLab node app](../../pageaudit)
 
@@ -19,9 +19,6 @@ If you accidentally use `python` you will get an error like: _"Couldn't import D
 ## Getting started - First time install:
 
 - Ensure you have the dependencies installed.
-- Create a database called `perf_lab`.
-- Clone the repo.
-- `npm install`
 - Setup some environment variables on your machine, replacing the `___` with your local Postgres DB user ID/PW.
  
 ```
@@ -32,6 +29,9 @@ DJANGO_DEBUG_FLAG=True
 DJANGO_ENV=production
 DJANGO_FORCE_SCRIPT_NAME=
 ```
+- Create a database called `perf_lab` (default), or create an ENV variable called `DJANGO_DB_NAME` and set it to your local database name.
+- Clone the repo.
+- Run `npm install`.
 
 
 
