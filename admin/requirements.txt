@@ -9,3 +9,4 @@ requests
 django-debug-toolbar==1.9.1
 ipdb
 pygraphviz
+django-inline-static
