@@ -146,32 +146,37 @@
 
         </div>
         
-        <div class="fl w-100 w-50-l mb4">
-            <h4 class="f4 b">Average user timing measures</h4>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}">Name</td>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}">Start</td>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}">Duration</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {# Skip measures that are zero duration because they don't make a difference #}
-                    
-                    {% for measure in url1.user_timing_measure_avg_url.all %}
-                        {% if measure.duration > 0 %}
+        
+        {# Only show the user-timing table if the URL has any user timing measures #}
+        
+        {% if url1.user_timing_measure_avg_url.count > 0 %}
+            <div class="fl w-100 w-50-l mb4">
+                <h4 class="f4 b">Average user timing measures</h4>
+                
+                <table>
+                    <thead>
                         <tr>
-                            <td class="{{ templateHelpers.classes.tableListCell }}">{{ measure.name }}</td>
-                            <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ measure.start_time|withComma }} ms</td>
-                            <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ measure.duration|withComma }} ms</td>
-                        </tr>    
-                        {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Name</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Start</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Duration</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {# Skip measures that are zero duration because they don't make a difference #}
+                        
+                        {% for measure in url1.user_timing_measure_avg_url.all %}
+                            {% if measure.duration > 0 %}
+                            <tr>
+                                <td class="{{ templateHelpers.classes.tableListCell }}">{{ measure.name }}</td>
+                                <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ measure.start_time|withComma }} ms</td>
+                                <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ measure.duration|withComma }} ms</td>
+                            </tr>    
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
     </div>
     
     

@@ -156,8 +156,9 @@ def api_get_compareinfo(request):
     
     
     ## Create the HTML snippet.
+    ## Firefox started rendering line returns as spaces so strip line returns.
     if urlObj:
-        html = render_to_string('partials/compare_item.html', {'url':urlObj})
+        html = render_to_string('partials/compare_item.html', {'url':urlObj}).replace('\n','')
     
     
     ## Send it back to the requestor.

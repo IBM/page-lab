@@ -6,7 +6,7 @@
 
 
 /************************************************************************************************
-    Site style vars and base setup
+    Site-wide style vars and base setups
 ************************************************************************************************/
 :root {
     --gold: #ffb700;
@@ -15,11 +15,24 @@
     --site-color: var(--gold);
 }
 
-/** Default text color (dark-gray) **/
+
 html, body, button, input, select, textarea {
     color: var(--text-color);
 }
 
+.icon {
+    fill: var(--blue);
+    width: 32px;
+}
+
+.icon.new-window {
+    width: 24px;
+}
+
+a {
+    color: var(--blue);
+    text-decoration: none;
+}
 
 
 /************************************************************************************************
@@ -163,6 +176,11 @@ html, body, button, input, select, textarea {
     z-index: 5;
 }
 
+@media print {
+    #pl-compare {
+        display: none;
+    }
+}
 
 /* Default; tray is hidden. When JS adds class, show tray and add footer padding. */
 .pl-compare-enabled #pl-compare {
