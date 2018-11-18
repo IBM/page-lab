@@ -143,7 +143,7 @@ def api_get_compareinfo(request):
     
     ## Create the HTML snippet.
     if urlObj:
-        html = render_to_string('compare_item.html', {'url':urlObj})
+        html = render_to_string('partials/compare_item.html', {'url':urlObj})
     
     
     ## Send it back to the requestor.
@@ -179,7 +179,7 @@ def api_home_items(request):
     }
     
     
-    html = render_to_string('home_load_items.html', context)
+    html = render_to_string('partials/home_load_items.html', context)
     
     return JsonResponse({
             'pageNum': urlsToShow.number,
@@ -359,19 +359,6 @@ def reports_urls_compare(request, id1, id2, id3=None):
 
 
 ##
-##  /report/urls/datatable/
-##
-##  Dumps lastest run for EVERY URL into a datatable.
-##
-def reports_urls_datatable(request):
-    context = {
-        'urls': Url().haveValidRuns().prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").all(),
-    }
-    
-    return render(request, 'reports_urls_datatable.html', context)
-
-
-##
 ##  /report/urls/detail/<id>/
 ##
 ##  Report detail for a given URL, include run history.
@@ -475,7 +462,7 @@ def signin(request):
         else:
             context = {
                 'form': AuthenticationForm,
-                'error': 'DOH! It looks like you are not a valid user in the system. Contact a sys admin',
+                'error': 'Woops! It looks like you are not a valid user in the system. Contact an admin.',
             }
             
             response = render(request, 'signin.html', context)

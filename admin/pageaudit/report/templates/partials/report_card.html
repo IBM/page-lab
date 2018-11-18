@@ -1,0 +1,49 @@
+{% load define %}
+{% load static %}
+{% load beautify %}
+{% load scoredisplayoptions %}
+
+
+<div class="relative pl-card-con ba b--transparent hover-b--blue mr3 mb3">
+    
+	{% if url.url_kpi_average %}
+    	<div class="pl-compare-cbcon absolute right-0 z-3 top-1 f6">
+    		<input id="id_{{ url.id }}" value="{{ url.id }}" class="w1 dib pointer" type="checkbox" style="transform: scale(1.1);"><label for="id_{{ url.id }}" class="ml1 mr3 relative dib pointer hover-light-blue">Compare</label>    
+    	</div>
+    	<a style="width: 350px;" class="dib tc mb3 w-100 dark-gray ba b--white pl-reportcard f6 no-underline w-100 pa3" href="{% url 'plr:reports_urls_detail' id=url.id %}" title="View details">
+        	<div class="mb3 tc"><img src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="100"></div>
+            
+            <div class="mb2 tc">
+                {% if viewdata == "a11yscore" %}
+                    {% define url.url_kpi_average.accessibility_score as score %}
+                {% elif viewdata == "seoscore" %}
+                    {% define url.url_kpi_average.seo_score as score %}
+                {% else %}
+                    {% define url.url_kpi_average.performance_score as score %}
+                {% endif %}
+                
+                {% include "partials/audit_score_donut.html" with scoreValue=score %}
+                
+            </div>
+    
+        	<p class="f6">{{ url.url|noprotocol }}
+            	<br>Last run: <span class="mid-gray">{{ url.lighthouse_run.created_date }}</span>
+        	</p>
+    	</a>
+    	
+    {% else %}
+        <div style="width: 350px;" class="tc mb3 w-100"s 
+        	<div class="mb3 tc">
+            	<div class="pl-reportcard-notests">
+                	<p class="white">No tests<br>have been<br>run yet</p>
+                </div>
+            	<div><img src="{% static 'report/img/notests.png' %}" width="100"></div>
+        	</div>
+            
+        	<p class="f6">{{ url.url|noprotocol }}</p>
+    	</div>  
+
+    {% endif %}
+
+</div>
+

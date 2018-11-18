@@ -4,38 +4,65 @@
     Modified gloves by: Michael Santelia.
 **/
 
+
+/************************************************************************************************
+    Site style vars and base setup
+************************************************************************************************/
+:root {
+    --gold: #ffb700;
+    --text-color: #333;
+    --blue: #357edd;
+    --site-color: var(--gold);
+}
+
+/** Default text color (dark-gray) **/
+html, body, button, input, select, textarea {
+    color: var(--text-color);
+}
+
+
+
+/************************************************************************************************
+    Site navigation bar
+************************************************************************************************/
+.pl-sitenav a {
+    position: relative;
+}
+.pl-sitenav .pl-highlight:after {
+    background: var(--site-color);
+    
+    content: "";
+    height: 4px;
+    width: 100%;
+    display: block;
+    position: absolute;
+    bottom: 0;
+}
+
+
+
+/************************************************************************************************
+    Leadspace
+************************************************************************************************/
 .pl-leadspace {
     background: #000 url(../img/leadspace.svg) no-repeat 95% 100% / 11%;
     min-height: 160px;
 }
 
-.ibm-grid-medium .pl-leadspace {
-    background-size: 18%;
-}
 
-#ibm-footer .ibm-fluid {
-    max-width: 100%;
-    width: 100%;
-}
 
-/** Force table links to be blue **/
-a.ibm-linkcolor-default {
-    color: #4178be !important;
-    text-decoration: none !important;
-}
-a.ibm-linkcolor-default:hover {
-    text-decoration: underline !important;
-}
-
-.pl-perfscore {
+/************************************************************************************************
+    Audit score donuts.
+************************************************************************************************/
+.pl-audit-score {
     border-radius: 100%;
     border: transparent 5px solid;
     display: inline-block;
-    height: 35px;
+    height: 65px;
     line-height: 35px;
     padding: 10px;
     text-align: center;
-    width: 35px;
+    width: 65px;
 }
 
 .pl-goodscore {
@@ -51,7 +78,288 @@ a.ibm-linkcolor-default:hover {
 }
 
 
-/* top align "icon after" icons when link text wraps. */
-.ibm-ind-link a.ibm-icon-after::after {
-    top: 0;
+
+/************************************************************************************************
+    Typeahead drop-down menu list.
+    This class is intended to go on the <ul>.
+************************************************************************************************/
+.pl-dropdown-menu {
+	li {
+		padding: 0;
+		white-space: nowrap;
+
+		&::before  {
+			content: none;
+		}
+
+		+ li {
+			padding-top: 0;
+		}
+	}
+
+	a {
+		display: block;
+		padding: 7px 10px;
+		position: relative;
+		text-decoration: none;
+	}
+
+	.pl-highlight a,
+	a:hover,
+	a:focus {
+		color: #fff;
+		text-decoration: none;
+	}
 }
+
+.pl-dropdown-menu li {
+    padding: 0;
+    white-space: nowrap;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 579px) {
+    .pl-dropdown-menu li {
+        white-space: normal;
+    }
+}
+
+.pl-dropdown-menu li::before {
+    content: none;
+}
+
+.pl-dropdown-menu li+li {
+    padding-top: 0;
+}
+
+.pl-dropdown-menu a {
+    color: var(--text-color);
+    display: block;
+    padding: 7px 10px;
+    position: relative;
+    text-decoration: none;
+}
+
+.pl-dropdown-menu .pl-highlight a,
+.pl-dropdown-menu a:hover,
+.pl-dropdown-menu a:focus {
+    background-color: var(--blue);
+    color: #fff;
+    text-decoration: none;
+}
+
+
+
+/************************************************************************************************
+    Compare tray
+************************************************************************************************/
+
+#pl-compare {
+    bottom: 0;
+    display: none;
+    position: fixed;
+    transform: translate3d(0, calc(100% - 46px),0);
+    transition: transform .5s cubic-bezier(0.2, 1, 0.2, 1);
+    width: 100%;
+    z-index: 5;
+}
+
+
+/* Default; tray is hidden. When JS adds class, show tray and add footer padding. */
+.pl-compare-enabled #pl-compare {
+    display: block;
+}
+
+.pl-compare-enabled {
+    padding-bottom: 48px;
+}
+
+/* Slide tray up when 'open' link is clicked (JS adds 'opened' class.) */
+#pl-compare.opened {
+    transform: translate3d(0,0,0);
+}
+
+
+#pl-compare .pl-compare-closetray {
+    display: none;
+}
+#pl-compare.opened .pl-compare-closetray {
+    display: block;
+}
+
+
+#pl-compare .pl-compare-opentray {
+    display: block;
+}
+#pl-compare.opened .pl-compare-opentray {
+    display: none;
+}
+
+
+/* Default: 'compare' link hidden, plain text shown. */
+.pl-compare-comparelink-con .pl-compare-plaintext {
+    cursor: not-allowed;
+    display: inline;
+}
+.pl-compare-comparelink-con .pl-compare-hotlink {
+    display: none;
+}
+
+/* >1 items; 'compare' link shown, text hidden. */
+.pl-compare-comparelink-con.enabled .pl-compare-plaintext {
+    display: none;
+}
+.pl-compare-comparelink-con.enabled .pl-compare-hotlink {
+    display: inline;
+}
+
+       
+       
+/************************************************************************************************
+    Reports browse/list page
+************************************************************************************************/
+
+/* Add slight delay so fly-bys aren't so annoying. */
+.pl-card-con {
+    transition: border .4s .15s;
+}
+
+.pl-reportcard-notests {
+    background: rgba(0,0,0,0.75);
+    box-sizing: border-box;
+    left: 50%;
+    padding: 16px;
+    position: absolute;
+    top: 40%;
+    transform: translate3d(-50%,-50%,0);
+    width: 120px;
+}
+
+.pl-reportcard {
+    background: #fff;
+    position: relative;
+}
+
+.pl-reportcard img {
+    border: 1px solid #c7c7c7;
+}
+
+/* Add slight delay so fly-bys aren't so annoying. */
+.pl-compare-cbcon input,
+.pl-compare-cbcon label {
+    transition: opacity .4s .15s;
+    opacity: 0;
+}
+
+.pl-card-con:hover .pl-compare-cbcon *,
+.pl-compare-cbcon input:checked,
+.pl-compare-cbcon input:checked + label {
+    opacity: 1;
+}
+
+.pl-compare-cbcon:hover * {
+    color: var(--blue);
+}
+
+
+
+/************************************************************************************************
+    Effects
+************************************************************************************************/
+.pl-fadein {
+	visibility: visible;
+	opacity: 1;
+	transition: opacity .4s;
+}
+
+.pl-fadeout {
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0s 0.4s, opacity 0.4s;
+}
+
+/** Makes a border color match the text color, on hover. **/
+.hover-b--current:hover,
+.hover-b--current:focus  {
+	border-color: currentColor;
+}
+
+.hover-b--blue:hover,
+.hover-b--blue:focus  {
+	border-color: var(--blue);
+}
+
+
+
+/************************************************************************************************
+    Select 2 updates to match site design 
+    I know !important is bad but way less CSS here by using it.
+************************************************************************************************/
+.select2-results__option--highlighted {
+    background-color: var(--blue) !important;
+}
+.select2-container .select2-selection--single {
+    height: 37px !important;
+}
+.select2-selection__rendered {
+    line-height: 37px !important;
+    padding-right: 22px !important;
+}
+.select2-selection__arrow {
+    right: 3px !important;
+    top: 7px !important;
+}
+
+
+/************************************************************************************************
+    Datatable style overrides.
+************************************************************************************************/
+.dataTable thead th {
+    text-align: left;
+    vertical-align: top;
+}
+
+.dataTable.hover tbody tr:hover,
+.dataTable.display tbody tr:hover,
+.dataTable.display tbody tr:hover > .sorting_1,
+.dataTable.order-column.hover tbody tr:hover > .sorting_1 {
+    background-color: #cdecff !important;
+}
+
+.dataTable thead .sorting,
+.dataTable thead .sorting_asc,
+.dataTable thead .sorting_desc {
+    background-position: -1px 11px !important;
+}
+
+
+.dataTable thead .sorting_asc {
+    background-position: -1px 13px !important;
+}
+
+.dataTable thead .no-sort {
+    background: none !important;
+}
+  
+.dataTables_length {
+    margin-bottom: 2rem;
+}
+    
+    
+/************************************************************************************************
+    Helpers
+************************************************************************************************/
+.pl-resize {
+    height: auto !important;
+    width: 100%;
+}
+
+.pl-downsize {
+    height: auto !important;
+    max-width: 100% !important;
+}
+
+.pl-word-break-all {
+    word-break: break-all;
+}
+
+

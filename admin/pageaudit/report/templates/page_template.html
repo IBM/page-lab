@@ -1,14 +1,16 @@
 {% load static %}
 {% load bannernotification %}
+{% load define %}
 {% load flatpages %}
-{% load pageview %}
 {% load flatpages_nav_highlight %}
-{% load inline_static_tags %}
+{% load pageview %}
+{% load template_helpers %}
 
 {% trackPageView %}
+{% getTemplateHelpers as templateHelpers %}
 
 <!DOCTYPE html>
-<html lang="en-US" class="no-js">
+<html lang="en-US">
     <head>
         <meta charset="UTF-8">
 
@@ -28,9 +30,6 @@
         -->        
         
             
-        {% if IBM_BRANDING %}
-            <link rel="shortcut icon" href="https://www.ibm.com/favicon.ico">
-        {% endif %}
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="index,follow">
         <meta name="description" content="Web page page, monitoring, testing and reporting toolshed.">
@@ -38,121 +37,78 @@
         <meta name="geo.country" content="US">
         <meta name="dcterms.date" content="2018-11-01">
         
-        <title>PageLab {% block browserTitle %}{% endblock %}</title>
-
-        <link href="{% static 'report/css/www.css' %}" rel="stylesheet">
-        <link href="{% static 'report/css/grid-fluid.css' %}" rel="stylesheet">
-        <link href="{% static 'report/css/tables.css' %}" rel="stylesheet">
+        <title>{% block browserTitle %}PageLab {% endblock %}</title>
         
+        
+        <link href="{% static 'report/css/tachyons.min.css' %}" rel="stylesheet">
         <link href="{% static 'report/css/site-custom.css' %}" rel="stylesheet">
         
         <script>
-            window.digitalData = {
-                page: {
-                    category: {
-                        primaryCategory: ""
-                    },
-                    pageInfo: {
-                        effectiveDate: "2018-11-01",
-                        expiryDate: "2028-11-01",
-                        language: "en-US",
-                        publishDate: "2018-11-01",
-                        version: "v18",
-                        ibm: {
-                            country: "US",
-                            industry: "zz",
-                            config: {
-                                coremodules: {enabled: false}
-                            }
-                        }
-                    }
+            // Setup global NS and add trick to use dynamic URLs in static JS/CSS files URLs.
+            window.PL = {
+                'urls': {
+                    'static_path': '{% get_static_prefix %}',
+                    'api_get_compareinfo': '{% url 'plr:api_get_compareinfo' %}',
+                    'api_get_urlid': '{% url 'plr:api_get_urlid' %}',
+                    'api_url_typeahead': '{% url 'plr:api_url_typeahead' %}',
+                    'home': '{% url 'plr:home' %}'
                 }
             };
-            
         </script>
         
-        <script src="{% static 'report/js/www.js' %}"></script>
-        
+		<script src="{% static 'report/js/jquery-3.3.1.min.js' %}"></script>
+		<script src="{% static 'report/js/site-custom.js' %}"></script>
+
         {% block extraFiles %} {% endblock %}
     
     </head>
     
-    <body id="ibm-com" class="ibm-type">
-        <div id="ibm-top">
+    
+    <body class="helvetica">
             
-            {% bannerNotification %}
+        {% bannerNotification %}
+        
+        <main role="main" aria-label="PageLab content">
+
+            <nav class="{{ templateHelpers.classes.horizontalSpace }} pl-sitenav bg-black bb">
+                <a class="{{ templateHelpers.classes.navItem }} {{ templateHelpers.classes.siteColor }} b" href="{% url 'plr:home' %}">PageLab</a>
+                <a class="{{ templateHelpers.classes.navItem }} {% block menuHomeClass %}{% endblock %}" href="{% url 'plr:home' %}">Find reports</a>
+                <a class="{{ templateHelpers.classes.navItem }} {% block menuBrowsereportsClass %}{% endblock %}" href="{% url 'plr:reports_browse' %}">Browse reports</a>
+                <a class="{{ templateHelpers.classes.navItem }} {% block menuDashboardClass %}{% endblock %}" href="{% url 'plr:reports_dashboard' %}">Dashboard</a>
+                
+                {% get_flatpages as flatpages %}
+                {% for page in flatpages %}
+                    {% highlight_nav_item page.url as highlight_flag %}
+                    <a class="{{ templateHelpers.classes.navItem }} {% if highlight_flag %}pl-highlight{% endif %}" href="{{ FORCE_SCRIPT_NAME }}/report/pages{{ page.url }}">{{ page.title }}</a>
+                {% endfor %}
+            </nav>
             
-            {% if IBM_BRANDING %}
-                <!-- Masthead -->
-                <div id="ibm-masthead" role="banner" aria-label="IBM">
-                    <div id="ibm-universal-nav">
-                        <nav role="navigation" aria-label="IBM">
-                            <div id="ibm-home"><a href="http://www.ibm.com/us/en/">IBM®</a></div>
-                        </nav>
-                    </div>
-                </div>
+            {% block leadspace %}
+                <div class="{{ templateHelpers.classes.grid }} pl-leadspace bg-black pv4">
+			        <h1 class="f2 mt0 mb3 {{ templateHelpers.classes.siteColor }}">{% block pageTitle %}PageLab{% endblock %}</h1>
+			        {% block pageSubtitle %}{% endblock %}
+			    </div>
+            {% endblock %}
+            
+            
+            {% if request.session.showMessage %}
+                <p class="{{ templateHelpers.classes.grid }} mb3 {{ request.session.showMessage.class }}">{{ request.session.showMessage.text|safe }}</p>
             {% endif %}
-
-            <main role="main" aria-label="PageLab content">
-                <div id="ibm-pcon" style="min-height: 75vh;">
-                    
-                    <nav role="navigation" aria-label="PageLab">
-                        <div class="ibm-sitenav-menu-container ibm-alternate-dark">
-                            <div class="ibm-sitenav-menu-name"><a href="{% url 'plr:home' %}">PageLab</a></div>
-                            <div class="ibm-sitenav-menu-list">
-                                <ul role="menubar">
-                                    <li role="presentation" class="{% block menuHomeClass %}{% endblock %}"><a role="menuitem" href="{% url 'plr:home' %}">Find reports</a></li>
-                                    <li role="presentation" class="{% block menuBrowseClass %}{% endblock %}"><a role="menuitem" href="{% url 'plr:reports_browse' %}">Browse reports</a></li>
-                                    <li role="presentation" class="{% block menuDashboardClass %}{% endblock %}"><a role="menuitem" href="{% url 'plr:reports_dashboard' %}">Heads-up display</a></li>
-                                    
-                                    {% get_flatpages as flatpages %}
-                                    {% for page in flatpages %}
-                                        {% highlight_nav_item page.url as highlight_flag %}
-                                        <li role="presentation" {% if highlight_flag %}class="ibm-highlight"{% endif %}><a href="{{ FORCE_SCRIPT_NAME }}/report/pages{{ page.url }}">{{ page.title }}</a></li>
-                                    {% endfor %}                                    
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-                    
-                    {% block leadspace %}
-                    
-                    <div class="pl-leadspace ibm-background-black-core ibm-hidden-bg-small ibm-margin-bottom-2">
-                        <div class="ibm-fluid ibm-fullwidth ibm-padding-top-1 ibm-padding-bottom-1">
-                            <div class="ibm-col-12-12 ibm-margin-bottom-1">                             
-                                <h1 class="ibm-h2 ibm-h2-small ibm-bold"><span class="ibm-textcolor-green-30">{% block pageTitle %}{% endblock %}</span></h1>
-                                {% block pageSubtitle %}{% endblock %}
-                            </div>
-                        </div>
-                    </div>
-                    {% endblock %}
-                    
-                    {% if request.session.showMessage %}
-                        <div class="ibm-fluid ibm-fullwidth">
-                            <div class="ibm-col-12-12">
-                                <p class="ibm-margin-bottom-1 {{ request.session.showMessage.class }}">{{ request.session.showMessage.text|safe }}</p>
-                            </div>
-                        </div>
-                    {% endif %}
-                    
-                    {% block content %} {% endblock %}
-
-                    <div class="ibm-fluid ibm-fullwidth ibm-padding-top-1">
-                        <div class="ibm-col-12-6 ibm-padding-top-2"></div>
-                        <div class="ibm-col-12-6 ibm-padding-top-2">
-                            <p class="ibm-right ibm-left-small ibm-padding-bottom-0">Made with <br>
-                                 <a style="display:inline-block;transform:translate3d(0,-3px,0);"  href="https://www.postgresql.org/" target="_blank"><img src="{% static 'report/img/postgresql-logo.gif' %}" width="120" height="25" title="PostgreSQL: The world's most advanced open source relational database" alt="Made with PostgreSQL"></a> <span style="display:inline-block;transform:translate3d(0,-12px,0)">+</span> <a style="display:inline-block;" href="https://www.djangoproject.com/" target="_blank"><img src="{% static 'report/img/django-logo.gif' %}" width="100" height="35" title="Django makes it easier to build better Web apps more quickly and with less code." alt="Made with Django"></a></p>
-                        </div>
-                    </div>
-                </div>
-            </main>
-
             
-            {% if IBM_BRANDING %}
-                <!-- Footer -->
-                <footer role="contentinfo" aria-label="IBM"><div id="ibm-footer" class="ibm-fullwidth"><ul><li><a href="http://www.ibm.com/contact/us/en/">Contact</a></li><li><a href="http://www.ibm.com/privacy/us/en/">Privacy</a></li><li><a href="http://www.ibm.com/legal/us/en/">Terms of use</a></li><li><a href="http://www.ibm.com/accessibility/us/en/">Accessibility</a></li></ul></div></footer>
-            {% endif %}
-        </div>
-
+            
+            {% block content %} {% endblock %}
+            
+            
+            {% define "40" as imgsize %}
+            <div class="tr-ns mb3 mt5 tl {{ templateHelpers.classes.grid }}">
+                <p class="mb2">Made with</p>
+                <div>
+                    <a class="dib mr2 " href="https://www.nodejs.org/" target="_blank"><img src="{% static 'report/img/nodejs.svg' %}" width="{{imgsize}}" height="{{imgsize}}" title="Nodejs is an asynchronous event driven JavaScript runtime" alt="Made with Node"></a>
+                    <a class="dib mr2 " href="https://redis.io/" target="_blank"><img src="{% static 'report/img/redis.svg' %}" width="{{imgsize}}" height="{{imgsize}}" title="Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache and message broker" alt="Made with Redis"></a>
+                    <a class="dib mr2 " href="https://www.postgresql.org/" target="_blank"><img src="{% static 'report/img/postgresql.png' %}" width="{{imgsize}}" height="{{imgsize}}" title="PostgreSQL: The world's most advanced open source relational database" alt="Made with PostgreSQL"></a>
+                    <a class="dib" href="https://www.djangoproject.com/" target="_blank"><img src="{% static 'report/img/django.svg' %}" width="31" height="{{imgsize}}" title="Django makes it easier to build better Web apps more quickly and with less code." alt="Made with Django"></a>
+                </div>
+            </div>
+        </main>
     </body>
 </html>

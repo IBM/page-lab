@@ -4,7 +4,7 @@
 {% load static %}
 
 
-{% block browserTitle %} - URL report comparison {% endblock  %}
+{% block browserTitle %} {{ block.super }} - URL report comparison {% endblock  %}
 
 {% block pageTitle %} URL report comparison {% endblock  %}
 
@@ -22,14 +22,12 @@
 
 {% block content %}
 
-        <div class="ibm-fluid ibm-fullwidth">
-            <div class="ibm-col-12-12">
-                {% if not url3 %}
-                    {% include "urls_compare2_table.html" %}
-                {% else %}
-                    {% include "urls_compare3_table.html" %}
-                {% endif %}
-            </div>
+        <div class="{{ templateHelpers.classes.grid }} mt4">
+            {% if not url3 %}
+                {% include "partials/urls_compare_2_table.html" %}
+            {% else %}
+                {% include "partials/urls_compare_3_table.html" %}
+            {% endif %}
         </div>
         
 

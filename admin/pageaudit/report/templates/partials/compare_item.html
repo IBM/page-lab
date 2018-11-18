@@ -1,0 +1,9 @@
+{% load static %}
+{% load beautify %}
+{% load scoredisplayoptions %}
+
+<div data-itemid="{{ url.id }}" class="pl-compare-item w-33 dib tc">
+    <p><a href="#" data-itemid="{{ url.id }}" class="pl-compare-item-remove dark-red f6 no-underline">Remove</a></p>
+    <div class="mb2"><img src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="80" class="{{ templateHelpers.classes.imageBorder }}"></div>
+    <p class="f6 wb">{{ url.url|noprotocol }}</p>
+</div>
