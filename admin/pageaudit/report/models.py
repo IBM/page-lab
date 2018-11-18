@@ -480,7 +480,13 @@ class LighthouseDataRaw(models.Model):
                                                 report_data=report_data,)
         lighthouse_data_raw.save()
 
-
+        ## From https://blog.dareboost.com/en/2018/06/lighthouse-tool-chrome-devtools/ 
+        # First ContentFul Paint: First contentful paint marks the time at which the first text/image is painted.
+        # First Meaningful Paint: First Meaningful Paint measures when the primary content of a page is visible.
+        # Speed Index: Speed Index shows how quickly the contents of a page are visibly populated.
+        # First CPU Idle: First CPU Idle marks the first time at which the page’s main thread is quiet enough to handle input.
+        # Time to Interactive: Interactive marks the time at which the page is fully interactive.
+        
         ## 4. Now grab the key fields we want and add them to the LighthouseRun for fast, single query.
         try:
             accessibility_score = int(report_data['categories']['accessibility']['score'] * 100)

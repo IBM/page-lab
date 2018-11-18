@@ -10,7 +10,7 @@
 
 
 {% block pageSubtitle %} 
-    <p><a class="light-blue no-underline underline-hover animate-hover" href="{{ url1.url }}" title="View page in new window" target="_blank">{{ url1.url|noprotocol }}</a></p>
+    <p><a class="light-blue no-underline underline-hover animate-hover" href="{{ url1.url }}" title="Visit page in new window" target="_blank">{{ url1.url|noprotocol }}</a></p>
     <div class="pl-compare-checkbox-con pt2">
     	<span class="f6">
             <input id="id_{{ url1.id }}" type="checkbox" value="{{ url1.id }}" class="w1 dib pointer" style="transform: scale(1.1);"><label for="id_{{ url1.id }}" class="ml1 relative dib pointer hover-light-blue light-gray">Compare</label>
@@ -82,62 +82,62 @@
             
     <div class="{{ templateHelpers.classes.grid }} cf">
         <div class="fl w-100 w-50-l mb4">
-            <h4 class="f4 b">Average KPIs</h4>
+            <h4 class="f4 b inline-flex">Average KPIs <span class="items-center pointer hint--top normal ml2" aria-label="Standard indicators of a page's performance.">{{ templateHelpers.html.icons.info|safe }}</span></h4>
             
             <table>
                 <tbody>
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}">Last tested:</td>
-                        <td class="tr {{ templateHelpers.classes.tableListCell }}" style="width:200px;">{{ url1.lighthouse_run.created_date }}</td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal" aria-label="Most recent test run on this URL"><span class="b">Last tested:</span></span></td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.lighthouse_run.created_date }}</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}">Total size:</td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="Total page size including all images, script, stylesheets and any other included or referenced resources."><span class="b">Total size:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.total_byte_weight|kbToMb }}</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"># of network requests:</td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="Total number of resources requested by the page including all images, script, stylesheets and any other included or referenced resources."><span class="b"># of network requests:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.number_network_requests|withComma }}</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}">Time to first byte:</td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="Time spent waiting for the initial response. This time captures the latency of a round trip to the server in addition to the time spent waiting for the server to deliver the response."><span class="b">Time to first byte:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.time_to_first_byte|withComma }} ms</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}">DOM content loaded:</td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="This event is fired when the initial HTML document has been completely loaded and parsed, without waiting for stylesheets, images, and subframes to finish loading; the page is loaded but scripts just started to be executed."><span class="b">DOM content loaded:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.dom_content_loaded|withComma }} ms</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}">First contentful paint:</td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="FCP reports the time when the browser first rendered any text, image (including background images), non-white canvas or SVG. This includes text with pending webfonts. This is the first time users could start consuming page content."><span class="b">First contentful paint:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.first_contentful_paint|withComma }} ms</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}">First meaningful paint:</td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="FMP measures when the primary content of a page is visible; answers the question: 'is it useful?'. The concept of 'useful' is very hard to spec in a way that applies generically to all web pages, so this is Lighthouse's best guess."><span class="b">First meaningful paint:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}">DOM loaded:</td>
-                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.dom_loaded|withComma }} ms</td>
-                    </tr>
-                   
-                    <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}">Fully interactive:</td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="(Time to interactive) The TTI metric identifies the point at which the page's initial JavaScript is loaded and the main thread is idle (free of long tasks). As a general rule, you should try as hard as possible to minimize the time between FMP and TTI"><span class="b">Fully interactive:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.interactive|withComma }} ms</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"># of redirects:</td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="The load event is fired when the page and its dependent resources have finished loading. Essentially, all requests have finished. Stalled/hung requests (including asynchronous) will blow this number out."><span class="b">DOM loaded:</span></span></td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.dom_loaded|withComma }} ms</td>
+                    </tr>
+                   
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="Number of redirect hops (301, 302) it took to get to the actual final destination URL that was tested."><span class="b"># of redirects:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.lighthouse_run.redirect_hops|withComma }}</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}">Wasted redirect time:</td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="The total redirection (301, 302) time spent getting to the actual final destination URL that was tested."><span class="b">Wasted redirect time:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
                     </tr>
                     
@@ -151,7 +151,7 @@
         
         {% if url1.user_timing_measure_avg_url.count > 0 %}
             <div class="fl w-100 w-50-l mb4">
-                <h4 class="f4 b">Average user timing measures</h4>
+                <h4 class="f4 b inline-flex">Average user timing measures <span class="items-center pointer hint--top hint--large normal ml2" aria-label="Custom user timing measures from any JS on the page. Only non-zero durations are shown. These do not necessarily show the cause of page performance issues.">{{ templateHelpers.html.icons.info|safe }}</span></h4>
                 
                 <table>
                     <thead>
@@ -202,8 +202,8 @@
                 <th>DOM content loaded (ms)</th>
                 <th>First contentful paint (ms)</th>
                 <th>First meaningful paint (ms)</th>
-                <th>DOM loaded (ms)</th>
                 <th>Fully interactive (ms)</th>
+                <th>DOM loaded (ms)</th>
                 <th># redirects</th>
                 <th>Wasted redirect time</th>
             </thead>
@@ -219,11 +219,11 @@
 		                <td>{{ lighthouseRun.total_byte_weight|byteToKb }}</td>
 		                <td>{{ lighthouseRun.number_network_requests }}</td>
 		                <td>{{ lighthouseRun.time_to_first_byte }}</td>
-		                <td>{{ lighthouseRun.dom_loaded }}</td>
+		                <td>{{ lighthouseRun.dom_content_loaded }}</td>
 		                <td>{{ lighthouseRun.first_contentful_paint }}</td>
 		                <td>{{ lighthouseRun.first_meaningful_paint }}</td>
-		                <td>{{ lighthouseRun.dom_content_loaded }}</td>
 		                <td>{{ lighthouseRun.interactive }}</td>
+		                <td>{{ lighthouseRun.dom_loaded }}</td>
 		                <td>{{ lighthouseRun.redirect_hops }}</td>
 		                <td>{{ lighthouseRun.redirect_wasted_ms }}</td>
 	                </tr>
