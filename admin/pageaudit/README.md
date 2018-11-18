@@ -36,6 +36,7 @@ DJANGO_FORCE_SCRIPT_NAME=
 
 
 ## Getting started - Coding:
+- Run `./manage.pyu migrate` so Django can create and setup your database as needed.
 - Start the app by running `runserver` (in this root directory).
 - To view the site, open a browser to `http://localhost:8000/report/`
 - To view the Django admin, goto `http://localhost:8000/admin/`
