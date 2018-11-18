@@ -37,7 +37,7 @@
         <meta name="geo.country" content="US">
         <meta name="dcterms.date" content="2018-11-01">
         
-        <title>PageLab {% block browserTitle %}{% endblock %}</title>
+        <title>{% block browserTitle %}PageLab {% endblock %}</title>
         
         
         <link href="{% static 'report/css/tachyons.min.css' %}" rel="stylesheet">
@@ -85,7 +85,7 @@
             
             {% block leadspace %}
                 <div class="{{ templateHelpers.classes.grid }} pl-leadspace bg-black pv4">
-			        <h1 class="f2 mt0 mb3 {{ templateHelpers.classes.siteColor }}">{% block pageTitle %}{% endblock %}</h1>
+			        <h1 class="f2 mt0 mb3 {{ templateHelpers.classes.siteColor }}">{% block pageTitle %}PageLab{% endblock %}</h1>
 			        {% block pageSubtitle %}{% endblock %}
 			    </div>
             {% endblock %}

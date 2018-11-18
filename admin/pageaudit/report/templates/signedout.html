@@ -1,8 +1,7 @@
 {% extends "page_template.html" %}
 
-{% block statsFile %} {% endblock %}
 
-{% block browserTitle %} - Signed out {% endblock  %}
+{% block browserTitle %} {{ block.super }} - Signed out {% endblock  %}
 
 {% block pageTitle %} Signed out {% endblock  %}
 
