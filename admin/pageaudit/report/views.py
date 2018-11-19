@@ -299,7 +299,7 @@ def reports_dashboard(request):
     ## Get a bunch of counts to chart.
     ## Nothing here should be changed unless we add a new data point to chart.
     context = {
-        'urlCountTested': Url().haveValidRuns().count(),
+        'urlCountTested': urls.withValidRuns().count(),
         
         'urlGlobalPerfAvg': round(urlKpiAverages.aggregate(Avg('performance_score'))['performance_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
         'urlGlobalA11yAvg': round(urlKpiAverages.aggregate(Avg('accessibility_score'))['accessibility_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
