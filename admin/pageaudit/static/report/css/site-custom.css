@@ -16,7 +16,8 @@
 }
 
 
-html, body, button, input, select, textarea {
+html, body, button, input, select, textarea,
+.pl-textcolor-body {
     color: var(--text-color);
 }
 
