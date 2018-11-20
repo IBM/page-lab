@@ -15,6 +15,7 @@ import os
 SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 36214400
@@ -26,7 +27,7 @@ SECRET_KEY = 'qhk(v0g!4#(+_$$36hyks$nx!wkq$g&8qfgb92)92e)jkm1g%a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_DEBUG_FLAG', False)
-
+DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 if os.getenv('DJANGO_ALLOWED_HOST'): 
@@ -35,7 +36,9 @@ if os.getenv('DJANGO_ALLOWED_HOST'):
 INTERNAL_IPS = ['127.0.0.1',]
 
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
-DBBACKUP_STORAGE_OPTIONS = {'location': '/var/webplatform/backups/pagelab'}
+DBBACKUP_STORAGE_OPTIONS = {
+    'location': os.getenv('DJANGO_PAGELAB_DBBACKUP_PATH', '')
+}
 DBBACKUP_DATE_FORMAT = 'date-%d-%H'
 DBBACKUP_FILENAME_TEMPLATE = 'pagelab-{datetime}.{extension}'
 
@@ -56,6 +59,7 @@ INSTALLED_APPS = [
     'report',
     'django_extensions',
     'dbbackup',
+    'compressor',
 ]
 
 MIDDLEWARE = [
@@ -72,6 +76,8 @@ if DEBUG:
     MIDDLEWARE.append(
         'debug_toolbar.middleware.DebugToolbarMiddleware')
     INSTALLED_APPS.append('debug_toolbar')
+
+COMPRESS_ENABLED = True
 
 ROOT_URLCONF = 'pageaudit.urls'
 
@@ -155,13 +161,23 @@ SITE_ID = 1
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_ROOT = os.getenv('DJANGO_STATIC_ROOT', '/var/webplatform/static/pagelab')
+STATICFILES_FINDERS = (
+    ## Django defaults:
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    ## Other modules:
+    'compressor.finders.CompressorFinder',
+)
+
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static/"),
 ]
 
 STATIC_URL = os.getenv('DJANGO_STATIC_URL', '/static-pagelab/')
 MEDIA_URL = os.getenv('DJANGO_MEDIA_URL', '/media/')
+COMPRESS_ROOT = os.path.join(BASE_DIR, "static/")
 
 ## Custom signin, signout, and post-signout page.
 LOGIN_URL = '%s/report/signin/' % FORCE_SCRIPT_NAME

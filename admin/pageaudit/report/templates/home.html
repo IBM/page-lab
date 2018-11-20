@@ -1,6 +1,7 @@
 {% extends "page_template.html" %}
 
 {% load beautify %}
+{% load compress %}
 {% load static %}
 
 
@@ -8,7 +9,11 @@
 
 
 {% block extraFiles %}
+    
+    {% compress js %}
     <script src="{% static 'report/js/url-typeahead.js' %}"></script>
+    {% endcompress %}
+
 {% endblock %}
 
 
