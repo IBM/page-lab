@@ -48,7 +48,7 @@
 		// Call the throttler with our callback function to run to make a typeahead service request.
 		makeTypeaheadRequest(function() {
 			$.ajax({
-				url: "{% url 'plr:api_url_typeahead' %}?q=" + currentSearchTerm,
+				url: PL.urls.api_url_typeahead + "?q=" + currentSearchTerm,
 				dataType: "json",
 				searchTerm: currentSearchTerm,
 				requestCount: ++requestCount,
@@ -114,7 +114,7 @@
 			term = term.replace(reg, '<strong>' + searchedFor + '</strong>');
 			
 			if (i < maxNum) {
-				lis += '<li data-urlid="' + itemObj.id + '" id="ibm-search-overlay-typeahead-res-' + i + '" role="option" tabindex="-1"><a href="#" tabindex="-1">' + term + '</a></li>';
+				lis += '<li data-urlid="' + itemObj.id + '" id="pl-search-overlay-typeahead-res-' + i + '" role="option" tabindex="-1"><a href="#" tabindex="-1">' + term + '</a></li>';
 			}
 		});
 
@@ -137,12 +137,11 @@
 
 	function showTypeaheadResults (b) {
 		if (b) {
-			$typeaheadContainer.addClass("ibm-fadein").removeClass("ibm-fadeout");
+			$typeaheadContainer.addClass("pl-fadein").removeClass("pl-fadeout");
 			typeaheadResultsShowing = true;
-			console.log("showing");
 		}
 		else {
-			$typeaheadContainer.addClass("ibm-fadeout").removeClass("ibm-fadein");
+			$typeaheadContainer.addClass("pl-fadeout").removeClass("pl-fadein");
 			typeaheadResultsShowing = false;
 		}
 	}
@@ -153,7 +152,7 @@
 		$inputField = $("#pl-url-search");
 		$searchForm = $inputField.closest("form");
 		$typeaheadContainer = $("#pl-typeahead-container");
-		$typeaheadUl = $('<ul class="ibm-dropdown-menu ibm-padding-small ibm-padding-bottom-0" role="listbox" aria-live="polite" aria-label="Suggestions"></ul>');
+		$typeaheadUl = $('<ul class="pl-dropdown-menu list pa0 ma0" role="listbox" aria-live="polite" aria-label="Suggestions"></ul>');
 
         $searchForm.on("submit", function (evt) {
             evt.preventDefault();
@@ -162,7 +161,7 @@
             // Returns the ID or null.
             // If not null, goto ID.
             $.ajax({
-                url: "{% url 'plr:api_get_urlid' %}?url=" + $inputField[0].value,
+                url: PL.urls.api_get_urlid + "?url=" + $inputField[0].value,
                 dataType: "json",
                 success: function (data) {
                     try {
@@ -189,7 +188,8 @@
 			evt.stopPropagation();
 			
 			if ($(evt.target).parent().data("urlid") !== 0) {
-    		    $inputField.val(evt.target.text);	
+    		    $inputField.val(evt.target.text);
+    		    $searchForm.trigger("submit");
 			}
 		});
 
@@ -248,38 +248,38 @@
 
 
 	function gotoNextTypeaheadResult () {
-		var $nextItem = $typeaheadUl.find("li.ibm-highlight").next("li");
+		var $nextItem = $typeaheadUl.find("li.pl-highlight").next("li");
 		
-		$typeaheadUl.find("li.ibm-highlight").removeClass("ibm-highlight");
+		$typeaheadUl.find("li.pl-highlight").removeClass("pl-highlight");
 			
 		if ($nextItem[0]) {
-			$nextItem.addClass("ibm-highlight");
+			$nextItem.addClass("pl-highlight");
 		}
 		else {
-			$("li:first", $typeaheadUl).addClass("ibm-highlight");
+			$("li:first", $typeaheadUl).addClass("pl-highlight");
 		}
 
 		// If this item if the section heading, skip it and goto the next one.
-		if ($typeaheadUl.find("li.ibm-highlight").hasClass("typeahead-nooption")) {
+		if ($typeaheadUl.find("li.pl-highlight").hasClass("typeahead-nooption")) {
 			gotoNextTypeaheadResult();
 		}
 	}
 
 
 	function gotoPrevTypeaheadResult () {
-		var $prevItem = $typeaheadUl.find("li.ibm-highlight").prev("li");
+		var $prevItem = $typeaheadUl.find("li.pl-highlight").prev("li");
 		
-		$typeaheadUl.find("li.ibm-highlight").removeClass("ibm-highlight");
+		$typeaheadUl.find("li.pl-highlight").removeClass("pl-highlight");
 			
 		if ($prevItem[0]) {
-			$prevItem.addClass("ibm-highlight");
+			$prevItem.addClass("pl-highlight");
 		}
 		else {
-			$("li:last", $typeaheadUl).addClass("ibm-highlight");
+			$("li:last", $typeaheadUl).addClass("pl-highlight");
 		}
 
 		// If this item if the section heading, skip it and goto the next one.
-		if ($typeaheadUl.find("li.ibm-highlight").hasClass("typeahead-nooption")) {
+		if ($typeaheadUl.find("li.pl-highlight").hasClass("typeahead-nooption")) {
 			gotoPrevTypeaheadResult();
 		}
 	}
@@ -288,7 +288,7 @@
 	function setInputFieldValue () {
 		// Set active dedcendent attr. on field to tell ATs this one is active so they read it since we don't
 		//  focus on it, then change the text in the text field.
-		var $highlightedLi = $typeaheadUl.find("li.ibm-highlight");
+		var $highlightedLi = $typeaheadUl.find("li.pl-highlight");
 		
 		$inputField.attr("aria-activedescendant", $highlightedLi.attr("id"));
 

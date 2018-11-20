@@ -96,7 +96,7 @@ const REPORT_POST_URL = program.reporturl ||
 const MSG_HTTP_POST_ENDPOINT_ERR = `Is HTTP POST API ENDPOINT (${REPORT_POST_URL}) DOWN?`;
 const URLS_LIST_URL = program.listurl ||
       process.env['URLS_LIST_URL'] ||
-      'https://127.0.0.1:8000/queue';
+      'https://127.0.0.1:8000/queue/';
 const URLS_LOADED = 'urlsLoaded';
 
 const PAGE_LAB_WORKER_TIMEOUT_MS = 2000;

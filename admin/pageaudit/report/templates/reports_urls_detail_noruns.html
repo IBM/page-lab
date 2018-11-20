@@ -1,0 +1,30 @@
+{% extends "page_template.html" %}
+
+{% load beautify %}
+{% load static %}
+
+
+{% block browserTitle %} {{ block.super }} - URL report {% endblock  %}
+
+{% block extraFiles %}
+    <script src="{% static 'report/js/compare.js' %}"></script>
+{% endblock %}
+
+{% block pageTitle %} URL report {% endblock  %}
+
+{% block pageSubtitle %} 
+    <p><a class="light-blue no-underline underline-hover animate-hover" href="{{ url1.url }}" title="Visit page in new window" target="_blank">{{ url1.url|noprotocol }}</a></p>
+ {% endblock  %}
+
+
+{% block content %}
+
+    <div class="{{ templateHelpers.classes.grid }} mt5 cf">
+        <div class="fl w-100 w-20-ns mb3">
+        	<a class="tc dib" href="{{ url1.url }}" title="View page in new window" target="_blank"><img src="{% static 'report/img/notests.png' %}" width="155"><div class="mt3 pl-textcolor-body">No tests yet</div></a>
+        </div>          
+    </div>
+    
+	{% include "partials/compare_tray.html" %}
+    
+{% endblock %}

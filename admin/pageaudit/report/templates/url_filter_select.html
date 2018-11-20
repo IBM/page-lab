@@ -1,5 +1,5 @@
 <script>
-  (function ($, IBM) {
+  (function ($) {
     function setApplyHandler() {
       $('#apply').click((e) => {
           e.preventDefault();
@@ -10,10 +10,10 @@
     $(function () {
         setApplyHandler();
     });
-  })(jQuery, IBMCore)
+  })(jQuery)
 </script>
-<div class="ibm-margin-bottom-1" style="margin-right: 15px; display: inline-block;">
-    <p class="ibm-bold" style="padding-bottom: 10px;">URL Filter:</p>
+<div style="margin-right: 15px; display: inline-block;">
+    <p class="b mt0">URL Filter:</p>
     <select id="url-filter">
         <option value="">&nbsp;</option>
         {% for url_filter in filters %}

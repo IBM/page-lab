@@ -31,9 +31,19 @@ from .models import LighthouseDataRaw, LighthouseRun, Url, UrlKpiAverage, UrlFil
 ERROR = 'error'
 SUCCESS = 'success'
 
+
+
+########################################################################
+########################################################################
 ##
+##  WSRs for Node app
 ##
-##  WSR VIEWS
+########################################################################
+########################################################################
+
+
+##
+##  /collect/report/
 ##
 ##
 @csrf_exempt
@@ -65,6 +75,10 @@ def collect_report(request):
                 })
 
 
+##
+##  /queue/
+##
+##
 def get_urls(request):
     """
     Get a list of URLS to process
@@ -142,8 +156,9 @@ def api_get_compareinfo(request):
     
     
     ## Create the HTML snippet.
+    ## Firefox started rendering line returns as spaces so strip line returns.
     if urlObj:
-        html = render_to_string('compare_item.html', {'url':urlObj})
+        html = render_to_string('partials/compare_item.html', {'url':urlObj}).replace('\n','')
     
     
     ## Send it back to the requestor.
@@ -160,6 +175,7 @@ def api_get_compareinfo(request):
 ##
 ##  Lazy loader.
 ##  Called by 'load more' button on bottom of page.
+##
 ##
 def api_home_items(request):
     urls = Url.getUrls({
@@ -179,7 +195,7 @@ def api_home_items(request):
     }
     
     
-    html = render_to_string('home_load_items.html', context)
+    html = render_to_string('partials/home_load_items.html', context)
     
     return JsonResponse({
             'pageNum': urlsToShow.number,
@@ -201,6 +217,7 @@ def api_home_items(request):
 ##
 ##  /report/test/
 ##
+##
 def test(request):
 
     context = {}
@@ -213,20 +230,12 @@ def test(request):
 ##
 ##  Home page.
 ##
+##
 def home(request):
 
     context = {}
     
     return render(request, 'home.html', context)
-
-
-##
-##  /report/about/
-##
-##  Staple page on all apps.
-##
-def about(request):
-    return render(request, 'about.html')
 
 
 ##
@@ -276,7 +285,6 @@ def reports_filters(request):
 ##  /report/dashboard/
 ##
 def reports_dashboard(request, filter_slug=''):
-    
     reportBuckets = {
         'fcp': {
             'fast': 1.6,
@@ -306,7 +314,7 @@ def reports_dashboard(request, filter_slug=''):
     ## Get a bunch of counts to chart.
     ## Nothing here should be changed unless we add a new data point to chart.
     context = {
-        'urlCountTested': urls.count(),
+        'urlCountTested': urls.withValidRuns().count(),
         'filter': filter,
         'filters': UrlFilter.objects.all(),
         
@@ -335,21 +343,10 @@ def reports_dashboard(request, filter_slug=''):
 
 
 ##
-##  /report/faqs/
-##
-##  Home page.
-##
-def faqs(request):
-
-    context = {}
-    
-    return render(request, 'faqs.html', context)
-
-
-##
 ##  /report/urls/compare/<id1>/<id2>/<id3>?/
 ##
 ##  Compares 2 (required) or optional 3rd URL report side-by-side.
+##
 ##
 def reports_urls_compare(request, id1, id2, id3=None):
     
@@ -378,22 +375,10 @@ def reports_urls_compare(request, id1, id2, id3=None):
 
 
 ##
-##  /report/urls/datatable/
-##
-##  Dumps lastest run for EVERY URL into a datatable.
-##
-def reports_urls_datatable(request):
-    context = {
-        'urls': Url().haveValidRuns().prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").all(),
-    }
-    
-    return render(request, 'reports_urls_datatable.html', context)
-
-
-##
 ##  /report/urls/detail/<id>/
 ##
 ##  Report detail for a given URL, include run history.
+##
 ##
 def reports_urls_detail(request, id):
     try:
@@ -443,6 +428,7 @@ def reports_urls_detail(request, id):
 ##  Report detail for a given URL, include run history.
 ##  Lists every run for every URL. HUGE. Used as export view to see all data.
 ##
+##
 def reports_urls_detail_all(request):
     context = {
         'lighthouseRuns': LighthouseRun.objects.all(),
@@ -455,6 +441,7 @@ def reports_urls_detail_all(request):
 ##  /report/signin/
 ##
 ##  Sign in page.
+##
 ##
 def signin(request):
     global siteGlobals
@@ -494,7 +481,7 @@ def signin(request):
         else:
             context = {
                 'form': AuthenticationForm,
-                'error': 'DOH! It looks like you are not a valid user in the system. Contact a sys admin',
+                'error': 'Woops! It looks like you are not a valid user in the system. Contact an admin.',
             }
             
             response = render(request, 'signin.html', context)
@@ -509,6 +496,7 @@ def signin(request):
 ##  Signed out page.
 ##
 ##  Page that shows AFTER you have successfully signed out.
+##
 ##
 def signedout(request):
     return render(request, 'signedout.html')

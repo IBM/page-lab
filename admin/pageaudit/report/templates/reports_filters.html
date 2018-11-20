@@ -12,9 +12,6 @@
       p {
         padding-bottom: 3px;
       }
-      .ibm-col-12-6 {
-        text-align: left;
-      }
       .filter-details {
         display: none;
         padding-bottom: 5px;
@@ -25,7 +22,7 @@
         border-radius: 6px;
         display: inline-block;
         margin-right: 20px;
-        padding: 2px 4px 0 4px;
+        padding: 2px 4px 3px 4px;
       }
       .filter-item {
         padding-left: 15px;
@@ -48,17 +45,17 @@
         })(jQuery);
     </script>
 {% endblock %}
-{% block menuFiltersClass %}ibm-highlight{% endblock %}
+{% block menuFiltersClass %}pl-highlight{% endblock %}
 {% block content %}
-    <div class="ibm-fluid ibm-fullwidth">
-        <div class="ibm-col-12-6">
-            <h1 class="ibm-h1">Select a filter</h1>
+    <div class="{{ templateHelpers.classes.grid }} mt4">
+        <div>
+            <h1>Select a filter</h1>
             {% for filter, parts in filter_sets %}
                 <div class="filter-item">
                     <div>
-                        <h3 style="display: inline-block;" class="ibm-h3 filter-name">{{ filter.name }}</h3>
+                        <h3 style="display: inline-block;" class="filter-name">{{ filter.name }}</h3>
                         <button id="{{ filter.slug }}-toggle" style="display: inline;"
-                            class="click-show-hide ibm-btn-pri ibm-btn-small ibm-btn-green-50">
+                            class="click-show-hide {{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }}">
                             Show filter details
                         </button>
                     </div>

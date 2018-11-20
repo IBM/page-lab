@@ -2,17 +2,20 @@
 
 {% load static %}
 {% load beautify %}
-{% load inline_static_tags %}
 
+
+{% block browserTitle %} {{ block.super }} - Dashboard{% endblock %}
 
 {% block pageTitle %} Heads-up display {% endblock  %}
 
-{% block pageSubtitle %} {% endblock  %}
+{% block menuDashboardClass %}pl-highlight{% endblock %}
 
-{% block menuDashboardClass %}ibm-highlight{% endblock %}
 
-{% block content %}
-
+{% block extraFiles %}
+    <link href="{% static 'report/css/c3.min.css' %}" rel="stylesheet">
+    <link href="{% static 'report/css/select2.min.css' %}" rel="stylesheet"/>
+    <script src="{% static 'report/js/select2.min.js' %}"></script>
+    
     <style> 
            
         .pl-avg-donut {
@@ -20,87 +23,13 @@
             width: 230px;
         }
        
-        .pl-avg-donut .pl-perfscore {
+        .pl-avg-donut .pl-audit-score {
             border-width: 14px;
             font-size: 2.5rem;
-            height: 100px;
+            height: 148px;
             line-height: 100px;
-            width: 100px;
+            width: 148px;
         }
-
-        #pl-sortform {
-          padding-left: 35%;
-        }
-        
-    </style>
-
-
-	<div class="ibm-fluid ibm-fullwidth">	
-        <div class="ibm-col-12-12">
-            {% include "switch_filter_view.html" with filter=filter view_name='browse' %}
-            <form id="pl-sortform" aria-label="Sort data listing" action="" method="get">
-                {% include "url_filter_select.html" with filter=filter filters=filters view_name='dashboard' %}
-                <div class="ibm-margin-bottom-1" style="margin-right: 60px; display: inline-block;">
-                    <p class="ibm-ind-link">
-                        <a id="apply" class="ibm-forward-link" href="####">Apply</a>
-                    </p>
-                </div>
-            </form>
-            <div class="ibm-center">
-                <p class="ibm-h4 ibm-padding-bottom-1 ibm-bold">Average scores across <span class="ibm-light">{{ urlCountTested|withComma }}</span> tested URLs</p>
-                
-                    <div class="pl-avg-donut ibm-margin-bottom-2">
-                        {% include "url_compare_table_score.html" with scoreValue=urlGlobalPerfAvg %}
-                        <p class="ibm-margin-top-1 ibm-h4">Performance</p>
-                    </div>
-                    <div class="pl-avg-donut ibm-margin-bottom-2">
-                        {% include "url_compare_table_score.html" with scoreValue=urlGlobalA11yAvg %}
-                        <p class="ibm-margin-top-1 ibm-h4">Accessibility</p>
-                    </div>
-                    <div class="pl-avg-donut ibm-margin-bottom-2">
-                        {% include "url_compare_table_score.html" with scoreValue=urlGlobalSeoAvg %}
-                        <p class="ibm-margin-top-1 ibm-h4">SEO</p>
-                    </div>
-                
-            </div>
-        </div>
-	</div>
-	
-	
-	<div class="ibm-fluid ibm-fullwidth ibm-margin-top-2">
-        <div class="ibm-col-12-12"> 
-            <div class="ibm-center-block ibm-center">
-                <p class="ibm-h4 ibm-bold">Overall performance</p>
-                <div style="position: relative;" id="pl-perf-percent-cats"></div>
-            </div>
-	    </div>
-	</div>
-	
-	
-	<div class="ibm-fluid ibm-fullwidth ibm-margin-top-3">
-        <div class="ibm-col-12-4 ibm-center ibm-margin-bottom-3">
-            <p class="ibm-bold ibm-h4">First contentful paint</p>
-            <div id="pl-perf-fcp-kpi"></div>  
-        </div>
-        <div class="ibm-col-12-4 ibm-center ibm-margin-bottom-3">
-            <p class="ibm-bold ibm-h4">First meaningful paint</p>
-            <div id="pl-perf-fmp-kpi"></div>
-            
-        </div>
-        <div class="ibm-col-12-4 ibm-center ibm-margin-bottom-3">
-            <p class="ibm-bold ibm-h4">Fully interactive (TTI)</p>
-            <div id="pl-perf-fullyint-kpi"></div>
-        </div>
-	</div>
-	      
-	      
-            		        
-
-	
-    <link href="{% static 'report/charting/c3.min.css' %}" rel="stylesheet">
-    
-    <style>
-        
         
         .c3-arc-Poor, .c3-arc-Slow, .c3-arc-Under {
             fill: #e71d32 !important;
@@ -110,7 +39,6 @@
         .c3-legend-item-Under line {
             stroke: #e71d32 !important;
         }
-
         
         .c3-arc-Average {
             fill: #f4a000 !important;
@@ -118,7 +46,6 @@
         .c3-legend-item-Average line {
             stroke: #f4a000 !important;
         }
-
         
         .c3-arc-Good, .c3-arc-Over {
             fill: #008000 !important;
@@ -130,99 +57,172 @@
         
     </style>
  
-
-    <script src="{% static 'report/charting/d3.v4.min.js' %}"></script>
-    <script src="{% static 'report/charting/c3.min.js' %}"></script>
+    <script src="{% static 'report/js/d3.v4.min.js' %}"></script>
+    <script src="{% static 'report/js/c3.min.js' %}"></script>
 
  	<script>
     	
         (function () {
 
-            var piePerfCategories = c3.generate({
-                bindto: '#pl-perf-percent-cats',
-                data: {
-                    columns: [
-                        ['Poor', {{ urlPerfCountPoor }}],
-                        ['Average', {{ urlPerfCountAvg }}],
-                        ['Good', {{ urlPerfCountGood }}]
-                    ],
-                    type : 'pie'
-                },
-                tooltip: {
-                    format: {
-                        value: function (value, ratio, id) {
-                            var format = id === 'data1' ? d3.format(',') : d3.format('#');
-                            return format(value);
+            function createAuditCategories () {
+                var piePerfCategories = c3.generate({
+                    bindto: '#pl-perf-percent-cats',
+                    data: {
+                        columns: [
+                            ['Poor', {{ urlPerfCountPoor }}],
+                            ['Average', {{ urlPerfCountAvg }}],
+                            ['Good', {{ urlPerfCountGood }}]
+                        ],
+                        type : 'pie'
+                    },
+                    tooltip: {
+                        format: {
+                            value: function (value, ratio, id) {
+                                var format = id === 'data1' ? d3.format(',') : d3.format('#');
+                                return format(value);
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
             
             
-            var pieFCP = c3.generate({
-                bindto: '#pl-perf-fcp-kpi',
-                data: {
-                    columns: [
-                        ['Slow', {{ urlFcpCountSlow }}],
-                        ['Average', {{ urlFcpCountAvg }}],
-                        ['Fast', {{ urlFcpCountFast }}]
-                    ],
-                    type : 'pie'
-                },
-                tooltip: {
-                    format: {
-                        value: function (value, ratio, id) {
-                            var format = id === 'data1' ? d3.format(',') : d3.format('#');
-                            return format(value);
+            function createPieFcp () {
+                var pieFCP = c3.generate({
+                    bindto: '#pl-perf-fcp-kpi',
+                    data: {
+                        columns: [
+                            ['Slow', {{ urlFcpCountSlow }}],
+                            ['Average', {{ urlFcpCountAvg }}],
+                            ['Fast', {{ urlFcpCountFast }}]
+                        ],
+                        type : 'pie'
+                    },
+                    tooltip: {
+                        format: {
+                            value: function (value, ratio, id) {
+                                var format = id === 'data1' ? d3.format(',') : d3.format('#');
+                                return format(value);
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
             
             
-            var pieFMP = c3.generate({
-                bindto: '#pl-perf-fmp-kpi',
-                data: {
-                    columns: [
-                        ['Slow', {{ urlFmpCountSlow }}],
-                        ['Average', {{ urlFmpCountAvg }}],
-                        ['Fast', {{ urlFmpCountFast }}]
-                    ],
-                    type : 'pie'
-                },
-                tooltip: {
-                    format: {
-                        value: function (value, ratio, id) {
-                            var format = id === 'data1' ? d3.format(',') : d3.format('#');
-                            return format(value);
+            function createPieFmp () {
+                var pieFMP = c3.generate({
+                    bindto: '#pl-perf-fmp-kpi',
+                    data: {
+                        columns: [
+                            ['Slow', {{ urlFmpCountSlow }}],
+                            ['Average', {{ urlFmpCountAvg }}],
+                            ['Fast', {{ urlFmpCountFast }}]
+                        ],
+                        type : 'pie'
+                    },
+                    tooltip: {
+                        format: {
+                            value: function (value, ratio, id) {
+                                var format = id === 'data1' ? d3.format(',') : d3.format('#');
+                                return format(value);
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
             
             
-            var pieFullInteractive = c3.generate({
-                bindto: '#pl-perf-fullyint-kpi',
-                data: {
-                    columns: [
-                        ['Slow', {{ urlFiCountSlow }}],
-                        ['Average', {{ urlFiCountAvg }}],
-                        ['Fast', {{ urlFiCountFast }}]
-                    ],
-                    type : 'pie'
-                },
-                tooltip: {
-                    format: {
-                        value: function (value, ratio, id) {
-                            var format = id === 'data1' ? d3.format(',') : d3.format('#');
-                            return format(value);
+            function createPieFi () {
+                var pieFullInteractive = c3.generate({
+                    bindto: '#pl-perf-fullyint-kpi',
+                    data: {
+                        columns: [
+                            ['Slow', {{ urlFiCountSlow }}],
+                            ['Average', {{ urlFiCountAvg }}],
+                            ['Fast', {{ urlFiCountFast }}]
+                        ],
+                        type : 'pie'
+                    },
+                    tooltip: {
+                        format: {
+                            value: function (value, ratio, id) {
+                                var format = id === 'data1' ? d3.format(',') : d3.format('#');
+                                return format(value);
+                            }
                         }
                     }
-                }
+                });
+            }
+            
+            // Showtime.
+            $(function () {
+                createAuditCategories();
+                createPieFmp();
+                createPieFcp();
+                createPieFi();
+                $("select").select2({
+                    minimumResultsForSearch: 8
+                });
             });
+            
             
         })();
         	
     </script>
     
 {% endblock %}
+
+
+{% block content %}
+    <div class="{{ templateHelpers.classes.grid }} mt4">
+        {% include "switch_filter_view.html" with filter=filter view_name='browse' %}
+        <form id="pl-sortform" aria-label="Apply filters" action="" method="get">
+            {% include "url_filter_select.html" with filter=filter filters=filters view_name='dashboard' %}
+            <div style="margin-right: 60px; display: inline-block;">
+                <button id="apply" type="submit" class="{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }} relative" style="top:2px;">Apply</button>
+            </div>
+        </form>
+    </div>
+    <div class="{{ templateHelpers.classes.grid }} tc mt4">
+        <p class="f4 b pb2">Average scores across <code class="fw4 dark-red">{{ urlCountTested|withComma }}</code> tested URLs</p>
+        
+        <div class="pl-avg-donut mb4">
+            {% include "partials/audit_score_donut.html" with scoreValue=urlGlobalPerfAvg %}
+            <p class="f4 mt3">Performance</p>
+        </div>
+        <div class="pl-avg-donut mb4">
+            {% include "partials/audit_score_donut.html" with scoreValue=urlGlobalA11yAvg %}
+            <p class="f4 mt3">Accessibility</p>
+        </div>
+        <div class="pl-avg-donut mb4">
+            {% include "partials/audit_score_donut.html" with scoreValue=urlGlobalSeoAvg %}
+            <p class="f4 mt3">SEO</p>
+        </div>
+    </div>
+
+	
+	<div class="{{ templateHelpers.classes.grid }} mt5">
+        <p class="b f4 tc">Overall performance</p>
+        <div class="relative" id="pl-perf-percent-cats"></div>    
+	</div>
+	
+	
+	<div class="{{ templateHelpers.classes.grid }} mt5 cf">
+        <div class="fl w-33 tc mb4">
+            <p class="f4 b">First contentful paint</p>
+            <div id="pl-perf-fcp-kpi"></div>  
+        </div>
+        <div class="fl w-33 tc mb4">
+            <p class="f4 b">First meaningful paint</p>
+            <div id="pl-perf-fmp-kpi"></div>
+            
+        </div>
+        <div class="fl w-33 tc mb4">
+            <p class="f4 b">Fully interactive (TTI)</p>
+            <div id="pl-perf-fullyint-kpi"></div>
+        </div>
+	</div>
+    
+{% endblock %}
+
