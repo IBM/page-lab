@@ -27,7 +27,7 @@ SECRET_KEY = 'qhk(v0g!4#(+_$$36hyks$nx!wkq$g&8qfgb92)92e)jkm1g%a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_DEBUG_FLAG', False)
-DEBUG = False
+
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 if os.getenv('DJANGO_ALLOWED_HOST'): 
@@ -192,3 +192,8 @@ AUTHENTICATION_BACKENDS = [
 
 ##LDAP_URL = ''
 
+try:
+    from .settings_local import *
+except ImportError:
+    pass
+    
