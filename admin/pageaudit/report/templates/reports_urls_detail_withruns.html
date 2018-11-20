@@ -1,0 +1,324 @@
+{% extends "page_template.html" %}
+
+{% load beautify %}
+{% load static %}
+
+
+{% block browserTitle %} {{ block.super }} - URL report {% endblock  %}
+
+{% block pageTitle %} URL report {% endblock  %}
+
+
+{% block pageSubtitle %} 
+    <p><a class="light-blue no-underline underline-hover animate-hover" href="{{ url1.url }}" title="Visit page in new window" target="_blank">{{ url1.url|noprotocol }}</a></p>
+    <div class="pl-compare-checkbox-con pt2">
+    	<span class="f6">
+            <input id="id_{{ url1.id }}" type="checkbox" value="{{ url1.id }}" class="w1 dib pointer" style="transform: scale(1.1);"><label for="id_{{ url1.id }}" class="ml1 relative dib pointer hover-light-blue light-gray">Compare</label>
+        </span>                       
+    </div>
+ {% endblock  %}
+
+
+{% block extraFiles %}
+
+    <style>
+        
+        .pl-url-detail-donut {
+            display: inline-block;
+            width: 230px;
+        }
+       
+        .pl-url-detail-donut .pl-audit-score {
+            border-width: 10px;
+            font-size: 2rem;
+            height: 100px;
+            line-height: 60px;
+            width: 100px;
+        }
+        
+    </style>
+
+    <script src="{% static 'report/js/compare.js' %}"></script>
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="{{ templateHelpers.classes.grid }} mt5 cf">
+        <div class="fl w-100 w-20-ns tc tl-ns mb3">
+
+        	<p class="mb3 mt0">
+                <a href="{{ url1.url }}" title="View page in new window" target="_blank"><img class="{{ templateHelpers.classes.imageBorder }}" src="data:image/png;base64,{{ url1.lighthouse_run.thumbnail_image }}" width="155"></a>
+            </p>
+        	
+        </div>
+        <div class="fl w-100 w-80-ns mb3">
+            <div id="linechart"></div>
+        </div>            
+    </div>
+    
+    
+    {{ templateHelpers.html.hr|safe }}
+    
+    
+    <div class="{{ templateHelpers.classes.grid }} tc">
+        <h4 class="f4 b mb4">Average scores across <code class="fw4 dark-red">{{ lighthouseRuns.count }}</code> test runs</h4>
+    
+        <div class="pl-url-detail-donut mb4">
+            <div>{% include "partials/audit_score_donut.html" with scoreValue=url1.url_kpi_average.performance_score %}</div>
+            <p class="f4 mt3">Performance</p>
+        </div>
+        
+        <div class="pl-url-detail-donut mb4">
+            <div>{% include "partials/audit_score_donut.html" with scoreValue=url1.url_kpi_average.accessibility_score %}</div>
+            <p class="f4 mt3">Accessibility</p>
+        </div>
+        
+        <div class="pl-url-detail-donut mb4">
+            <div>{% include "partials/audit_score_donut.html" with scoreValue=url1.url_kpi_average.seo_score %}</div>
+            <p class="f4 mt3">SEO</p>
+        </div>
+    </div>
+    
+            
+    <div class="{{ templateHelpers.classes.grid }} cf">
+        <div class="fl w-100 w-50-l mb4">
+            <h4 class="f4 b inline-flex">Average KPIs <span class="items-center pointer hint--top normal ml2" aria-label="Standard indicators of a page's performance.">{{ templateHelpers.html.icons.info|safe }}</span></h4>
+            
+            <table class="pf-tooltip-cue">
+                <tbody>
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal" aria-label="Most recent test run on this URL"><span class="b">Last tested:</span></span></td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.lighthouse_run.created_date }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="Total page size including all images, script, stylesheets and any other included or referenced resources."><span class="b">Total size:</span></span></td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.total_byte_weight|kbToMb }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="Total number of resources requested by the page including all images, script, stylesheets and any other included or referenced resources."><span class="b"># of network requests:</span></span></td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.number_network_requests|withComma }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="Time spent waiting for the initial response. This time captures the latency of a round trip to the server in addition to the time spent waiting for the server to deliver the response."><span class="b">Time to first byte:</span></span></td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.time_to_first_byte|withComma }} ms</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="This event is fired when the initial HTML document has been completely loaded and parsed, without waiting for stylesheets, images, and subframes to finish loading; the page is loaded but scripts just started to be executed."><span class="b">DOM content loaded:</span></span></td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.dom_content_loaded|withComma }} ms</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="FCP reports the time when the browser first rendered any text, image (including background images), non-white canvas or SVG. This includes text with pending webfonts. This is the first time users could start consuming page content."><span class="b">First contentful paint:</span></span></td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.first_contentful_paint|withComma }} ms</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="FMP measures when the primary content of a page is visible; answers the question: 'is it useful?'. The concept of 'useful' is very hard to spec in a way that applies generically to all web pages, so this is Lighthouse's best guess."><span class="b">First meaningful paint:</span></span></td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="(Time to interactive) The TTI metric identifies the point at which the page's initial JavaScript is loaded and the main thread is idle (free of long tasks). As a general rule, you should try as hard as possible to minimize the time between FMP and TTI"><span class="b">Fully interactive:</span></span></td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.interactive|withComma }} ms</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="The load event is fired when the page and its dependent resources have finished loading. Essentially, all requests have finished. Stalled/hung requests (including asynchronous) will blow this number out."><span class="b">DOM loaded:</span></span></td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.dom_loaded|withComma }} ms</td>
+                    </tr>
+                   
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="Number of redirect hops (301, 302) it took to get to the actual final destination URL that was tested."><span class="b"># of redirects:</span></span></td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.lighthouse_run.redirect_hops|withComma }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="The total redirection (301, 302) time spent getting to the actual final destination URL that was tested."><span class="b">Wasted redirect time:</span></span></td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+
+        </div>
+        
+        
+        {# Only show the user-timing table if the URL has any user timing measures #}
+        
+        {% if url1.user_timing_measure_avg_url.count > 0 %}
+            <div class="fl w-100 w-50-l mb4">
+                <h4 class="f4 b inline-flex">Average user timing measures <span class="items-center pointer hint--top hint--large normal ml2" aria-label="Custom user timing measures from any JS on the page. Only non-zero durations are shown. These do not necessarily show the cause of page performance issues.">{{ templateHelpers.html.icons.info|safe }}</span></h4>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Name</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Start</td>
+                            <td class="b {{ templateHelpers.classes.tableListCell }}">Duration</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {# Skip measures that are zero duration because they don't make a difference #}
+                        
+                        {% for measure in url1.user_timing_measure_avg_url.all %}
+                            {% if measure.duration > 0 %}
+                            <tr>
+                                <td class="{{ templateHelpers.classes.tableListCell }}">{{ measure.name }}</td>
+                                <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ measure.start_time|withComma }} ms</td>
+                                <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ measure.duration|withComma }} ms</td>
+                            </tr>    
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+    
+    
+    {{ templateHelpers.html.hr|safe }}
+    
+    
+    <div class="{{ templateHelpers.classes.grid }} mt5 mb4 cf">
+        <div class="fl w-100 w-50-ns"><p class="f4 b">Test runs history</p></div>
+        <div class="fl w-100 w-50-ns" id="pl-exportbuttons"></div>
+    </div>
+     
+    <div id="pl-rundata-kpis" class="{{ templateHelpers.classes.grid }} cf">
+        <table class="f6 hover display stripe" style="width:100%!important;" data-column-defs='[{"targets":"no-sort","orderable":false}]' data-buttons='["excel"]' data-dom="lBfrtip">
+            <thead>
+	            <th scope="col" class="no-sort"></th>
+                <th>Test time</th>
+                <th>Performance score</th>
+                <th>Accessibility score</th>
+                <th>SEO score</th>
+                <th>Size (KB)</th>
+                <th>Network requests</th>
+                <th>Time to first byte (ms)</th>
+                <th>DOM content loaded (ms)</th>
+                <th>First contentful paint (ms)</th>
+                <th>First meaningful paint (ms)</th>
+                <th>Fully interactive (ms)</th>
+                <th>DOM loaded (ms)</th>
+                <th># redirects</th>
+                <th>Wasted redirect time</th>
+            </thead>
+            
+            <tbody>
+	            {% for lighthouseRun in lighthouseRuns %}
+	                <tr>
+		                <td>{{ forloop.counter }}</td>
+		                <td>{{ lighthouseRun.created_date }}</td>
+		                <td>{{ lighthouseRun.performance_score }}</td>
+		                <td>{{ lighthouseRun.accessibility_score }}</td>
+		                <td>{{ lighthouseRun.seo_score }}</td>
+		                <td>{{ lighthouseRun.total_byte_weight|byteToKb }}</td>
+		                <td>{{ lighthouseRun.number_network_requests }}</td>
+		                <td>{{ lighthouseRun.time_to_first_byte }}</td>
+		                <td>{{ lighthouseRun.dom_content_loaded }}</td>
+		                <td>{{ lighthouseRun.first_contentful_paint }}</td>
+		                <td>{{ lighthouseRun.first_meaningful_paint }}</td>
+		                <td>{{ lighthouseRun.interactive }}</td>
+		                <td>{{ lighthouseRun.dom_loaded }}</td>
+		                <td>{{ lighthouseRun.redirect_hops }}</td>
+		                <td>{{ lighthouseRun.redirect_wasted_ms }}</td>
+	                </tr>
+	            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <link href="{% static 'report/css/c3.min.css' %}" rel="stylesheet">   
+        
+    <link href="{% static 'report/css/select2.min.css' %}" rel="stylesheet"/>
+    
+    <link href="{% static 'report/css/datatables/jquery.dataTables.min.css' %}" rel="stylesheet">   
+    <link href="{% static 'report/css/datatables/colReorder.dataTables.min.css' %}" rel="stylesheet">   
+    <link href="{% static 'report/css/datatables/responsive.dataTables.min.css' %}" rel="stylesheet">   
+
+	<script src="{% static 'report/js/jquery.datatables.pkg.min.js' %}"></script>
+
+    <script src="{% static 'report/js/select2.min.js' %}"></script>
+
+    <script src="{% static 'report/js/d3.v4.min.js' %}"></script>
+    <script src="{% static 'report/js/c3.min.js' %}"></script>
+
+    <script>
+
+        (function ($) {
+            
+            var datatableSettings = {
+                    colReorder: true,
+                    info: true,
+                    ordering: true,
+                    paging: true,
+                    pageLength: 10,
+                    responsive: true,
+                    scrollCollapse: true,
+                    searching: true
+                };
+            
+            function adjustExportButtons ($scope) {
+                var $tablewidgetContainer = $scope.parent(),
+                    $buttonCon = $tablewidgetContainer.find(".dt-buttons");
+                
+                $buttonCon.removeClass("dt-buttons").addClass("tr").appendTo("#pl-exportbuttons").prepend('<span class="b mb3 dib mr3">Export table</span>');
+               
+                $buttonCon.find("button").addClass("{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }}")[0].addEventListener("click", function () {
+                    emailSelectedApps();
+                })
+            }
+            
+            
+            function createHistoryLineChart () {
+                var chart = c3.generate({
+                    bindto: '#linechart',
+
+                    data: {
+                        x: 'x',
+                        xFormat: '%d-%m-%Y',
+                        columns: [
+                            {{ lineChartData.dates|safe }},
+                            {{ lineChartData.perfScores|safe }},
+                            {{ lineChartData.a11yScores|safe }},
+                            {{ lineChartData.seoScores|safe }},
+                        ]
+                    },
+                    axis: {
+                        x: {
+                            type: 'timeseries',
+                            tick: {
+                                format: '%m-%d-%Y'
+                            }
+                        }
+                    }
+                    
+                });
+            }
+            
+            createHistoryLineChart();
+
+            $(function(){
+                $("#pl-rundata-kpis table").DataTable(datatableSettings);
+                $("#pl-rundata-kpis").find("select").select2();
+                adjustExportButtons($("#pl-rundata-kpis"));
+                PL.compare.setupCompareCheckboxes($(".pl-compare-checkbox-con"));
+                PL.compare.preselectCheckbox($(".pl-compare-checkbox-con").find("input"));
+            });
+            
+        })(jQuery);        
+        
+    </script>
+
+
+	{% include "partials/compare_tray.html" %}
+	
+    
+{% endblock %}

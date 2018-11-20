@@ -12,9 +12,9 @@
             </tr>
             <tr>
                 <td class="b {{ templateHelpers.classes.tableListCell }}"></td>
-                <td class="{{ templateHelpers.classes.tableListCell }}"><a class="pl-word-break-all" href="{{ url1.url }}" target="_blank">{{ url1.url|noprotocol }}</a></td>
-                <td class="{{ templateHelpers.classes.tableListCell }}"><a class="pl-word-break-all" href="{{ url2.url }}" target="_blank">{{ url2.url|noprotocol }}</a></td>
-                <td class="{{ templateHelpers.classes.tableListCell }}"><a class="pl-word-break-all" href="{{ url3.url }}" target="_blank">{{ url3.url|noprotocol }}</a></td>
+                <td class="{{ templateHelpers.classes.tableListCell }}"><a class="pl-word-break-all {{ templateHelpers.classes.hasIcon }}" href="{{ url1.url }}" target="_blank" title="Visit page in new window">{{ url1.url|noprotocol }}  {{ templateHelpers.html.icons.newWindow|safe }}</a></td>
+                <td class="{{ templateHelpers.classes.tableListCell }}"><a class="pl-word-break-all {{ templateHelpers.classes.hasIcon }}" href="{{ url2.url }}" target="_blank" title="Visit page in new window">{{ url2.url|noprotocol }}  {{ templateHelpers.html.icons.newWindow|safe }}</a></td>
+                <td class="{{ templateHelpers.classes.tableListCell }}"><a class="pl-word-break-all {{ templateHelpers.classes.hasIcon }}" href="{{ url3.url }}" target="_blank" title="Visit page in new window">{{ url3.url|noprotocol }}  {{ templateHelpers.html.icons.newWindow|safe }}</a></td>
             </tr>
             
             <tr>
@@ -146,9 +146,9 @@
             </tr>
             <tr>
                 <td class="{{ templateHelpers.classes.tableListCell }}"></td>
-                <td class="{{ templateHelpers.classes.tableListCell }}"><a class="" href="{% url 'plr:reports_urls_detail' id=url1.id %}">Full report record</a></td>
-                <td class="{{ templateHelpers.classes.tableListCell }}"><a class="" href="{% url 'plr:reports_urls_detail' id=url2.id %}">Full report record</a></td>
-                <td class="{{ templateHelpers.classes.tableListCell }}"><a class="" href="{% url 'plr:reports_urls_detail' id=url3.id %}">Full report record</a></td>
+                <td class="{{ templateHelpers.classes.tableListCell }}"><a class="{{ templateHelpers.classes.hasIcon }}" href="{% url 'plr:reports_urls_detail' id=url1.id %}">Full report record {{ templateHelpers.html.icons.chevronForward|safe }}</a></td>
+                <td class="{{ templateHelpers.classes.tableListCell }}"><a class="{{ templateHelpers.classes.hasIcon }}" href="{% url 'plr:reports_urls_detail' id=url2.id %}">Full report record {{ templateHelpers.html.icons.chevronForward|safe }}</a></td>
+                <td class="{{ templateHelpers.classes.tableListCell }}"><a class="{{ templateHelpers.classes.hasIcon }}" href="{% url 'plr:reports_urls_detail' id=url3.id %}">Full report record {{ templateHelpers.html.icons.chevronForward|safe }}</a></td>
             </tr>
     
         </tbody>
