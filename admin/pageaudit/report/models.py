@@ -11,7 +11,7 @@ from .helpers import *
 
 
 ## Custom Url object filters mapped to functions.
-## These are chainable preset filters instead o fusing .all or .filter() all the time
+## These are chainable preset filters instead of using .all or .filter() all the time
 class UrlQueryset(models.QuerySet):
     """
         Gets all active URLs to run.
@@ -21,12 +21,18 @@ class UrlQueryset(models.QuerySet):
     def allActive(self):
         return self.filter(inactive=False)
 
+    def withValidRuns(self):
+        return self.filter(lighthouse_run__isnull=False, lighthouse_run__number_network_requests__gt=1, lighthouse_run__performance_score__gt=5, lighthouse_run__invalid_run=False)
+
 class UrlManger(models.Manager):
     def get_queryset(self):
         return UrlQueryset(self.model, using=self._db)  ## IMPORTANT KEY ITEM.
 
     def allActive(self):
         return self.get_queryset().allActive()
+
+    def withValidRuns(self):
+        return self.get_queryset().withValidRuns()
 
 
 class LighthouseRun(models.Model):
@@ -236,7 +242,7 @@ class Url(models.Model):
         ## Map sortorder field to proper query filter condition.
         querySortorder = "" if userSortorder == "asc" else defSortorder
 
-        return Url().haveValidRuns().prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").order_by(querySortorder + querySortby)
+        return Url.objects.withValidRuns().prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").order_by(querySortorder + querySortby)
 
     def getKpiAverages(self):
         try:
@@ -258,9 +264,6 @@ class Url(models.Model):
             }
 
             return namedtuple('RowObject', row.keys())(*row.values())
-
-    def haveValidRuns(self):
-        return Url.objects.filter(lighthouse_run__isnull=False, lighthouse_run__number_network_requests__gt=1, lighthouse_run__performance_score__gt=5, lighthouse_run__invalid_run=False)
 
 
 class UrlPath(models.Model):
@@ -480,7 +483,13 @@ class LighthouseDataRaw(models.Model):
                                                 report_data=report_data,)
         lighthouse_data_raw.save()
 
-
+        ## From https://blog.dareboost.com/en/2018/06/lighthouse-tool-chrome-devtools/ 
+        # First ContentFul Paint: First contentful paint marks the time at which the first text/image is painted.
+        # First Meaningful Paint: First Meaningful Paint measures when the primary content of a page is visible.
+        # Speed Index: Speed Index shows how quickly the contents of a page are visibly populated.
+        # First CPU Idle: First CPU Idle marks the first time at which the page’s main thread is quiet enough to handle input.
+        # Time to Interactive: Interactive marks the time at which the page is fully interactive.
+        
         ## 4. Now grab the key fields we want and add them to the LighthouseRun for fast, single query.
         try:
             accessibility_score = int(report_data['categories']['accessibility']['score'] * 100)

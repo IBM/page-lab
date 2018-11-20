@@ -50,4 +50,10 @@ DJANGO_FORCE_SCRIPT_NAME=
 - The PageLab node app will test each URL you have in the Django app once, then stop.
 - Go back and view the site at `https://localhost:8000/report/` and you should see some reports.
 
+## Design
+We are using:
+- [Tachyons](https://tachyons.io/) for the main app theme.
+- [Eva icons](https://akveo.github.io/eva-icons/#/) for the icons.
+- [Hint.css](https://kushagragour.in/lab/hint/) for the tooltip.
+- [Micromodal.js](https://micromodal.now.sh/) for the modal overlays.
 
