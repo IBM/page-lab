@@ -174,7 +174,7 @@ STATICFILES_DIRS = [
 ]
 
 ## The directory on your filesystem where you want static files moved to and served from.
-## When you run 'collectstatic', it moves them here.
+## When you run 'collectstatic', it copies them here.
 ## This is a production-only setting. It's not used in DEBUG mode.
 ## In debug mode, files are served from STATICFILES_DIRS var directory (directly above).
 STATIC_ROOT = os.getenv('DJANGO_STATIC_ROOT', '')
