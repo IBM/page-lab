@@ -14,9 +14,11 @@
         
 {% block extraFiles %}
 
-    {# Already compressed version #}
+    {# Already compressed version, no point. #}
+    {# If we add select list on any other page, move select2 JS/CSS to common template include compress. #}
     <link href="{% static 'report/css/select2.min.css' %}" rel="stylesheet"/>
     
+    {# Compress all this into 1 included compressed cached file. #}
     {% compress js %}
         <script src="{% static 'report/js/select2.min.js' %}"></script>
         <script src="{% static 'report/js/compare.js' %}"></script>
