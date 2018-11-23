@@ -276,12 +276,14 @@
     // Strictly sets up the tray. 
     // Checkbox bindings are util fuction each page calls as appropriate onload.
     $(function () {
-        $compareTray = $("#pl-compare");
-        $compareTrayBody = $("#pl-compare-body");
-        $compareTrayCompareLink = $(".pl-compare-comparelink-con")
-        setupCompareTrayActions();
-        populateCompareTrayFromStorage();
-        activateTray();
+        if (document.getElementById("pl-compare")) {
+            $compareTray = $("#pl-compare");
+            $compareTrayBody = $("#pl-compare-body");
+            $compareTrayCompareLink = $(".pl-compare-comparelink-con")
+            setupCompareTrayActions();
+            populateCompareTrayFromStorage();
+            activateTray();
+        }
     });  
     
     

@@ -11,7 +11,7 @@
 {% block extraFiles %}
     
     {% compress js %}
-    <script src="{% static 'report/js/url-typeahead.js' %}"></script>
+        <script src="{% static 'report/js/url-typeahead.js' %}"></script>
     {% endcompress %}
 
 {% endblock %}
@@ -39,4 +39,8 @@
         </form>
 	</div>
 		
+
+    {% include "partials/compare_tray.html" %}
+    
+    
 {% endblock %}

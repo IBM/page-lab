@@ -1,6 +1,7 @@
 {% extends "page_template.html" %}
 
 {% load beautify %}
+{% load compress %}
 {% load static %}
 
 
@@ -21,25 +22,32 @@
 
 {% block extraFiles %}
 
-    <style>
-        
-        .pl-url-detail-donut {
-            display: inline-block;
-            width: 230px;
-        }
-       
-        .pl-url-detail-donut .pl-audit-score {
-            border-width: 10px;
-            font-size: 2rem;
-            height: 100px;
-            line-height: 60px;
-            width: 100px;
-        }
-        
-    </style>
+    {% compress css %}
+        <style>
+            
+            .pl-url-detail-donut {
+                display: inline-block;
+                width: 230px;
+            }
+           
+            .pl-url-detail-donut .pl-audit-score {
+                border-width: 10px;
+                font-size: 2rem;
+                height: 100px;
+                line-height: 60px;
+                width: 100px;
+            }
+            
+        </style>
 
-    <script src="{% static 'report/js/compare.js' %}"></script>
-
+        <link href="{% static 'report/css/c3.min.css' %}" rel="stylesheet">   
+        <link href="{% static 'report/css/select2.min.css' %}" rel="stylesheet"/>
+        <link href="{% static 'report/css/datatables/jquery.dataTables.min.css' %}" rel="stylesheet">   
+        <link href="{% static 'report/css/datatables/colReorder.dataTables.min.css' %}" rel="stylesheet">   
+        <link href="{% static 'report/css/datatables/responsive.dataTables.min.css' %}" rel="stylesheet">   
+    {% endcompress %}
+    
+    
 {% endblock %}
 
 
@@ -235,90 +243,84 @@
     </div>
 
 
-    <link href="{% static 'report/css/c3.min.css' %}" rel="stylesheet">   
-        
-    <link href="{% static 'report/css/select2.min.css' %}" rel="stylesheet"/>
+	{% compress js %}
+    	<script src="{% static 'report/js/jquery.datatables.pkg.min.js' %}"></script>
+        <script src="{% static 'report/js/select2.min.js' %}"></script>
+        <script src="{% static 'report/js/d3.v4.min.js' %}"></script>
+        <script src="{% static 'report/js/c3.min.js' %}"></script>
     
-    <link href="{% static 'report/css/datatables/jquery.dataTables.min.css' %}" rel="stylesheet">   
-    <link href="{% static 'report/css/datatables/colReorder.dataTables.min.css' %}" rel="stylesheet">   
-    <link href="{% static 'report/css/datatables/responsive.dataTables.min.css' %}" rel="stylesheet">   
-
-	<script src="{% static 'report/js/jquery.datatables.pkg.min.js' %}"></script>
-
-    <script src="{% static 'report/js/select2.min.js' %}"></script>
-
-    <script src="{% static 'report/js/d3.v4.min.js' %}"></script>
-    <script src="{% static 'report/js/c3.min.js' %}"></script>
-
-    <script>
-
-        (function ($) {
-            
-            var datatableSettings = {
-                    colReorder: true,
-                    info: true,
-                    ordering: true,
-                    paging: true,
-                    pageLength: 10,
-                    responsive: true,
-                    scrollCollapse: true,
-                    searching: true
-                };
-            
-            function adjustExportButtons ($scope) {
-                var $tablewidgetContainer = $scope.parent(),
-                    $buttonCon = $tablewidgetContainer.find(".dt-buttons");
+        <script>
+    
+            (function ($) {
                 
-                $buttonCon.removeClass("dt-buttons").addClass("tr").appendTo("#pl-exportbuttons").prepend('<span class="b mb3 dib mr3">Export table</span>');
-               
-                $buttonCon.find("button").addClass("{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }}")[0].addEventListener("click", function () {
-                    emailSelectedApps();
-                })
-            }
-            
-            
-            function createHistoryLineChart () {
-                var chart = c3.generate({
-                    bindto: '#linechart',
-
-                    data: {
-                        x: 'x',
-                        xFormat: '%d-%m-%Y',
-                        columns: [
-                            {{ lineChartData.dates|safe }},
-                            {{ lineChartData.perfScores|safe }},
-                            {{ lineChartData.a11yScores|safe }},
-                            {{ lineChartData.seoScores|safe }},
-                        ]
-                    },
-                    axis: {
-                        x: {
-                            type: 'timeseries',
-                            tick: {
-                                format: '%m-%d-%Y'
+                var datatableSettings = {
+                        colReorder: true,
+                        info: true,
+                        ordering: true,
+                        paging: true,
+                        pageLength: 10,
+                        responsive: true,
+                        scrollCollapse: true,
+                        searching: true
+                    };
+                
+                
+                function adjustExportButtons ($scope) {
+                    var $tablewidgetContainer = $scope.parent(),
+                        $buttonCon = $tablewidgetContainer.find(".dt-buttons");
+                    
+                    $buttonCon.removeClass("dt-buttons").addClass("tr").appendTo("#pl-exportbuttons").prepend('<span class="b mb3 dib mr3">Export table</span>');
+                   
+                    $buttonCon.find("button").addClass("{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }}")[0].addEventListener("click", function () {
+                        emailSelectedApps();
+                    })
+                }
+                
+                
+                function createHistoryLineChart () {
+                    var chart = c3.generate({
+                        bindto: '#linechart',
+    
+                        data: {
+                            x: 'x',
+                            xFormat: '%d-%m-%Y',
+                            columns: [
+                                {{ lineChartData.dates|safe }},
+                                {{ lineChartData.perfScores|safe }},
+                                {{ lineChartData.a11yScores|safe }},
+                                {{ lineChartData.seoScores|safe }},
+                            ]
+                        },
+                        axis: {
+                            x: {
+                                type: 'timeseries',
+                                tick: {
+                                    format: '%m-%d-%Y'
+                                }
                             }
                         }
-                    }
-                    
+                        
+                    });
+                }
+
+                
+                $(function(){
+                    createHistoryLineChart();
+                    $("#pl-rundata-kpis table").DataTable(datatableSettings);
+                    $("#pl-rundata-kpis").find("select").select2();
+                    adjustExportButtons($("#pl-rundata-kpis"));
+                    PL.compare.setupCompareCheckboxes($(".pl-compare-checkbox-con"));
+                    PL.compare.preselectCheckbox($(".pl-compare-checkbox-con").find("input"));
                 });
-            }
+                
+            })(jQuery);        
             
-            createHistoryLineChart();
+        </script>
 
-            $(function(){
-                $("#pl-rundata-kpis table").DataTable(datatableSettings);
-                $("#pl-rundata-kpis").find("select").select2();
-                adjustExportButtons($("#pl-rundata-kpis"));
-                PL.compare.setupCompareCheckboxes($(".pl-compare-checkbox-con"));
-                PL.compare.preselectCheckbox($(".pl-compare-checkbox-con").find("input"));
-            });
-            
-        })(jQuery);        
-        
-    </script>
-
-
-	{% include "partials/compare_tray.html" %}
+    {% endcompress %}
+    
+    
+    {% include "partials/compare_tray.html" %}
 	
     
 {% endblock %}
