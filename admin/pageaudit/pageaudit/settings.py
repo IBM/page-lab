@@ -39,7 +39,7 @@ INTERNAL_IPS = ['127.0.0.1',]
 
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_STORAGE_OPTIONS = {
-    'location': os.getenv('DJANGO_PAGELAB_DBBACKUP_PATH', '/var/webplatform/backups/pagelab')
+    'location': os.getenv('DJANGO_PAGELAB_DBBACKUP_PATH', '')
 }
 DBBACKUP_DATE_FORMAT = 'date-%d-%H'
 DBBACKUP_FILENAME_TEMPLATE = 'pagelab-{datetime}.{extension}'
@@ -177,7 +177,7 @@ STATICFILES_DIRS = [
 ## When you run 'collectstatic', it moves them here.
 ## This is a production-only setting. It's not used in DEBUG mode.
 ## In debug mode, files are served from STATICFILES_DIRS var directory (directly above).
-STATIC_ROOT = os.getenv('DJANGO_STATIC_ROOT', '/var/webplatform/static/pagelab')
+STATIC_ROOT = os.getenv('DJANGO_STATIC_ROOT', '')
 
 ## The URL path from your app home, where static files will be served from (their URL base path)
 ## In DEBUG mode, files serve from your STATICFILES_DIRS directory.
