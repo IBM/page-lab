@@ -190,7 +190,10 @@ MEDIA_URL = os.getenv('DJANGO_MEDIA_URL', '/media/')
 ## Compressor is default set to OPPOSITE of DEBUG. 
 ## To force compressor locally during debug, add "COMPRESS_ENABLED = True" var to your settings_local.py
 COMPRESS_ROOT = os.path.join(BASE_DIR, "static/")
-
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter', 
+    'compressor.filters.cssmin.rCSSMinFilter'
+]
 
 ## Custom signin, signout, and post-signout page.
 LOGIN_URL = '%s/report/signin/' % FORCE_SCRIPT_NAME
