@@ -106,6 +106,23 @@ def get_urls(request):
 
 
 ##
+##  /api/getlighthousedata/?q=<search string>
+##
+##
+def api_get_lighthouse_data(request, id):
+    lightouseData = {}
+    
+    try:
+        lightouseData['rawData'] = LighthouseDataRaw.objects.get(id=id).report_data
+    except Exception as ex:
+        pass
+    
+    return JsonResponse({
+        'results': lightouseData 
+    })
+
+
+##
 ##  /api/urltypeahead/?q=<search string>
 ##
 ##
@@ -203,26 +220,6 @@ def api_home_items(request):
             'resultsHtml': html
         })
 
-
-
-########################################################################
-########################################################################
-##
-##  PAGES
-##
-########################################################################
-########################################################################
-
-
-##
-##  /report/test/
-##
-##
-def test(request):
-
-    context = {}
-
-    return render(request, 'home.html', context)
 
 
 ##
@@ -323,6 +320,19 @@ def reports_dashboard(request):
    }
     
     return render(request, 'reports_dashboard.html', context)
+
+
+##
+##  /report/lighthouse-viewer
+##
+##  View LH raw report object. Used from official Lighthouse/lighthouse-viewer repo.
+##
+##
+def reports_lighthouse_viewer(request):
+
+    context = {}
+    
+    return render(request, 'lighthouse-viewer/index.html', context)
 
 
 ##
