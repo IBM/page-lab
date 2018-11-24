@@ -412,22 +412,11 @@ def reports_urls_detail(request, id):
         'lineChartData': lineChartData,
     }
     
-    return render(request, 'reports_urls_detail.html', context)
-
-
-##
-##  /report/urls/detail/all/
-##
-##  Report detail for a given URL, include run history.
-##  Lists every run for every URL. HUGE. Used as export view to see all data.
-##
-##
-def reports_urls_detail_all(request):
-    context = {
-        'lighthouseRuns': LighthouseRun.objects.all(),
-    }
     
-    return render(request, 'reports_urls_detail_all.html', context)
+    if urlLighthouseRuns.count() > 1:
+        return render(request, 'reports_urls_detail_withruns.html', context)
+    else:
+        return render(request, 'reports_urls_detail_noruns.html', context)
 
 
 ##
