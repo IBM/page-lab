@@ -28,6 +28,8 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 36214400
 SECRET_KEY = 'qhk(v0g!4#(+_$$36hyks$nx!wkq$g&8qfgb92)92e)jkm1g%a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# To test Django in "debug = false" mode, but using Django to server static files as in dev, 
+#  run this locally:  `manage.py runserver --insecure`
 DEBUG = os.getenv('DJANGO_DEBUG_FLAG', False)
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
@@ -173,10 +175,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static/"),
 ]
 
-## The directory on your filesystem where you want static files moved to and served from.
+## The directory on your filesystem where you want static files copied and served by YOUR WEB SERVER.
 ## When you run 'collectstatic', it copies them here.
 ## This is a production-only setting. It's not used in DEBUG mode.
-## In debug mode, files are served from STATICFILES_DIRS var directory (directly above).
+## In DEBUG mode, files are served BY DJANGO from STATICFILES_DIRS var directory above.
 STATIC_ROOT = os.getenv('DJANGO_STATIC_ROOT', '')
 
 ## The URL path from your app home, where static files will be served from (their URL base path)
