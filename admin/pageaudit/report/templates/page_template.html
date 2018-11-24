@@ -1,5 +1,6 @@
 {% load static %}
 {% load bannernotification %}
+{% load compress %}
 {% load define %}
 {% load flatpages %}
 {% load flatpages_nav_highlight %}
@@ -40,26 +41,31 @@
         <title>{% block browserTitle %}PageLab {% endblock %}</title>
         
         
-        <link href="{% static 'report/css/tachyons.min.css' %}" rel="stylesheet">
-        <link href="{% static 'report/css/site-custom.css' %}" rel="stylesheet">
-        <link href="{% static 'report/css/hint.base.min.css' %}" rel="stylesheet">
+        {% compress css %}
+            <link href="{% static 'report/css/tachyons.min.css' %}" rel="stylesheet">
+            <link href="{% static 'report/css/site-custom.css' %}" rel="stylesheet">
+            <link href="{% static 'report/css/hint.base.min.css' %}" rel="stylesheet">
+        {% endcompress %}
         
-        <script>
-            // Setup global NS and add trick to use dynamic URLs in static JS/CSS files URLs.
-            window.PL = {
-                'urls': {
-                    'static_path': '{% get_static_prefix %}',
-                    'api_get_compareinfo': '{% url 'plr:api_get_compareinfo' %}',
-                    'api_get_urlid': '{% url 'plr:api_get_urlid' %}',
-                    'api_url_typeahead': '{% url 'plr:api_url_typeahead' %}',
-                    'home': '{% url 'plr:home' %}'
-                }
-            };
-        </script>
+        {% compress js %}
+            <script>
+                // Setup global NS and add trick to use dynamic URLs in static JS/CSS files URLs.
+                window.PL = {
+                    'urls': {
+                        'static_path': '{% get_static_prefix %}',
+                        'api_get_compareinfo': '{% url 'plr:api_get_compareinfo' %}',
+                        'api_get_urlid': '{% url 'plr:api_get_urlid' %}',
+                        'api_url_typeahead': '{% url 'plr:api_url_typeahead' %}',
+                        'home': '{% url 'plr:home' %}'
+                    }
+                };
+            </script>
+            
+    		<script src="{% static 'report/js/jquery-3.3.1.min.js' %}"></script>
+    		<script src="{% static 'report/js/site-custom.js' %}"></script>
+    		<script src="{% static 'report/js/compare.js' %}"></script>
+        {% endcompress %}
         
-		<script src="{% static 'report/js/jquery-3.3.1.min.js' %}"></script>
-		<script src="{% static 'report/js/site-custom.js' %}"></script>
-
         {% block extraFiles %} {% endblock %}
     
     </head>

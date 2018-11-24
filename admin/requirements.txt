@@ -11,3 +11,4 @@ ipdb
 pygraphviz
 django-inline-static
 urllib3
+django_compressor

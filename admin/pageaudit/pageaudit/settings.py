@@ -12,10 +12,13 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
+## BASE_DIR is where your manage.py is.
+## SETTINGS_PATH is BASE_DIR + your_project_name (where settings.py is).
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 36214400
 # Quick-start development settings - unsuitable for production
@@ -25,6 +28,8 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 36214400
 SECRET_KEY = 'qhk(v0g!4#(+_$$36hyks$nx!wkq$g&8qfgb92)92e)jkm1g%a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# To test Django in "debug = false" mode, but using Django to server static files as in dev, 
+#  run this locally:  `manage.py runserver --insecure`
 DEBUG = os.getenv('DJANGO_DEBUG_FLAG', False)
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
@@ -35,7 +40,9 @@ if os.getenv('DJANGO_ALLOWED_HOST'):
 INTERNAL_IPS = ['127.0.0.1',]
 
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
-DBBACKUP_STORAGE_OPTIONS = {'location': '/var/webplatform/backups/pagelab'}
+DBBACKUP_STORAGE_OPTIONS = {
+    'location': os.getenv('DJANGO_PAGELAB_DBBACKUP_PATH', '')
+}
 DBBACKUP_DATE_FORMAT = 'date-%d-%H'
 DBBACKUP_FILENAME_TEMPLATE = 'pagelab-{datetime}.{extension}'
 
@@ -56,6 +63,7 @@ INSTALLED_APPS = [
     'report',
     'django_extensions',
     'dbbackup',
+    'compressor',
 ]
 
 MIDDLEWARE = [
@@ -155,13 +163,39 @@ SITE_ID = 1
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_ROOT = os.getenv('DJANGO_STATIC_ROOT', '/var/webplatform/static/pagelab')
+STATICFILES_FINDERS = (
+    ## Django defaults:
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    ## Other modules:
+    'compressor.finders.CompressorFinder',
+)
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static/"),
 ]
 
+## The directory on your filesystem where you want static files copied and served by YOUR WEB SERVER.
+## When you run 'collectstatic', it copies them here.
+## This is a production-only setting. It's not used in DEBUG mode.
+## In DEBUG mode, files are served BY DJANGO from STATICFILES_DIRS var directory above.
+STATIC_ROOT = os.getenv('DJANGO_STATIC_ROOT', '')
+
+## The URL path from your app home, where static files will be served from (their URL base path)
+## In DEBUG mode, files serve from your STATICFILES_DIRS directory.
+## In production/non-DEBUG mode, files serve from your STATIC_ROOT filesystem path dir.
 STATIC_URL = os.getenv('DJANGO_STATIC_URL', '/static-pagelab/')
 MEDIA_URL = os.getenv('DJANGO_MEDIA_URL', '/media/')
+
+
+## Compressor module settings.
+## Compressor is default set to OPPOSITE of DEBUG. 
+## To force compressor locally during debug, add "COMPRESS_ENABLED = True" var to your settings_local.py
+COMPRESS_ROOT = os.path.join(BASE_DIR, "static/")
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter', 
+    'compressor.filters.cssmin.rCSSMinFilter'
+]
 
 ## Custom signin, signout, and post-signout page.
 LOGIN_URL = '%s/report/signin/' % FORCE_SCRIPT_NAME
@@ -169,10 +203,15 @@ LOGOUT_URL = '%s/report/signout/' % FORCE_SCRIPT_NAME
 LOGOUT_REDIRECT_URL = '%s/report/signedout/' % FORCE_SCRIPT_NAME
 
 
-## Django first allows easy dev access via Django and wont error on LDAP for a local user.
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-##LDAP_URL = ''
 
+## Local settings override for ease, instead of/in addition to using ENV vars.
+## Create a settings_local.py and override any vars above, even if they were set in your ENV.
+try:
+    from .settings_local import *
+except ImportError:
+    pass
+    

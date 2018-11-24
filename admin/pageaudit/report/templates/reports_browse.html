@@ -1,6 +1,7 @@
 {% extends "page_template.html" %}
 
 {% load beautify %}
+{% load compress %}
 {% load static %}
 
 
@@ -12,65 +13,71 @@
   
         
 {% block extraFiles %}
+
+    {# Already compressed version, no point. #}
+    {# If we add select list on any other page, move select2 JS/CSS to common template include compress. #}
     <link href="{% static 'report/css/select2.min.css' %}" rel="stylesheet"/>
-    <script src="{% static 'report/js/select2.min.js' %}"></script>
-    <script src="{% static 'report/js/compare.js' %}"></script>
-        
-    <script>
-        
-        (function ($) {
+    
+    {# Compress all this into 1 included compressed cached file. #}
+    {% compress js %}
+        <script src="{% static 'report/js/select2.min.js' %}"></script>
             
-            var $sortForm, $loadmoreContainer, $cardContainer, pageNum = 1;
+        <script>
             
-            
-            function setupLoadMore () {
-                $loadmoreContainer.find("button")[0].addEventListener("click", loadMoreCards);
-            }
-            
-            
-            function loadMoreCards () {
-                $.ajax({
-                    url: "{% url 'plr:api_home_items' %}?page=" + (pageNum + 1),
-                    dataType: "json",
-                    data: $sortForm.serialize(),
-                    success: function (data) {
-                        $cardContainer.append(data.resultsHtml);
-                        
-                        PL.compare.preselectCheckbox($cardContainer.find("input:checkbox"));
-                        
-                        if (data.hasNextPage) {
-                            pageNum = (data.pageNum + 1);
-                        }
-                        else {
-                            $loadmoreContainer.remove();
-                        }
-                    }
-               });
-            }
-            
-            
-            $(function () {
-                $cardContainer = $("#pl-cards-container");
-                $loadmoreContainer = $("#pl-loadmore");
-                $sortForm = $("#pl-sortform");
+            (function ($) {
                 
-                if ($loadmoreContainer[0]) {
-                    setupLoadMore();
+                var $sortForm, $loadmoreContainer, $cardContainer, pageNum = 1;
+                
+                
+                function setupLoadMore () {
+                    $loadmoreContainer.find("button")[0].addEventListener("click", loadMoreCards);
                 }
                 
-                // Setup checkboxes on this page to add/remove items in the compare tray.
-                PL.compare.setupCompareCheckboxes($("#pl-cards-container"));
-                PL.compare.preselectCheckbox($("input:checkbox"));
                 
-                // Setup select2 widgets.
-                $("select").select2({
-                    minimumResultsForSearch: 8
+                function loadMoreCards () {
+                    $.ajax({
+                        url: "{% url 'plr:api_home_items' %}?page=" + (pageNum + 1),
+                        dataType: "json",
+                        data: $sortForm.serialize(),
+                        success: function (data) {
+                            $cardContainer.append(data.resultsHtml);
+                            
+                            PL.compare.preselectCheckbox($cardContainer.find("input:checkbox"));
+                            
+                            if (data.hasNextPage) {
+                                pageNum = (data.pageNum + 1);
+                            }
+                            else {
+                                $loadmoreContainer.remove();
+                            }
+                        }
+                   });
+                }
+                
+                
+                $(function () {
+                    $cardContainer = $("#pl-cards-container");
+                    $loadmoreContainer = $("#pl-loadmore");
+                    $sortForm = $("#pl-sortform");
+                    
+                    if ($loadmoreContainer[0]) {
+                        setupLoadMore();
+                    }
+                    
+                    // Setup checkboxes on this page to add/remove items in the compare tray.
+                    PL.compare.setupCompareCheckboxes($("#pl-cards-container"));
+                    PL.compare.preselectCheckbox($("input:checkbox"));
+                    
+                    // Setup select2 widgets.
+                    $("select").select2({
+                        minimumResultsForSearch: 8
+                    });
                 });
-            });
-            
-        })(jQuery);
                 
-    </script>
+            })(jQuery);
+                    
+        </script>
+    {% endcompress %}
     
 {% endblock %}
 
