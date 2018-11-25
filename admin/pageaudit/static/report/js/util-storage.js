@@ -61,7 +61,12 @@
 		@return {Boolean} True if localStorage is supported, else false.
 	**/
 	storageUtil.isSupported = function () {
-		return localStorage && typeof JSON !== "undefined";
+		try {
+    		return localStorage && typeof JSON !== "undefined";
+        }
+        catch {
+            return false;
+        }
 	};
 	
 	/**
