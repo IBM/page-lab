@@ -223,7 +223,6 @@ def api_home_items(request):
         })
 
 
-
 ##
 ##  /report/
 ##
@@ -324,10 +323,12 @@ def reports_dashboard(request):
 
 
 ##
-##  /report/lighthouse-viewer
+##  /report/lighthouse-viewer/
 ##
-##  View Lighthouse report. Pulled from official Lighthouse/lighthouse-viewer repo.
-##  
+##  View a Lighthouse report.
+##  HTML and associated static files pulled from official Lighthouse/lighthouse-viewer repo,
+##   and modified for Django static files setup:
+##  https://github.com/GoogleChrome/lighthouse/tree/master/lighthouse-viewer
 ##
 ##
 def reports_lighthouse_viewer(request):
