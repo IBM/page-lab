@@ -172,7 +172,7 @@ a {
     bottom: 0;
     display: none;
     position: fixed;
-    transform: translate3d(0, calc(100% - 46px),0);
+    transform: translate3d(0, calc(100% - 51px),0);
     transition: transform .5s cubic-bezier(0.2, 1, 0.2, 1);
     width: 100%;
     z-index: 5;
