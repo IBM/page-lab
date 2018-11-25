@@ -323,22 +323,6 @@ def reports_dashboard(request):
 
 
 ##
-##  /report/lighthouse-viewer/
-##
-##  View a Lighthouse report.
-##  HTML and associated static files pulled from official Lighthouse/lighthouse-viewer repo,
-##   and modified for Django static files setup:
-##  https://github.com/GoogleChrome/lighthouse/tree/master/lighthouse-viewer
-##
-##
-def reports_lighthouse_viewer(request):
-
-    context = {}
-    
-    return render(request, 'lighthouse-viewer/index.html', context)
-
-
-##
 ##  /report/urls/compare/<id1>/<id2>/<id3>?/
 ##
 ##  Compares 2 (required) or optional 3rd URL report side-by-side.
