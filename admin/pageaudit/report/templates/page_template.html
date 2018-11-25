@@ -50,6 +50,7 @@
         {% compress js %}
             <script>
                 // Setup global NS and add trick to use dynamic URLs in static JS/CSS files URLs.
+                // Can't do Django vars in static files, so we set it in the template like this.
                 window.PL = {
                     'urls': {
                         'static_path': '{% get_static_prefix %}',
@@ -63,10 +64,11 @@
                 };
             </script>
             
-    		<script src="{% static 'report/js/jquery-3.3.1.min.js' %}"></script>
-    		<script src="{% static 'report/js/site-custom.js' %}"></script>
-    		<script src="{% static 'report/js/compare.js' %}"></script>
-    		<script src="{% static 'report/js/lighthouse-report-viewer.js' %}"></script>
+            <script src="{% static 'report/js/jquery-3.3.1.min.js' %}"></script>
+            <script src="{% static 'report/js/site-base.js' %}"></script>
+            <script src="{% static 'report/js/util-storage.js' %}"></script>
+            <script src="{% static 'report/js/compare.js' %}"></script>
+            <script src="{% static 'report/js/lighthouse-report-viewer.js' %}"></script>
         {% endcompress %}
         
         {% block extraFiles %} {% endblock %}
@@ -95,9 +97,9 @@
             
             {% block leadspace %}
                 <div class="{{ templateHelpers.classes.grid }} pl-leadspace bg-black pv4">
-			        <h1 class="f2 mt0 mb3 {{ templateHelpers.classes.siteColor }}">{% block pageTitle %}PageLab{% endblock %}</h1>
-			        {% block pageSubtitle %}{% endblock %}
-			    </div>
+                    <h1 class="f2 mt0 mb3 {{ templateHelpers.classes.siteColor }}">{% block pageTitle %}PageLab{% endblock %}</h1>
+                    {% block pageSubtitle %}{% endblock %}
+                </div>
             {% endblock %}
             
             

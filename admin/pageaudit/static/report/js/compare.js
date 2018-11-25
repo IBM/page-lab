@@ -1,5 +1,5 @@
-
 (function ($, PL) {
+    
     var compare = PL.namespace(PL, "compare");
     
     var $compareTray, 
