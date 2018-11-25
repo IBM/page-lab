@@ -106,9 +106,11 @@ def get_urls(request):
 
 
 ##
-##  /api/getlighthousedata/?q=<search string>
+##  /api/getlighthousedata/<id>/
 ##  
-##  Get the raw data object for the given LighthouseRun ID.
+##  Get the Lighthouse report's raw data object for the given LighthouseRun ID.
+##
+##
 def api_get_lighthouse_data(request, id):
     lightouseData = {}
     
