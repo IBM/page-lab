@@ -109,7 +109,7 @@
     **/
     function getItemHtml (id) {
         $.ajax({
-            url: PL.urls.api_get_compareinfo + "?id=" + id,
+            url: PL.urls.api_compareinfo + "?id=" + id,
             dataType: "json",
             success: function (data) {
                 addToCompareTray(data);

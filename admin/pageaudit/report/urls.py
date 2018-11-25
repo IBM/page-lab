@@ -11,9 +11,9 @@ from .views import *
 urlpatterns = [
 
     ## APIs.
-    url(r'^api/geturlid/$', api_get_urlid, name='api_get_urlid'),
-    url(r'^api/getlighthousedata/((?P<id>[\d-]+)/)?$', api_get_lighthouse_data, name='api_get_lighthouse_data'),
-    url(r'^api/getcompareinfo/$', api_get_compareinfo, name='api_get_compareinfo'),
+    url(r'^api/urlid/$', api_urlid, name='api_urlid'),
+    url(r'^api/lighthousedata/((?P<id>[\d-]+)/)?$', api_lighthouse_data, name='api_lighthouse_data'),
+    url(r'^api/compareinfo/$', api_compareinfo, name='api_compareinfo'),
     url(r'^api/home/items/$', api_home_items, name='api_home_items'),
     url(r'^api/urltypeahead/$', api_url_typeahead, name='api_url_typeahead'),
     

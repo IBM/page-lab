@@ -106,12 +106,12 @@ def get_urls(request):
 
 
 ##
-##  /api/getlighthousedata/<id>/
+##  /api/lighthousedata/<id>/
 ##  
 ##  Get the Lighthouse report's raw data object for the given LighthouseRun ID.
 ##
 ##
-def api_get_lighthouse_data(request, id):
+def api_lighthouse_data(request, id):
     lightouseData = {}
     
     try:
@@ -142,10 +142,10 @@ def api_url_typeahead(request):
 
 
 ##
-##  /api/geturlid/?url=<search string>
+##  /api/urlid/?url=<search string>
 ##
 ##
-def api_get_urlid(request):
+def api_urlid(request):
     url = request.GET.get('url', '')
     
     try:
@@ -159,10 +159,10 @@ def api_get_urlid(request):
 
 
 ##
-##  /api/getcompareinfo/?id=<id>
+##  /api/compareinfo/?id=<id>
 ##
 ##
-def api_get_compareinfo(request):
+def api_compareinfo(request):
     id = request.GET.get('id', '')
     html = None
     

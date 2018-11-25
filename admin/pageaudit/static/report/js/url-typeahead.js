@@ -161,7 +161,7 @@
             // Returns the ID or null.
             // If not null, goto ID.
             $.ajax({
-                url: PL.urls.api_get_urlid + "?url=" + $inputField[0].value,
+                url: PL.urls.api_urlid + "?url=" + $inputField[0].value,
                 dataType: "json",
                 success: function (data) {
                     try {

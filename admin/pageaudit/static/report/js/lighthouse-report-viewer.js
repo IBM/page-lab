@@ -39,7 +39,7 @@
                 // Pass the object to the Lighthouse Viewer function.
                 // Boom.
                 $.ajax({
-                    url: PL.urls.api_get_lighthouse_data + evt.currentTarget.dataset.runid,
+                    url: PL.urls.api_lighthouse_data + evt.currentTarget.dataset.runid,
                     dataType: "json",
                     success: function (d) {
                         PL.openTabAndSendJsonReport(d.results.rawData, PL.urls.report_lighthouse_viewer);
