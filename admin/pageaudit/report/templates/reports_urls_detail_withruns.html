@@ -13,7 +13,7 @@
 {% block pageSubtitle %} 
     <p><a class="light-blue no-underline underline-hover animate-hover" href="{{ url1.url }}" title="Visit page in new window" target="_blank">{{ url1.url|noprotocol }}</a></p>
     <div class="pl-compare-checkbox-con pt2">
-    	<span class="f6">
+        <span class="f6">
             <input id="id_{{ url1.id }}" type="checkbox" value="{{ url1.id }}" class="w1 dib pointer" style="transform: scale(1.1);"><label for="id_{{ url1.id }}" class="ml1 relative dib pointer hover-light-blue light-gray">Compare</label>
         </span>                       
     </div>
@@ -56,10 +56,10 @@
     <div class="{{ templateHelpers.classes.grid }} mt5 cf">
         <div class="fl w-100 w-20-ns tc tl-ns mb3">
 
-        	<p class="mb3 mt0">
+            <p class="mb3 mt0">
                 <a href="{{ url1.url }}" title="View page in new window" target="_blank"><img class="{{ templateHelpers.classes.imageBorder }}" src="data:image/png;base64,{{ url1.lighthouse_run.thumbnail_image }}" width="155"></a>
             </p>
-        	
+            
         </div>
         <div class="fl w-100 w-80-ns mb3">
             <div id="linechart"></div>
@@ -201,7 +201,8 @@
     <div id="pl-rundata-kpis" class="{{ templateHelpers.classes.grid }} cf">
         <table class="f6 hover display stripe" style="width:100%!important;" data-column-defs='[{"targets":"no-sort","orderable":false}]' data-buttons='["excel"]' data-dom="lBfrtip">
             <thead>
-	            <th scope="col" class="no-sort"></th>
+                <th scope="col" class="no-sort"></th>
+                <th class="no-sort">Report</th>
                 <th>Test time</th>
                 <th>Performance score</th>
                 <th>Accessibility score</th>
@@ -219,32 +220,33 @@
             </thead>
             
             <tbody>
-	            {% for lighthouseRun in lighthouseRuns %}
-	                <tr>
-		                <td>{{ forloop.counter }}</td>
-		                <td>{{ lighthouseRun.created_date }}</td>
-		                <td>{{ lighthouseRun.performance_score }}</td>
-		                <td>{{ lighthouseRun.accessibility_score }}</td>
-		                <td>{{ lighthouseRun.seo_score }}</td>
-		                <td>{{ lighthouseRun.total_byte_weight|byteToKb }}</td>
-		                <td>{{ lighthouseRun.number_network_requests }}</td>
-		                <td>{{ lighthouseRun.time_to_first_byte }}</td>
-		                <td>{{ lighthouseRun.dom_content_loaded }}</td>
-		                <td>{{ lighthouseRun.first_contentful_paint }}</td>
-		                <td>{{ lighthouseRun.first_meaningful_paint }}</td>
-		                <td>{{ lighthouseRun.interactive }}</td>
-		                <td>{{ lighthouseRun.dom_loaded }}</td>
-		                <td>{{ lighthouseRun.redirect_hops }}</td>
-		                <td>{{ lighthouseRun.redirect_wasted_ms }}</td>
-	                </tr>
-	            {% endfor %}
+                {% for lighthouseRun in lighthouseRuns %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><a aria-label="View report in new window" class="pl-open-lighthouse-report hint--top-right small" href="#" data-runid="{{ lighthouseRun.id }}">{{ templateHelpers.html.icons.newWindow|safe }}</a></td>
+                        <td>{{ lighthouseRun.created_date }}</td>
+                        <td>{{ lighthouseRun.performance_score }}</td>
+                        <td>{{ lighthouseRun.accessibility_score }}</td>
+                        <td>{{ lighthouseRun.seo_score }}</td>
+                        <td>{{ lighthouseRun.total_byte_weight|byteToKb }}</td>
+                        <td>{{ lighthouseRun.number_network_requests }}</td>
+                        <td>{{ lighthouseRun.time_to_first_byte }}</td>
+                        <td>{{ lighthouseRun.dom_content_loaded }}</td>
+                        <td>{{ lighthouseRun.first_contentful_paint }}</td>
+                        <td>{{ lighthouseRun.first_meaningful_paint }}</td>
+                        <td>{{ lighthouseRun.interactive }}</td>
+                        <td>{{ lighthouseRun.dom_loaded }}</td>
+                        <td>{{ lighthouseRun.redirect_hops }}</td>
+                        <td>{{ lighthouseRun.redirect_wasted_ms }}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
 
 
-	{% compress js %}
-    	<script src="{% static 'report/js/jquery.datatables.pkg.min.js' %}"></script>
+    {% compress js %}
+        <script src="{% static 'report/js/jquery.datatables.pkg.min.js' %}"></script>
         <script src="{% static 'report/js/select2.min.js' %}"></script>
         <script src="{% static 'report/js/d3.v4.min.js' %}"></script>
         <script src="{% static 'report/js/c3.min.js' %}"></script>
@@ -321,6 +323,6 @@
     
     
     {% include "partials/compare_tray.html" %}
-	
+    
     
 {% endblock %}

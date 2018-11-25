@@ -1,9 +1,0 @@
-{# The URL may be new, or just not have been tested yet. In that case we show a different, minimal template. #}
-{# The majority case is that a URL has at least 1 test run, so that is first in if/else. #}
-
-
-{% if lighthouseRuns.count > 1 %}
-    {% include 'reports_urls_detail_withruns.html' %}
-{% else %}
-    {% include 'reports_urls_detail_noruns.html' %}
-{% endif %}
