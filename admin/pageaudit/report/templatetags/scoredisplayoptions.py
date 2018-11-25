@@ -1,5 +1,5 @@
 from django import template
-from ..helpers import *
+from ..helpers import GOOGLE_SCORE_SCALE
 
 register = template.Library()
 
