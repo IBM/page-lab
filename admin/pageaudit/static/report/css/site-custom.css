@@ -364,6 +364,11 @@ a {
     margin-bottom: 2rem;
 }
 
+.dtr-inline.collapsed > tbody td:first-child::before,
+.dtr-inline.collapsed > tbody th:first-child::before {
+    top: unset !important;
+}
+
 
 
 /************************************************************************************************

@@ -202,6 +202,7 @@
         <table class="f6 hover display stripe" style="width:100%!important;" data-column-defs='[{"targets":"no-sort","orderable":false}]' data-buttons='["excel"]' data-dom="lBfrtip">
             <thead>
 	            <th scope="col" class="no-sort"></th>
+                <th class="no-sort">Report</th>
                 <th>Test time</th>
                 <th>Performance score</th>
                 <th>Accessibility score</th>
@@ -222,7 +223,8 @@
 	            {% for lighthouseRun in lighthouseRuns %}
 	                <tr>
 		                <td>{{ forloop.counter }}</td>
-		                <td>{{ lighthouseRun.created_date }}</td>
+		                <td><a aria-label="View report in new window" class="pl-open-lighthouse-report hint--top-right small" href="#" data-runid="{{ lighthouseRun.id }}">{{ templateHelpers.html.icons.newWindow|safe }}</a></td>
+                        <td>{{ lighthouseRun.created_date }}</td>
 		                <td>{{ lighthouseRun.performance_score }}</td>
 		                <td>{{ lighthouseRun.accessibility_score }}</td>
 		                <td>{{ lighthouseRun.seo_score }}</td>

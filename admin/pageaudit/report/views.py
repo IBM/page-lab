@@ -107,13 +107,13 @@ def get_urls(request):
 
 ##
 ##  /api/getlighthousedata/?q=<search string>
-##
-##
+##  
+##  Get the raw data object for the given LighthouseRun ID.
 def api_get_lighthouse_data(request, id):
     lightouseData = {}
     
     try:
-        lightouseData['rawData'] = LighthouseDataRaw.objects.get(id=id).report_data
+        lightouseData['rawData'] = LighthouseRun.objects.get(id=id).lighthouse_data_raw_lighthouse_run.first().report_data
     except Exception as ex:
         pass
     
@@ -289,22 +289,21 @@ def reports_dashboard(request):
     ## Vars here allow for easy future update to scope data to any set of URLs, instead of all.
     ## This way NONE OF THE THINGS IN "CONTEXT" need to be touched.
     ## Simple change the scope/queries of these two vars.
+    urls = Url.objects.withValidRuns()
     urlKpiAverages = UrlKpiAverage.objects.all()
-    urls = Url.objects.all()
-    
     
     ## Get a bunch of counts to chart.
     ## Nothing here should be changed unless we add a new data point to chart.
     context = {
-        'urlCountTested': urls.withValidRuns().count(),
+        'urlCountTested': urls.count(),
         
         'urlGlobalPerfAvg': round(urlKpiAverages.aggregate(Avg('performance_score'))['performance_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
         'urlGlobalA11yAvg': round(urlKpiAverages.aggregate(Avg('accessibility_score'))['accessibility_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
         'urlGlobalSeoAvg': round(urlKpiAverages.aggregate(Avg('seo_score'))['seo_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
         
-        'urlPerfCountPoor': urls.filter(url_kpi_average__performance_score__gt = 5, url_kpi_average__performance_score__lt=45).count(),
-        'urlPerfCountGood': urls.filter(url_kpi_average__performance_score__gt=74).count(),
-        'urlPerfCountAvg': urls.filter(url_kpi_average__performance_score__gt=44, lighthouse_run__performance_score__lt=75).count(),
+        'urlPerfCountPoor': urls.filter(url_kpi_average__performance_score__gt = 5, url_kpi_average__performance_score__lte=GOOGLE_SCORE_SCALE['poor']['max']).count(),
+        'urlPerfCountAvg': urls.filter(url_kpi_average__performance_score__gte=GOOGLE_SCORE_SCALE['average']['min'], url_kpi_average__performance_score__lte=GOOGLE_SCORE_SCALE['average']['max']).count(),
+        'urlPerfCountGood': urls.filter(url_kpi_average__performance_score__gte=GOOGLE_SCORE_SCALE['good']['min']).count(),
         
         'urlFcpCountSlow': urls.filter(url_kpi_average__first_contentful_paint__gt=(reportBuckets['fcp']['slow']*1000)).count(),
         'urlFcpCountFast': urls.filter(url_kpi_average__first_contentful_paint__lt=(reportBuckets['fcp']['fast']*1000)).count(),
@@ -325,7 +324,8 @@ def reports_dashboard(request):
 ##
 ##  /report/lighthouse-viewer
 ##
-##  View LH raw report object. Used from official Lighthouse/lighthouse-viewer repo.
+##  View Lighthouse report. Pulled from official Lighthouse/lighthouse-viewer repo.
+##  
 ##
 ##
 def reports_lighthouse_viewer(request):
@@ -404,8 +404,7 @@ def reports_urls_detail(request, id):
     ## Add dates, formatted, as x-axis array data.
     for runData in urlLighthouseRuns:
         lineChartData['dates'].append(runData.created_date.strftime('%d-%m-%Y'))
-    
-    
+        
     context = {
         'url1': url1,
         'lighthouseRuns': urlLighthouseRuns,
