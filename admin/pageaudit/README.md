@@ -21,7 +21,7 @@ If you accidentally use `python` you will get an error like: _"Couldn't import D
 1. Ensure you have the dependencies installed.
 2. Clone the repo.
 3. From the repo root directory, run `pip3 install -r admin/requirements.txt` to install Django and all it's requirements for the app.
-4. There are some local variables and settings needed for your implementation. They can either be set as environment variables, or you can add a `settings_local.py` file with them.
+4. There are some local variables and settings needed for your implementation. They can either be set as environment variables, or you can add a `settings_local.py` file alongside the Django default `settings.py` file in the `admin/pageaudit/pageaudit/` directory with them.
  Replace the `___` with your local Postgres DB user ID/PW.
 
 
