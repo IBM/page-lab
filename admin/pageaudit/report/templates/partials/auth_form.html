@@ -3,15 +3,12 @@
 		<!-- CSRF -->
 		{% csrf_token %}
 		
-		<p>
-			<strong>{{ form.username.label_tag }}</strong>
-			{{ form.username }}
-		</p>
-		<p>
-			<strong>{{ form.password.label_tag }}</strong>
-			{{ form.password }}
-		</p>
-
-		<p class="mt4"><button class="{{ templateHelpers.classes.button }} {{ templateHelpers.classes.bluePriButton }}" type="submit">Sign in</button></p>
+		<p><strong>{{ form.username.label_tag }}</strong></p>
+		<p><input class="ba b--black-20 hover-b--current input-reset pa2 db" type="input" name="{{ form.username.name }}"></p>
+		
+		<p><strong>{{ form.password.label_tag }}</strong></p>
+		<p><input class="ba b--black-20 hover-b--current input-reset pa2 db" type="password" name="{{ form.password.name }}"></p>
+		
+		<p class="mt4"><button class="{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }}" type="submit">Sign in</button></p>
 	</form>
 
