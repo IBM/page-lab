@@ -18,7 +18,6 @@
     <style> 
            
         .pl-avg-donut {
-            display: inline-block;
             width: 230px;
         }
        
@@ -175,15 +174,15 @@
     <div class="{{ templateHelpers.classes.grid }} tc mt4">
         <p class="f4 b pb2">Average scores across <code class="fw4 dark-red">{{ urlCountTested|withComma }}</code> tested URLs</p>
         
-        <div class="pl-avg-donut mb4">
+        <div class="pl-avg-donut mb4 dib">
             {% include "partials/audit_score_donut.html" with scoreValue=urlGlobalPerfAvg %}
             <p class="f4 mt3">Performance</p>
         </div>
-        <div class="pl-avg-donut mb4">
+        <div class="pl-avg-donut mb4 dib">
             {% include "partials/audit_score_donut.html" with scoreValue=urlGlobalA11yAvg %}
             <p class="f4 mt3">Accessibility</p>
         </div>
-        <div class="pl-avg-donut mb4">
+        <div class="pl-avg-donut mb4 dib">
             {% include "partials/audit_score_donut.html" with scoreValue=urlGlobalSeoAvg %}
             <p class="f4 mt3">SEO</p>
         </div>

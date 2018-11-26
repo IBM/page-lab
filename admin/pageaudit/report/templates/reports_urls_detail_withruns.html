@@ -26,7 +26,6 @@
         <style>
             
             .pl-url-detail-donut {
-                display: inline-block;
                 width: 230px;
             }
            
@@ -73,17 +72,17 @@
     <div class="{{ templateHelpers.classes.grid }} tc">
         <h4 class="f4 b mb4">Average scores across <code class="fw4 dark-red">{{ lighthouseRuns.count }}</code> test runs</h4>
     
-        <div class="pl-url-detail-donut mb4">
+        <div class="pl-url-detail-donut mb4 dib">
             <div>{% include "partials/audit_score_donut.html" with scoreValue=url1.url_kpi_average.performance_score %}</div>
             <p class="f4 mt3">Performance</p>
         </div>
         
-        <div class="pl-url-detail-donut mb4">
+        <div class="pl-url-detail-donut mb4 dib">
             <div>{% include "partials/audit_score_donut.html" with scoreValue=url1.url_kpi_average.accessibility_score %}</div>
             <p class="f4 mt3">Accessibility</p>
         </div>
         
-        <div class="pl-url-detail-donut mb4">
+        <div class="pl-url-detail-donut mb4 dib">
             <div>{% include "partials/audit_score_donut.html" with scoreValue=url1.url_kpi_average.seo_score %}</div>
             <p class="f4 mt3">SEO</p>
         </div>
@@ -223,7 +222,7 @@
                 {% for lighthouseRun in lighthouseRuns %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td><a aria-label="View report in new window" class="pl-open-lighthouse-report hint--top-right small" href="#" data-runid="{{ lighthouseRun.id }}">{{ templateHelpers.html.icons.newWindow|safe }}</a></td>
+                        <td class="tc"><a aria-label="View report in new window" class="pl-open-lighthouse-report hint--top-right small" href="#" data-runid="{{ lighthouseRun.id }}">{{ templateHelpers.html.icons.newWindow|safe }}</a></td>
                         <td>{{ lighthouseRun.created_date }}</td>
                         <td>{{ lighthouseRun.performance_score }}</td>
                         <td>{{ lighthouseRun.accessibility_score }}</td>
