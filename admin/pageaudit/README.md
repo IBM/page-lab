@@ -15,10 +15,12 @@
 **Note**: We are using python 3, so any command should use  `python3` for the command, not `python`.
 If you accidentally use `python` you will get an error like: _"Couldn't import Django. Are you sure it's installed..."_
 
+
 ## Getting started - First time install:
 
 - Ensure you have the dependencies installed.
-- Setup some environment variables on your machine, replacing the `___` with your local Postgres DB user ID/PW.
+- There are some local variables and settings needed for your implementation. They can either be set as environment variables, or you can add a `settings_local.py` file with them.
+ Replace the `___` with your local Postgres DB user ID/PW.
  
 ```
 DJANGO_DB_HOST=127.0.0.1
@@ -28,10 +30,17 @@ DJANGO_DEBUG_FLAG=True
 DJANGO_ENV=production
 DJANGO_FORCE_SCRIPT_NAME=
 ```
-- Create a database called `perf_lab` (default), or create an ENV variable called `DJANGO_DB_NAME` and set it to your local database name.
+- Create a database called `perf_lab` (default), or create a variable called `DJANGO_DB_NAME` and set it to your local database name.
 - Clone the repo.
 - Run `npm install`.
 
+
+## Getting started - Sample data:
+A sample data set is available to be loaded via Django's `manage.py loaddata` command. The sample data set contains:
+- 51 URLs (50 with runs)
+- Each URL has ~13 test runs.
+- Superuser with ID/PW: superuser / django4ever
+- The data dump file is available here: https://github.com/ecumike/page-lab-sampledata
 
 
 ## Getting started - Coding:
@@ -43,12 +52,14 @@ DJANGO_FORCE_SCRIPT_NAME=
     - https://docs.djangoproject.com/en/2.0/misc/design-philosophies/
     - https://docs.djangoproject.com/en/2.0/internals/contributing/writing-code/coding-style/
 
+
 ## Populating data
 - To populate the PageLab Django app with data, goto the Django admin and add a couple URLs to test.
 - Install the [PageLab node app](../../pageaudit).
 - Run the PageLab node app.
 - The PageLab node app will test each URL you have in the Django app once, then stop.
 - Go back and view the site at `https://localhost:8000/report/` and you should see some reports.
+
 
 ## Design
 We are using:
