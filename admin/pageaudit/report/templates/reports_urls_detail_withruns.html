@@ -65,7 +65,7 @@
     {{ templateHelpers.html.hr|safe }}
     
     
-    <h4 class="f4 b mb4 tc">Average scores across <code class="fw4 dark-red">{{ lighthouseRuns.count }}</code> test runs</h4>
+    <h4 class="{{ templateHelpers.classes.grid }} f4 b mb4 tc">Average scores across <code class="fw4 dark-red">{{ lighthouseRuns.count }}</code> test runs</h4>
     
     <div class="{{ templateHelpers.classes.grid }} tc flex center justify-center flex-column flex-row-ns">
         <div class="pl-url-detail-donut mb4 w-100 w5-ns">
