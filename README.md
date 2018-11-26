@@ -1,6 +1,6 @@
 # Page Lab
 
-Web Page Performance Laboratory: Scaling [Lighthouse](https://github.com/GoogleChrome/Lighthouse "Google Lighthouse") performace and web testing tools
+Web Page Performance Laboratory: Scaling [Lighthouse](https://github.com/GoogleChrome/Lighthouse "Google Lighthouse") performance and web testing tools
 
 * This is Alpha software and needs some testing and automation. PR's are accepted!
 
@@ -17,7 +17,7 @@ The goals here are 3-fold:
 
 ## Get started
 
-### Setup Django 'Heads Up Display' dashboard
+### Setup Django Lighthouse reporting app
 
 * see: [Django README](admin/pageaudit/README.md "Django README")
 
