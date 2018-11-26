@@ -41,7 +41,7 @@ If you accidentally use `python` you will get an error like: _"Couldn't import D
 A sample data set is available to be loaded via Django's `manage.py loaddata` command. The sample data set contains:
 - 51 URLs (50 with runs)
 - Each URL has ~13 test runs.
-- Superuser with ID/PW: superuser / django4ever
+- Superuser with ID/PW: `superuser` / `django4ever`
 - The sample data set file is available here: https://github.com/ecumike/page-lab-sampledata
 
 
@@ -56,6 +56,7 @@ A sample data set is available to be loaded via Django's `manage.py loaddata` co
 
 
 ## Populating data
+You can pre-populate the app with the sample data set as above, and/or you can add URLs via the Django admin and run a few test runs via the Node app.
 - To populate the PageLab Django app with data, goto the Django admin and add a couple URLs to test.
 - Install the [PageLab node app](../../pageaudit).
 - Run the PageLab node app.
