@@ -5,6 +5,26 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 
 
+##  Global var to be used any time we need to use the range or min/max # of
+##   Google's category scoring scale. Names changed for more global usage.
+##   Ex: An accessibility score isn't "slow", it's "poor".
+##  Comes from Google documentation:  https://developers.google.com/web/tools/lighthouse/v3/scoring
+GOOGLE_SCORE_SCALE = {
+        "poor": {
+            "min": 0,
+            "max": 49
+        },
+        "average": {
+            "min": 50,
+            "max": 89
+        },
+        "good": {
+            "min": 90,
+            "max": 100
+        }
+    }
+
+
 ##
 ##  User timings is an array of generic non-property-named objects.
 ##  To get the one you want, you have to loop thru the array and find the one with the name you want.

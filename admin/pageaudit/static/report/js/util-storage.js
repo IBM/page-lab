@@ -1,26 +1,7 @@
 (function ($, PL) {
 
-	// Core namespace utility
-	PL.namespace = function() {
-		var scope = arguments[0],
-			ln = arguments.length,
-			i, value, split, x, xln, parts, object;
+	var storageUtil = PL.namespace(PL, "util.storage");
 
-		for (i = 1; i < ln; i++) {
-			value = arguments[i];
-			parts = value.split(".");
-			object = scope[parts[0]] = Object(scope[parts[0]]);
-			for (x = 1, xln = parts.length; x < xln; x++) {
-				object = object[parts[x]] = Object(object[parts[x]]);
-			}
-		}
-		return object;
-	};
-
-
-
-	// Storage Util
-	var me = PL.namespace(PL, "util.storage");
 
 	/**
 		Clears the user's browser localStorage (for the owning domain).
@@ -29,8 +10,8 @@
 		@method clear
 		@return {Boolean} True if localStorage is supported, else false.
 	**/
-	me.clear = function () {
-		if (!me.isSupported()) {
+	storageUtil.clear = function () {
+		if (!storageUtil.isSupported()) {
 			return false;
 		}
 
@@ -46,12 +27,12 @@
 		@return {Varies} The data for the key if localStorage is supported &amp;&amp; if key exists &amp;&amp; key is not expired,
 		 else returns: null.
 	**/
-	me.getItem = function (key) {
+	storageUtil.getItem = function (key) {
 		var storageData = null,
 			expires = 0, // 0 means no expiration.
 			timeNow = new Date().getTime();
 			
-		if (!me.isSupported()) {
+		if (!storageUtil.isSupported()) {
 			return null;
 		}
 
@@ -61,7 +42,7 @@
 			expires = JSON.parse(localStorage.getItem(key)).expires;
 
 			if (expires !== 0 && expires < timeNow) {
-				me.removeItem(key);
+				storageUtil.removeItem(key);
 			}
 			else {
 				storageData = JSON.parse(localStorage.getItem(key)).value;
@@ -79,8 +60,13 @@
 		@method isSupported
 		@return {Boolean} True if localStorage is supported, else false.
 	**/
-	me.isSupported = function () {
-		return localStorage && typeof JSON !== "undefined";
+	storageUtil.isSupported = function () {
+		try {
+    		return localStorage && typeof JSON !== "undefined";
+        }
+        catch {
+            return false;
+        }
 	};
 	
 	/**
@@ -90,8 +76,8 @@
 		@param key {String} The name of the key/item to delete from localStorage.
 		@return {Boolean} True if localStorage is supported, else false.
 	**/
-	me.removeItem = function (key) {
-		if (!me.isSupported()) {
+	storageUtil.removeItem = function (key) {
+		if (!storageUtil.isSupported()) {
 			return false;
 		}
 		localStorage.removeItem(key);
@@ -109,18 +95,18 @@
 		  If lifetime is not supplied, the storage item TTL is session-only.
 		@return {Boolean} True if localStorage is supported, else false.
 	**/
-	me.setItem = function (key, value, lifetime) {
+	storageUtil.setItem = function (key, value, lifetime) {
 		var expireTime = 0,
 			storageObject = {},
 			timeNow = new Date().getTime();
 		
 		// Can't do shit if localStorage isn't supported.
-		if (!me.isSupported()) {
+		if (!storageUtil.isSupported()) {
 			return false;
 		}
 
 		// First we should remove this key if it already exists.
-		me.removeItem(key);
+		storageUtil.removeItem(key);
 
 		// If lifetime is specified...
 		if (lifetime) {
@@ -139,6 +125,6 @@
 
 		return true;
 	};
-	
-})(jQuery, PL);
+		
 
+})(jQuery, PL);

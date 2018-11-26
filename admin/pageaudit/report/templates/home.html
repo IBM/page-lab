@@ -1,6 +1,7 @@
 {% extends "page_template.html" %}
 
 {% load beautify %}
+{% load compress %}
 {% load static %}
 
 
@@ -8,7 +9,11 @@
 
 
 {% block extraFiles %}
-    <script src="{% static 'report/js/url-typeahead.js' %}"></script>
+    
+    {% compress js %}
+        <script async src="{% static 'report/js/url-typeahead.js' %}"></script>
+    {% endcompress %}
+
 {% endblock %}
 
 
@@ -34,4 +39,8 @@
         </form>
 	</div>
 		
+
+    {% include "partials/compare_tray.html" %}
+    
+    
 {% endblock %}

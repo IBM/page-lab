@@ -17,3 +17,5 @@ tests/.coverage
 tests/coverage_html/
 tests/report/
 _local
+settings_local.py
+admin/pageaudit/static/CACHE/

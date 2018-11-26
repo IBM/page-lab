@@ -1,5 +1,5 @@
-
 (function ($, PL) {
+    
     var compare = PL.namespace(PL, "compare");
     
     var $compareTray, 
@@ -37,8 +37,10 @@
                 return this.set(arrIds);
             }
         };
-        
+    
+    // Set the above apis to be public callable via our PL namespace.  
     compare.storage = compareLs;
+    
     
     /**
         Called whenever we add/remove an item, this shows or hides the tray.
@@ -109,13 +111,13 @@
     **/
     function getItemHtml (id) {
         $.ajax({
-            url: PL.urls.api_get_compareinfo + "?id=" + id,
+            url: PL.urls.api_compareinfo + "?id=" + id,
             dataType: "json",
             success: function (data) {
                 addToCompareTray(data);
             },
             error: function (data) {
-                console.warn("Sorry, there was an error receiving the page's info for the compare tray.");
+                console.warn("Sorry, there was an error receiving the URL's info for the compare tray.");
             }
         })
     }
@@ -138,7 +140,9 @@
     
     /**
         Pre-check a URL's checkbox if it is in the localStorage list of items to compare.
-        
+        <br>This is called by each page that wants to have checkboxes setup to enable the user
+          to select a UR to add to the compare tray.
+          
         @method populateCompareTrayFromStorage
         @param $checkboxes {DOM elements/jQuery obj} A list of checkbox elements to test if one needs to be pre-checked.
     **/
@@ -195,6 +199,8 @@
     /**
         Binds (via defer/bubbling) all checkboxes inside the passed element to enable them 
           to add/remove items in the compare tray.
+        <br>This is called by each page that wants to have checkboxes setup to enable the user
+          to select a UR to add to the compare tray.
         
         @method setupCompareCheckboxes
         @param $elContainer {DOM/jQuery object} DOM element to search thru and bind checkboxes 
@@ -276,12 +282,14 @@
     // Strictly sets up the tray. 
     // Checkbox bindings are util fuction each page calls as appropriate onload.
     $(function () {
-        $compareTray = $("#pl-compare");
-        $compareTrayBody = $("#pl-compare-body");
-        $compareTrayCompareLink = $(".pl-compare-comparelink-con")
-        setupCompareTrayActions();
-        populateCompareTrayFromStorage();
-        activateTray();
+        if (document.getElementById("pl-compare")) {
+            $compareTray = $("#pl-compare");
+            $compareTrayBody = $("#pl-compare-body");
+            $compareTrayCompareLink = $(".pl-compare-comparelink-con")
+            setupCompareTrayActions();
+            populateCompareTrayFromStorage();
+            activateTray();
+        }
     });  
     
     

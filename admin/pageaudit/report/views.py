@@ -48,6 +48,10 @@ SUCCESS = 'success'
 ##
 @csrf_exempt
 def collect_report(request):
+    """
+    Web service URL where Lighthouse report data is POST'd and saved in Django.
+    """
+    
     if request.method == 'GET':
         return HttpResponseNotAllowed('GET')
     elif request.method == 'POST':
@@ -81,8 +85,10 @@ def collect_report(request):
 ##
 def get_urls(request):
     """
-    Get a list of URLS to process
+    Web service URL to get a list of URLS to process by the Lighthouse test queue.
+    Only URLs that are "active" are returned to be tested.
     """
+    
     urls = []
     qs = Url.objects.allActive().order_by('id')
     
@@ -106,16 +112,44 @@ def get_urls(request):
 
 
 ##
+##  /api/lighthousedata/<id>/
+##  
+##  Get the Lighthouse report's raw data object for the given LighthouseRun ID.
+##
+##
+def api_lighthouse_data(request, id):
+    """
+    Takes a given LighthouseRun ID and returns it's raw report data object.
+    If none exists, returns empty results object.
+    """
+    
+    lightouseData = {}
+    
+    try:
+        lightouseData['rawData'] = LighthouseRun.objects.get(id=id).lighthouse_data_raw_lighthouse_run.get().report_data
+    except Exception as ex:
+        pass
+    
+    return JsonResponse({
+        'results': lightouseData 
+    })
+
+
+##
 ##  /api/urltypeahead/?q=<search string>
 ##
 ##
 def api_url_typeahead(request):
+    """
+    Takes a given string and returns 6 URLs that contain it.
+    """
+    
     textString = request.GET.get('q', '')
     
     urlList = []
 
     if textString != '':
-        urlList = list(Url.objects.filter(url__contains=textString)[:6].values('id', 'url', 'lighthouse_run__id'))
+        urlList = list(Url.objects.filter(url__contains=textString)[:6].values('id', 'url'))
     
     return JsonResponse({
         'results': urlList 
@@ -123,10 +157,15 @@ def api_url_typeahead(request):
 
 
 ##
-##  /api/geturlid/?url=<search string>
+##  /api/urlid/?url=<search string>
 ##
 ##
-def api_get_urlid(request):
+def api_urlid(request):
+    """
+    Takes a given URL and returns the ID. Used by home page search.
+    When you type/select a URL, the ID is retrieved and sends you to that page.
+    """
+    
     url = request.GET.get('url', '')
     
     try:
@@ -140,10 +179,14 @@ def api_get_urlid(request):
 
 
 ##
-##  /api/getcompareinfo/?id=<id>
+##  /api/compareinfo/?id=<id>
 ##
 ##
-def api_get_compareinfo(request):
+def api_compareinfo(request):
+    """
+    Takes a given URL id and returns the info for it, used by the compare tray.
+    """
+    
     id = request.GET.get('id', '')
     html = None
     
@@ -178,6 +221,12 @@ def api_get_compareinfo(request):
 ##
 ##
 def api_home_items(request):
+    """
+    Used by home page "more" button at bottom.
+    Gets 20 'more' report cards, with offset/pagination, and returns the cards HTML
+    to inject at the bottom of the page.
+    """
+    
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
         'sortorder': request.GET.get('sortorder'),
@@ -204,27 +253,6 @@ def api_home_items(request):
         })
 
 
-
-########################################################################
-########################################################################
-##
-##  PAGES
-##
-########################################################################
-########################################################################
-
-
-##
-##  /report/test/
-##
-##
-def test(request):
-
-    context = {}
-
-    return render(request, 'home.html', context)
-
-
 ##
 ##  /report/
 ##
@@ -232,7 +260,10 @@ def test(request):
 ##
 ##
 def home(request):
-
+    """
+    Site home page.
+    """
+    
     context = {}
     
     return render(request, 'home.html', context)
@@ -242,10 +273,18 @@ def home(request):
 ##  /report/browse/
 ##
 ##
+<<<<<<< HEAD
 def reports_browse(request, filter_slug=''):
     filter = UrlFilter.get_filter_safe(filter_slug)
     ids = list(filter.run_query().values_list('id', flat=True)) if filter != None else [] 
 
+=======
+def reports_browse(request):
+    """
+    Browse page showing list of report cards.
+    """
+    
+>>>>>>> e0a38a901651efc8bde91047f5a90fb8ae90bec9
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
         'sortorder': request.GET.get('sortorder'),
@@ -284,7 +323,12 @@ def reports_filters(request):
 ##
 ##  /report/dashboard/
 ##
-def reports_dashboard(request, filter_slug=''):
+##
+def reports_dashboard(request):
+    """
+    High-level page that shows key averages and overview #s.
+    """
+    
     reportBuckets = {
         'fcp': {
             'fast': 1.6,
@@ -303,6 +347,7 @@ def reports_dashboard(request, filter_slug=''):
     ## Vars here allow for easy future update to scope data to any set of URLs, instead of all.
     ## This way NONE OF THE THINGS IN "CONTEXT" need to be touched.
     ## Simple change the scope/queries of these two vars.
+<<<<<<< HEAD
     filter = UrlFilter.get_filter_safe(filter_slug)
     if filter != None:
       urls = filter.run_query()
@@ -310,21 +355,29 @@ def reports_dashboard(request, filter_slug=''):
     else:
       urls = Url.objects.all()
       urlKpiAverages = UrlKpiAverage.objects.all()
+=======
+    urls = Url.objects.withValidRuns()
+    urlKpiAverages = UrlKpiAverage.objects.all()
+>>>>>>> e0a38a901651efc8bde91047f5a90fb8ae90bec9
     
     ## Get a bunch of counts to chart.
     ## Nothing here should be changed unless we add a new data point to chart.
     context = {
+<<<<<<< HEAD
         'urlCountTested': urls.withValidRuns().count(),
         'filter': filter,
         'filters': UrlFilter.objects.all(),
+=======
+        'urlCountTested': urls.count(),
+>>>>>>> e0a38a901651efc8bde91047f5a90fb8ae90bec9
         
         'urlGlobalPerfAvg': round(urlKpiAverages.aggregate(Avg('performance_score'))['performance_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
         'urlGlobalA11yAvg': round(urlKpiAverages.aggregate(Avg('accessibility_score'))['accessibility_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
         'urlGlobalSeoAvg': round(urlKpiAverages.aggregate(Avg('seo_score'))['seo_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
         
-        'urlPerfCountPoor': urls.filter(url_kpi_average__performance_score__gt = 5, url_kpi_average__performance_score__lt=45).count(),
-        'urlPerfCountGood': urls.filter(url_kpi_average__performance_score__gt=74).count(),
-        'urlPerfCountAvg': urls.filter(url_kpi_average__performance_score__gt=44, lighthouse_run__performance_score__lt=75).count(),
+        'urlPerfCountPoor': urls.filter(url_kpi_average__performance_score__gt = 5, url_kpi_average__performance_score__lte=GOOGLE_SCORE_SCALE['poor']['max']).count(),
+        'urlPerfCountAvg': urls.filter(url_kpi_average__performance_score__gte=GOOGLE_SCORE_SCALE['average']['min'], url_kpi_average__performance_score__lte=GOOGLE_SCORE_SCALE['average']['max']).count(),
+        'urlPerfCountGood': urls.filter(url_kpi_average__performance_score__gte=GOOGLE_SCORE_SCALE['good']['min']).count(),
         
         'urlFcpCountSlow': urls.filter(url_kpi_average__first_contentful_paint__gt=(reportBuckets['fcp']['slow']*1000)).count(),
         'urlFcpCountFast': urls.filter(url_kpi_average__first_contentful_paint__lt=(reportBuckets['fcp']['fast']*1000)).count(),
@@ -349,6 +402,9 @@ def reports_dashboard(request, filter_slug=''):
 ##
 ##
 def reports_urls_compare(request, id1, id2, id3=None):
+    """
+    Compares average scores and timings in a data table, for either 2 or 3 URLs.
+    """
     
     try:
         url1 = Url.objects.prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").get(id=id1)
@@ -381,6 +437,11 @@ def reports_urls_compare(request, id1, id2, id3=None):
 ##
 ##
 def reports_urls_detail(request, id):
+    """
+    URL report detail page for given URL ID. Shows charts, scores, averages and 
+    key data from each lighthouse run in a table.
+    """
+    
     try:
         url1 = Url.objects.get(id=id)
     except:
@@ -411,30 +472,18 @@ def reports_urls_detail(request, id):
     ## Add dates, formatted, as x-axis array data.
     for runData in urlLighthouseRuns:
         lineChartData['dates'].append(runData.created_date.strftime('%d-%m-%Y'))
-    
-    
+        
     context = {
         'url1': url1,
         'lighthouseRuns': urlLighthouseRuns,
         'lineChartData': lineChartData,
     }
     
-    return render(request, 'reports_urls_detail.html', context)
-
-
-##
-##  /report/urls/detail/all/
-##
-##  Report detail for a given URL, include run history.
-##  Lists every run for every URL. HUGE. Used as export view to see all data.
-##
-##
-def reports_urls_detail_all(request):
-    context = {
-        'lighthouseRuns': LighthouseRun.objects.all(),
-    }
     
-    return render(request, 'reports_urls_detail_all.html', context)
+    if urlLighthouseRuns.count() > 1:
+        return render(request, 'reports_urls_detail_withruns.html', context)
+    else:
+        return render(request, 'reports_urls_detail_noruns.html', context)
 
 
 ##
@@ -444,8 +493,10 @@ def reports_urls_detail_all(request):
 ##
 ##
 def signin(request):
-    global siteGlobals
-
+    """
+    Custom/nice sign in page instead of Django admin/default sign-in page.
+    """
+    
     ## If user is already signed in they don't need to be here, so redirect them to home page.
     if request.user.is_authenticated:
         response = redirect(reverse('plr:home'))
@@ -499,6 +550,10 @@ def signin(request):
 ##
 ##
 def signedout(request):
+    """
+    'Success' page that simply confirms that the user has been signed out successfully.
+    """
+    
     return render(request, 'signedout.html')
 
 
@@ -509,10 +564,14 @@ def signedout(request):
 ##
 ##
 def custom_404(request, exception=None):
-    global siteGlobals
-
+    """
+    Custom, 'nice' 404 page. If DJANGO_SLACK_ALERT_URL variable is setup in 
+    settings with Slack room hook URL, it will send Slack room message, 
+    but only if referrer is from the site (aka a broken link).
+    """
+    
     referer = request.META.get('HTTP_REFERER', 'None')
-
+    
     if referer != 'None':
         sendSlackAlert('404', '*Requested path:*  ' + request.path + '\n*Referring page:*  ' + referer)
     
@@ -530,8 +589,13 @@ def custom_404(request, exception=None):
 ##
 ##
 def custom_500(request):
-    global siteGlobals
-
+    """
+    Custom, 'nice' 500 page. If DJANGO_SLACK_ALERT_URL variable is setup in 
+    settings with Slack room hook URL, it will send Slack room message.
+    If ADMINS_EMAIL_TO_SMS array of emails is setup in settings, it will send
+    you SMS text message via carrier's email-to-text email feature.
+    """
+    
     exctype, value = sys.exc_info()[:2]
     
     errMsg = value or '(No error provided)'
