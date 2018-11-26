@@ -25,10 +25,6 @@
     {% compress css %}
         <style>
             
-            .pl-url-detail-donut {
-                width: 230px;
-            }
-           
             .pl-url-detail-donut .pl-audit-score {
                 border-width: 10px;
                 font-size: 2rem;
@@ -69,20 +65,20 @@
     {{ templateHelpers.html.hr|safe }}
     
     
-    <div class="{{ templateHelpers.classes.grid }} tc">
-        <h4 class="f4 b mb4">Average scores across <code class="fw4 dark-red">{{ lighthouseRuns.count }}</code> test runs</h4>
+    <h4 class="f4 b mb4 tc">Average scores across <code class="fw4 dark-red">{{ lighthouseRuns.count }}</code> test runs</h4>
     
-        <div class="pl-url-detail-donut mb4 dib">
+    <div class="{{ templateHelpers.classes.grid }} tc flex center justify-center flex-column flex-row-ns">
+        <div class="pl-url-detail-donut mb4 w-100 w5-ns">
             <div>{% include "partials/audit_score_donut.html" with scoreValue=url1.url_kpi_average.performance_score %}</div>
             <p class="f4 mt3">Performance</p>
         </div>
         
-        <div class="pl-url-detail-donut mb4 dib">
+        <div class="pl-url-detail-donut mb4 w-100 w5-ns">
             <div>{% include "partials/audit_score_donut.html" with scoreValue=url1.url_kpi_average.accessibility_score %}</div>
             <p class="f4 mt3">Accessibility</p>
         </div>
         
-        <div class="pl-url-detail-donut mb4 dib">
+        <div class="pl-url-detail-donut mb4 w-100 w5-ns">
             <div>{% include "partials/audit_score_donut.html" with scoreValue=url1.url_kpi_average.seo_score %}</div>
             <p class="f4 mt3">SEO</p>
         </div>
