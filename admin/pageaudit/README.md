@@ -18,21 +18,23 @@ If you accidentally use `python` you will get an error like: _"Couldn't import D
 
 ## Getting started - First time install:
 
-- Ensure you have the dependencies installed.
-- There are some local variables and settings needed for your implementation. They can either be set as environment variables, or you can add a `settings_local.py` file with them.
+1. Ensure you have the dependencies installed.
+2. Clone the repo.
+3. From the repo root directory, run `pip3 install -r admin/requirements.txt` to install Django and all it's requirements for the app.
+4. There are some local variables and settings needed for your implementation. They can either be set as environment variables, or you can add a `settings_local.py` file with them.
  Replace the `___` with your local Postgres DB user ID/PW.
- 
+
+
 ```
-DJANGO_DB_HOST=127.0.0.1
-DJANGO_DB_PASSWORD=____
-DJANGO_DB_USER=____
-DJANGO_DEBUG_FLAG=True
-DJANGO_ENV=production
-DJANGO_FORCE_SCRIPT_NAME=
+    DJANGO_DB_HOST=127.0.0.1
+    DJANGO_DB_PASSWORD=____
+    DJANGO_DB_USER=____
+    DJANGO_DEBUG_FLAG=True
+    DJANGO_ENV=production
+    DJANGO_FORCE_SCRIPT_NAME=
 ```
 - Create a database called `perf_lab` (default), or create a variable called `DJANGO_DB_NAME` and set it to your local database name.
-- Clone the repo.
-- Run `npm install`.
+
 
 
 ## Getting started - Sample data:
@@ -40,7 +42,7 @@ A sample data set is available to be loaded via Django's `manage.py loaddata` co
 - 51 URLs (50 with runs)
 - Each URL has ~13 test runs.
 - Superuser with ID/PW: superuser / django4ever
-- The data dump file is available here: https://github.com/ecumike/page-lab-sampledata
+- The sample data set file is available here: https://github.com/ecumike/page-lab-sampledata
 
 
 ## Getting started - Coding:
