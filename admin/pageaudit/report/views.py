@@ -48,6 +48,10 @@ SUCCESS = 'success'
 ##
 @csrf_exempt
 def collect_report(request):
+    """
+    Web service URL where Lighthouse report data is POST'd and saved in Django.
+    """
+    
     if request.method == 'GET':
         return HttpResponseNotAllowed('GET')
     elif request.method == 'POST':
@@ -81,8 +85,10 @@ def collect_report(request):
 ##
 def get_urls(request):
     """
-    Get a list of URLS to process
+    Web service URL to get a list of URLS to process by the Lighthouse test queue.
+    Only URLs that are "active" are returned to be tested.
     """
+    
     urls = []
     qs = Url.objects.allActive().order_by('id')
     
@@ -112,10 +118,15 @@ def get_urls(request):
 ##
 ##
 def api_lighthouse_data(request, id):
+    """
+    Takes a given LighthouseRun ID and returns it's raw report data object.
+    If none exists, returns empty results object.
+    """
+    
     lightouseData = {}
     
     try:
-        lightouseData['rawData'] = LighthouseRun.objects.get(id=id).lighthouse_data_raw_lighthouse_run.first().report_data
+        lightouseData['rawData'] = LighthouseRun.objects.get(id=id).lighthouse_data_raw_lighthouse_run.get().report_data
     except Exception as ex:
         pass
     
@@ -129,12 +140,16 @@ def api_lighthouse_data(request, id):
 ##
 ##
 def api_url_typeahead(request):
+    """
+    Takes a given string and returns 6 URLs that contain it.
+    """
+    
     textString = request.GET.get('q', '')
     
     urlList = []
 
     if textString != '':
-        urlList = list(Url.objects.filter(url__contains=textString)[:6].values('id', 'url', 'lighthouse_run__id'))
+        urlList = list(Url.objects.filter(url__contains=textString)[:6].values('id', 'url'))
     
     return JsonResponse({
         'results': urlList 
@@ -146,6 +161,11 @@ def api_url_typeahead(request):
 ##
 ##
 def api_urlid(request):
+    """
+    Takes a given URL and returns the ID. Used by home page search.
+    When you type/select a URL, the ID is retrieved and sends you to that page.
+    """
+    
     url = request.GET.get('url', '')
     
     try:
@@ -163,6 +183,10 @@ def api_urlid(request):
 ##
 ##
 def api_compareinfo(request):
+    """
+    Takes a given URL id and returns the info for it, used by the compare tray.
+    """
+    
     id = request.GET.get('id', '')
     html = None
     
@@ -197,6 +221,12 @@ def api_compareinfo(request):
 ##
 ##
 def api_home_items(request):
+    """
+    Used by home page "more" button at bottom.
+    Gets 20 'more' report cards, with offset/pagination, and returns the cards HTML
+    to inject at the bottom of the page.
+    """
+    
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
         'sortorder': request.GET.get('sortorder'),
@@ -230,7 +260,10 @@ def api_home_items(request):
 ##
 ##
 def home(request):
-
+    """
+    Site home page.
+    """
+    
     context = {}
     
     return render(request, 'home.html', context)
@@ -241,7 +274,10 @@ def home(request):
 ##
 ##
 def reports_browse(request):
-
+    """
+    Browse page showing list of report cards.
+    """
+    
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
         'sortorder': request.GET.get('sortorder'),
@@ -271,6 +307,9 @@ def reports_browse(request):
 ##
 ##
 def reports_dashboard(request):
+    """
+    High-level page that shows key averages and overview #s.
+    """
     
     reportBuckets = {
         'fcp': {
@@ -329,6 +368,9 @@ def reports_dashboard(request):
 ##
 ##
 def reports_urls_compare(request, id1, id2, id3=None):
+    """
+    Compares average scores and timings in a data table, for either 2 or 3 URLs.
+    """
     
     try:
         url1 = Url.objects.prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").get(id=id1)
@@ -361,6 +403,11 @@ def reports_urls_compare(request, id1, id2, id3=None):
 ##
 ##
 def reports_urls_detail(request, id):
+    """
+    URL report detail page for given URL ID. Shows charts, scores, averages and 
+    key data from each lighthouse run in a table.
+    """
+    
     try:
         url1 = Url.objects.get(id=id)
     except:
@@ -412,8 +459,10 @@ def reports_urls_detail(request, id):
 ##
 ##
 def signin(request):
-    global siteGlobals
-
+    """
+    Custom/nice sign in page instead of Django admin/default sign-in page.
+    """
+    
     ## If user is already signed in they don't need to be here, so redirect them to home page.
     if request.user.is_authenticated:
         response = redirect(reverse('plr:home'))
@@ -467,6 +516,10 @@ def signin(request):
 ##
 ##
 def signedout(request):
+    """
+    'Success' page that simply confirms that the user has been signed out successfully.
+    """
+    
     return render(request, 'signedout.html')
 
 
@@ -477,10 +530,14 @@ def signedout(request):
 ##
 ##
 def custom_404(request, exception=None):
-    global siteGlobals
-
+    """
+    Custom, 'nice' 404 page. If DJANGO_SLACK_ALERT_URL variable is setup in 
+    settings with Slack room hook URL, it will send Slack room message, 
+    but only if referrer is from the site (aka a broken link).
+    """
+    
     referer = request.META.get('HTTP_REFERER', 'None')
-
+    
     if referer != 'None':
         sendSlackAlert('404', '*Requested path:*  ' + request.path + '\n*Referring page:*  ' + referer)
     
@@ -498,8 +555,13 @@ def custom_404(request, exception=None):
 ##
 ##
 def custom_500(request):
-    global siteGlobals
-
+    """
+    Custom, 'nice' 500 page. If DJANGO_SLACK_ALERT_URL variable is setup in 
+    settings with Slack room hook URL, it will send Slack room message.
+    If ADMINS_EMAIL_TO_SMS array of emails is setup in settings, it will send
+    you SMS text message via carrier's email-to-text email feature.
+    """
+    
     exctype, value = sys.exc_info()[:2]
     
     errMsg = value or '(No error provided)'
