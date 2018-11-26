@@ -273,18 +273,13 @@ def home(request):
 ##  /report/browse/
 ##
 ##
-<<<<<<< HEAD
 def reports_browse(request, filter_slug=''):
-    filter = UrlFilter.get_filter_safe(filter_slug)
-    ids = list(filter.run_query().values_list('id', flat=True)) if filter != None else [] 
-
-=======
-def reports_browse(request):
     """
     Browse page showing list of report cards.
     """
-    
->>>>>>> e0a38a901651efc8bde91047f5a90fb8ae90bec9
+
+    filter = UrlFilter.get_filter_safe(filter_slug)
+    ids = list(filter.run_query().values_list('id', flat=True)) if filter != None else []    
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
         'sortorder': request.GET.get('sortorder'),
@@ -324,7 +319,7 @@ def reports_filters(request):
 ##  /report/dashboard/
 ##
 ##
-def reports_dashboard(request):
+def reports_dashboard(request, filter_slug=''):
     """
     High-level page that shows key averages and overview #s.
     """
@@ -347,29 +342,20 @@ def reports_dashboard(request):
     ## Vars here allow for easy future update to scope data to any set of URLs, instead of all.
     ## This way NONE OF THE THINGS IN "CONTEXT" need to be touched.
     ## Simple change the scope/queries of these two vars.
-<<<<<<< HEAD
     filter = UrlFilter.get_filter_safe(filter_slug)
     if filter != None:
       urls = filter.run_query()
       urlKpiAverages = UrlKpiAverage.getFilteredAverages(urls)
     else:
-      urls = Url.objects.all()
+      urls = Url.objects.withValidRuns()
       urlKpiAverages = UrlKpiAverage.objects.all()
-=======
-    urls = Url.objects.withValidRuns()
-    urlKpiAverages = UrlKpiAverage.objects.all()
->>>>>>> e0a38a901651efc8bde91047f5a90fb8ae90bec9
     
     ## Get a bunch of counts to chart.
     ## Nothing here should be changed unless we add a new data point to chart.
     context = {
-<<<<<<< HEAD
         'urlCountTested': urls.withValidRuns().count(),
         'filter': filter,
         'filters': UrlFilter.objects.all(),
-=======
-        'urlCountTested': urls.count(),
->>>>>>> e0a38a901651efc8bde91047f5a90fb8ae90bec9
         
         'urlGlobalPerfAvg': round(urlKpiAverages.aggregate(Avg('performance_score'))['performance_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
         'urlGlobalA11yAvg': round(urlKpiAverages.aggregate(Avg('accessibility_score'))['accessibility_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
