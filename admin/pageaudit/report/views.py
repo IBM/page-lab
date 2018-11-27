@@ -357,9 +357,9 @@ def reports_dashboard(request, filter_slug=''):
         'filter': filter,
         'filters': UrlFilter.objects.all(),
         
-        'urlGlobalPerfAvg': round(urlKpiAverages.aggregate(Avg('performance_score'))['performance_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
-        'urlGlobalA11yAvg': round(urlKpiAverages.aggregate(Avg('accessibility_score'))['accessibility_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
-        'urlGlobalSeoAvg': round(urlKpiAverages.aggregate(Avg('seo_score'))['seo_score__avg']) if UrlKpiAverage.objects.all().count() > 0 else 0,
+        'urlGlobalPerfAvg': round(urlKpiAverages.aggregate(Avg('performance_score'))['performance_score__avg']) if urlKpiAverages.count() > 0 else 0,
+        'urlGlobalA11yAvg': round(urlKpiAverages.aggregate(Avg('accessibility_score'))['accessibility_score__avg']) if urlKpiAverages.count() > 0 else 0,
+        'urlGlobalSeoAvg': round(urlKpiAverages.aggregate(Avg('seo_score'))['seo_score__avg']) if urlKpiAverages.count() > 0 else 0,
         
         'urlPerfCountPoor': urls.filter(url_kpi_average__performance_score__gt = 5, url_kpi_average__performance_score__lte=GOOGLE_SCORE_SCALE['poor']['max']).count(),
         'urlPerfCountAvg': urls.filter(url_kpi_average__performance_score__gte=GOOGLE_SCORE_SCALE['average']['min'], url_kpi_average__performance_score__lte=GOOGLE_SCORE_SCALE['average']['max']).count(),
