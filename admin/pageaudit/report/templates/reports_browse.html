@@ -84,42 +84,45 @@
 
 {% block content %}
 
-	<div class="{{ templateHelpers.classes.grid }} mt4">
-        <form id="pl-sortform" aria-label="Sort data listing" action="" method="get">
-            <div class="mb3 dib mr2">
-                <p class="b mt0">Sort:</p>
-                <select name="sortby" aria-label="Select a field">
-                    <option value="url" {% if sortby == 'url' %}selected="selected"{% endif %}>URL</option>
-                    <option value="date" {% if sortby == 'date' %}selected="selected"{% endif %}>Last test date</option>
-                    <option value="a11yscore" {% if sortby == 'a11yscore' %}selected="selected"{% endif %}>Accessibility score</option>
-                    <option value="perfscore" {% if sortby == 'perfscore' %}selected="selected"{% endif %}>Performance score</option>
-                    <option value="seoscore" {% if sortby == 'seoscore' %}selected="selected"{% endif %}>SEO score</option>
-                </select>
-            </div>
-            
-            <div class="mb3 dib mr4">
-                <select name="sortorder" aria-label="Select an order">
-                    <option value="asc" {% if sortorder == 'asc' %}selected="selected"{% endif %}>Ascending</option>
-                    <option value="desc" {% if sortorder == 'desc' %}selected="selected"{% endif %}>Descending</option>
-                </select>
-            </div>
-            
+	<form id="pl-sortform" aria-label="Sort data listing" action="" method="get">
         
-            <div class="mb3 dib mr4">
-                <p class="b mt0">Show:</p>
-                <select name="viewdata" aria-label="Select an order">
-                    <option value="perfscore" {% if viewdata == 'perfscore' %}selected="selected"{% endif %}>Performance score</option>
-                    <option value="a11yscore" {% if viewdata == 'a11yscore' %}selected="selected"{% endif %}>Accessibility score</option>
-                    <option value="seoscore" {% if viewdata == 'seoscore' %}selected="selected"{% endif %}>SEO score</option>
-                </select>
+        <div class="{{ templateHelpers.classes.grid }} mt4">
+            <div class="flex flex-wrap items-end">
+                <div class="mb3 mr2">
+                    <p class="b mt0">Sort:</p>
+                    <select name="sortby" aria-label="Select a field">
+                        <option value="url" {% if sortby == 'url' %}selected="selected"{% endif %}>URL</option>
+                        <option value="date" {% if sortby == 'date' %}selected="selected"{% endif %}>Last test date</option>
+                        <option value="a11yscore" {% if sortby == 'a11yscore' %}selected="selected"{% endif %}>Accessibility score</option>
+                        <option value="perfscore" {% if sortby == 'perfscore' %}selected="selected"{% endif %}>Performance score</option>
+                        <option value="seoscore" {% if sortby == 'seoscore' %}selected="selected"{% endif %}>SEO score</option>
+                    </select>
+                </div>
+                
+                <div class="mb3 mr4">
+                    <select name="sortorder" aria-label="Select an order">
+                        <option value="asc" {% if sortorder == 'asc' %}selected="selected"{% endif %}>Ascending</option>
+                        <option value="desc" {% if sortorder == 'desc' %}selected="selected"{% endif %}>Descending</option>
+                    </select>
+                </div>
+                
+            
+                <div class="mb3 mr4">
+                    <p class="b mt0">Show:</p>
+                    <select name="viewdata" aria-label="Select an order">
+                        <option value="perfscore" {% if viewdata == 'perfscore' %}selected="selected"{% endif %}>Performance score</option>
+                        <option value="a11yscore" {% if viewdata == 'a11yscore' %}selected="selected"{% endif %}>Accessibility score</option>
+                        <option value="seoscore" {% if viewdata == 'seoscore' %}selected="selected"{% endif %}>SEO score</option>
+                    </select>
+                </div>
+                        
+                <div class="mr3">
+                    <button type="submit" class="{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }} relative">Apply</button>
+                </div>
             </div>
-                    
-            <div class="mb3 dib mr3">
-                <button type="submit" class="{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }} relative" style="top:2px;">Apply</button>
-            </div>
-               
-        </form>
-	</div>
+	    </div>
+	    
+	</form>
 	
 	
 	<div id="pl-cards-container" class="{{ templateHelpers.classes.grid }} mt4 flex flex-wrap">
