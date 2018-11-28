@@ -12,8 +12,8 @@ def getTemplateHelpers(context):
     horizontalSpace = 'ph3 ph4-ns'
     rounded = 'br2'
     
-    commonButton = 'pointer dib mb3 ba ph4 pv3 bg-animate border-box ' + rounded
-    smallButton = 'pointer dib mb3 ba pa2 bg-animate border-box ' + rounded
+    commonButton = 'pointer mb3 ba ph4 pv3 bg-animate border-box ' + rounded
+    smallButton = 'pointer mb3 ba pa2 bg-animate border-box ' + rounded
     
     bluePriButton = 'b--dark-blue bg-blue hover-bg-dark-blue white'
     blueSecButton = 'b--blue bg-white hover-bg-blue blue hover-white link'
