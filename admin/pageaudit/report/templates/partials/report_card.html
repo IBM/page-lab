@@ -26,9 +26,9 @@
                 
             </div>
     
-        	<p class="f6 mb0">{{ url.url|noprotocol }}
-            	<br>Last run: <span class="mid-gray">{{ url.lighthouse_run.created_date }}</span>
-        	</p>
+        	<div class="f6 mb0 dark-blue">{{ url.url|noprotocol }}</div>
+            <div class="f6 mb0">Last test: <span class="mid-gray">{{ url.lighthouse_run.created_date }}</span>
+            </div>
     	</a>
     	
     {% else %}
