@@ -1,5 +1,6 @@
 
 import calendar
+import datetime
 import json
 import sys
 
@@ -254,6 +255,57 @@ def api_home_items(request):
 
 
 ##
+##  /api/chart/lighthouseruns/?<GET params: <urlid>, startdate (optional), enddate (optional).
+##
+##  Returns data object in format needed for line chart.
+##
+##
+def api_home_items(request):
+    """
+    Used by report page line chart. 
+    Returns JSON in format needed for line chart. 
+    Used to load and chard a set of date-scoped runs.
+    """
+    
+    urlId = request.GET.get('urlid', None)
+    
+    ## Validate that URL ID is valid.
+    try:
+        url = Url.objects.get(id=urlId)
+    except:
+        return JsonResponse({
+            'results': {}
+        })
+
+
+    ## Validate optional start date
+    
+    ## Validate optional end date
+    
+    startDate = None
+    endDate = None
+    
+    urlLighthouseRuns = lighthouseRunsByDate(LighthouseRun.objects.filter(url=url1), startDate=startDate, endDate=endDate)    
+    
+    return JsonResponse({
+        'pageNum': urlsToShow.number,
+        'hasNextPage': urlsToShow.has_next(),
+        'resultsHtml': html
+    })
+
+
+
+
+########################################################################
+########################################################################
+##
+##  APIs 
+##
+########################################################################
+########################################################################
+
+
+##
 ##  /report/
 ##
 ##  Home page.
@@ -413,8 +465,9 @@ def reports_urls_detail(request, id):
     except:
         return redirect(reverse('plr:home'))
     
-    ## Get all runs for this URL
-    urlLighthouseRuns = LighthouseRun.objects.filter(url=url1)
+    ## Default time period to show in chart and data table is 3 weeks back from today.
+    daysBack = datetime.datetime.now() - datetime.timedelta(days=21)
+    urlLighthouseRuns = lighthouseRunsByDate(LighthouseRun.objects.filter(url=url1), startDate=daysBack)
 
     ## Setup arrays of data for the line chart.
     ## Each object is an array that is simply passed to D3 and each represents a line on the chart.
