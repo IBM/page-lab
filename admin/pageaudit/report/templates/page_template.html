@@ -82,7 +82,7 @@
         
         <main role="main" aria-label="PageLab content">
 
-            <nav class="{{ templateHelpers.classes.horizontalSpace }} pl-sitenav bg-black bb">
+            <nav class="{{ templateHelpers.classes.horizontalSpace }} pl-sitenav bg-black bb cf">
                 <a class="{{ templateHelpers.classes.navItem }} {{ templateHelpers.classes.siteColor }} b" href="{% url 'plr:home' %}">PageLab</a>
                 <a class="{{ templateHelpers.classes.navItem }} {% block menuHomeClass %}{% endblock %}" href="{% url 'plr:home' %}">Find reports</a>
                 <a class="{{ templateHelpers.classes.navItem }} {% block menuBrowsereportsClass %}{% endblock %}" href="{% url 'plr:reports_browse' %}">Browse reports</a>
