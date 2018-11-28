@@ -8,7 +8,7 @@
     
 	{% if url.url_kpi_average %}
     	<div class="pl-compare-cbcon absolute right-0 z-3 top-1 f6">
-    		<input id="id_{{ url.id }}" value="{{ url.id }}" class="w1 dib pointer" type="checkbox" style="transform: scale(1.1);"><label for="id_{{ url.id }}" class="ml1 mr3 relative dib pointer hover-light-blue">Compare</label>    
+    		<input id="id_{{ url.id }}" value="{{ url.id }}" class="w1 pointer" type="checkbox" style="transform: scale(1.1);"><label for="id_{{ url.id }}" class="ml1 mr3 pointer hover-light-blue">Compare</label>    
     	</div>
     	<a class="w-100 db tc dark-gray ba b--white pl-reportcard f6 no-underline pa3" href="{% url 'plr:reports_urls_detail' id=url.id %}" title="View details">
         	<div class="mb3 tc"><img src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="100"></div>
