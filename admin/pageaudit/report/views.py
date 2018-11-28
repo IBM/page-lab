@@ -260,7 +260,7 @@ def api_home_items(request):
 ##  Returns data object in format needed for line chart.
 ##
 ##
-def api_home_items(request):
+def api_chart_scores(request):
     """
     Used by report page line chart. 
     Returns JSON in format needed for line chart. 
@@ -269,7 +269,7 @@ def api_home_items(request):
     
     urlId = request.GET.get('urlid', None)
     
-    ## Validate that URL ID is valid.
+    ## Validate that URL ID is valid. No URL no service.
     try:
         url = Url.objects.get(id=urlId)
     except:
@@ -279,18 +279,26 @@ def api_home_items(request):
 
 
     ## Validate optional start date
+    try:
+        startDateString = request.GET.get('startdate', None)
+        startDate = datetime.datetime.strptime(startDateString, "%Y-%m-%d")
+    except:
+        startDate = None
     
     ## Validate optional end date
+    try:
+        endDateString = request.GET.get('enddate', None)
+        endDate = datetime.datetime.strptime(endDateString, "%Y-%m-%d")
+    except:
+        endDate = None
     
-    startDate = None
-    endDate = None
     
-    urlLighthouseRuns = lighthouseRunsByDate(LighthouseRun.objects.filter(url=url1), startDate=startDate, endDate=endDate)    
+    ## TODO: PICKUP HERE.
+    
+    urlLighthouseRuns = lighthouseRunsByDate(LighthouseRun.objects.filter(url=urlId), startDate=startDate, endDate=endDate)    
     
     return JsonResponse({
-        'pageNum': urlsToShow.number,
-        'hasNextPage': urlsToShow.has_next(),
-        'resultsHtml': html
+        'results': {}
     })
 
 

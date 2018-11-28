@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^api/compareinfo/$', api_compareinfo, name='api_compareinfo'),
     url(r'^api/home/items/$', api_home_items, name='api_home_items'),
     url(r'^api/urltypeahead/$', api_url_typeahead, name='api_url_typeahead'),
+    url(r'^api/chart/scores/$', api_chart_scores, name='api_chart_scores'),
     
     ## Core pages.
     url(r'^$', home, name='home'),
