@@ -37,7 +37,7 @@ SUCCESS = 'success'
 ########################################################################
 ########################################################################
 ##
-##  WSRs for Node app
+##  Web services used by Node app.
 ##
 ########################################################################
 ########################################################################
@@ -106,7 +106,7 @@ def get_urls(request):
 ########################################################################
 ########################################################################
 ##
-##  APIs 
+##  Web services
 ##
 ########################################################################
 ########################################################################
@@ -122,6 +122,8 @@ def api_lighthouse_data(request, id):
     """
     Takes a given LighthouseRun ID and returns it's raw report data object.
     If none exists, returns empty results object.
+    Used by the report detail page in the data table. Clicking on the icon to view
+    a report calls this as a web service to get the JSON to send to the lighthouse viewer.
     """
     
     lightouseData = {}
@@ -143,6 +145,7 @@ def api_lighthouse_data(request, id):
 def api_url_typeahead(request):
     """
     Takes a given string and returns 6 URLs that contain it.
+    Used by the input field on the home page to get and display the matches.
     """
     
     textString = request.GET.get('q', '')
@@ -163,8 +166,11 @@ def api_url_typeahead(request):
 ##
 def api_urlid(request):
     """
-    Takes a given URL and returns the ID. Used by home page search.
-    When you type/select a URL, the ID is retrieved and sends you to that page.
+    Takes a given URL and returns the ID.
+    Used on home page, when you type/select a URL the ID is retrieved and sends you to that page.
+    Reason why this isn't just included from above typeahead service is that if the user just
+    types in the full URL and doesn't "select" it from the typeahead list, we don't know what
+    this ID is. So we basically just search for it on form submit. NBD.
     """
     
     url = request.GET.get('url', '')
@@ -185,7 +191,8 @@ def api_urlid(request):
 ##
 def api_compareinfo(request):
     """
-    Takes a given URL id and returns the info for it, used by the compare tray.
+    Takes a given URL id and returns the info for it, used by the compare tray 
+    when you add an item, and on page load when the tray gets created.
     """
     
     id = request.GET.get('id', '')
@@ -255,7 +262,11 @@ def api_home_items(request):
 
 
 ##
-##  /api/chart/lighthouseruns/?<GET params: <urlid>, startdate (optional), enddate (optional).
+##  /api/chart/scores/?<GET params:>
+##      urlid (int)
+##      range ('latest', 'all', 'custom' (FUTURE USE))
+##      startdate (FUTURE USE)
+##      enddate (FUTURE USE)
 ##
 ##  Returns data object in format needed for line chart.
 ##
@@ -264,50 +275,59 @@ def api_chart_scores(request):
     """
     Used by report page line chart. 
     Returns JSON in format needed for line chart. 
-    Used to load and chard a set of date-scoped runs.
+    Used to load and chart a scoped set of Lighthouse runs.
     """
     
     urlId = request.GET.get('urlid', None)
+    rangeType = request.GET.get('range', None)
     
-    ## Validate that URL ID is valid. No URL no service.
+    
+    ## Validate that the passed URL ID is valid. No URL = no service.
     try:
         url = Url.objects.get(id=urlId)
     except:
         return JsonResponse({
             'results': {}
         })
+        
 
+    ## FUTURE FEATURE: custom range.
+    ## Will be used with data pickers to allow user to select start/stop date range.
+    #     ## Validate optional start date
+    #     try:
+    #         startDateString = request.GET.get('startdate', None)
+    #         startDate = datetime.datetime.strptime(startDateString, "%Y-%m-%d")
+    #     except:
+    #         startDate = None
+    #     
+    #     ## Validate optional end date
+    #     try:
+    #         endDateString = request.GET.get('enddate', None)
+    #         endDate = datetime.datetime.strptime(endDateString, "%Y-%m-%d")
+    #     except:
+    #         endDate = None
+    
+    
+    ## Get the scope of LighthouseRuns to chart: Latest 20 -or- all.
+    if rangeType == "all":
+        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId)    
+    else:
+        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:4]
+        
+    ## Create the output in format needed for line chart.
+    lineChartData = createHistoricalScoreChartData(urlLighthouseRuns)
 
-    ## Validate optional start date
-    try:
-        startDateString = request.GET.get('startdate', None)
-        startDate = datetime.datetime.strptime(startDateString, "%Y-%m-%d")
-    except:
-        startDate = None
-    
-    ## Validate optional end date
-    try:
-        endDateString = request.GET.get('enddate', None)
-        endDate = datetime.datetime.strptime(endDateString, "%Y-%m-%d")
-    except:
-        endDate = None
-    
-    
-    ## TODO: PICKUP HERE.
-    
-    urlLighthouseRuns = lighthouseRunsByDate(LighthouseRun.objects.filter(url=urlId), startDate=startDate, endDate=endDate)    
-    
+    ## Return to requestor.
     return JsonResponse({
-        'results': {}
+        'results': lineChartData
     })
-
-
+    
 
 
 ########################################################################
 ########################################################################
 ##
-##  APIs 
+##  Pages
 ##
 ########################################################################
 ########################################################################
@@ -468,38 +488,17 @@ def reports_urls_detail(request, id):
     key data from each lighthouse run in a table.
     """
     
+    ## Redirect an invalid URL ID to the home page.
     try:
         url1 = Url.objects.get(id=id)
     except:
         return redirect(reverse('plr:home'))
     
-    ## Default time period to show in chart and data table is 3 weeks back from today.
-    daysBack = datetime.datetime.now() - datetime.timedelta(days=21)
-    urlLighthouseRuns = lighthouseRunsByDate(LighthouseRun.objects.filter(url=url1), startDate=daysBack)
-
-    ## Setup arrays of data for the line chart.
-    ## Each object is an array that is simply passed to D3 and each represents a line on the chart.
-    lineChartData = {
-        'dates': ['x'],
-        'perfScores': ['Performance score'],
-        'a11yScores': ['Accessibility score'],
-        'seoScores': ['SEO score'],
-    }
     
-    ## Get list of field values as array data and add to our arrays setup above for each line.
-    lhRunsPerfScores = urlLighthouseRuns.values_list('performance_score', flat=True)
-    lhRunsA11yScores = urlLighthouseRuns.values_list('accessibility_score', flat=True)
-    lhRunsSeoScores = urlLighthouseRuns.values_list('seo_score', flat=True)
+    ## Get the latest 20 runs to display on chart and data table.
+    urlLighthouseRuns = LighthouseRun.objects.filter(url=url1).order_by('-created_date')[:20]
+    lineChartData = createHistoricalScoreChartData(urlLighthouseRuns)   
     
-    ## Add the data values array for each line we want to chart.
-    lineChartData['perfScores'].extend(list(lhRunsPerfScores))
-    lineChartData['a11yScores'].extend(list(lhRunsA11yScores))
-    lineChartData['seoScores'].extend(list(lhRunsSeoScores))
-    
-    ## Add dates, formatted, as x-axis array data.
-    for runData in urlLighthouseRuns:
-        lineChartData['dates'].append(runData.created_date.strftime('%d-%m-%Y'))
-        
     context = {
         'url1': url1,
         'lighthouseRuns': urlLighthouseRuns,

@@ -110,16 +110,18 @@
         @param id {Integer} The ID of a URL object.
     **/
     function getItemHtml (id) {
-        $.ajax({
-            url: PL.urls.api_compareinfo + "?id=" + id,
-            dataType: "json",
-            success: function (data) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', PL.urls.api_compareinfo + "?id=" + id);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
                 addToCompareTray(data);
-            },
-            error: function (data) {
+            }
+            else {
                 console.warn("Sorry, there was an error receiving the URL's info for the compare tray.");
             }
-        })
+        };
+        xhr.send();
     }
     
     

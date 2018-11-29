@@ -48,15 +48,18 @@
 
 {% block content %}
 
-    <div class="{{ templateHelpers.classes.grid }} mt5 cf">
-        <div class="fl w-100 w-20-ns tc tl-ns mb3">
+    <div class="{{ templateHelpers.classes.grid }} cf">
+        <div class="mt5 fl w-100 w-20-ns tc tl-ns mb3">
 
             <p class="mb3 mt0">
                 <a href="{{ url1.url }}" title="View page in new window" target="_blank"><img class="{{ templateHelpers.classes.imageBorder }}" src="data:image/png;base64,{{ url1.lighthouse_run.thumbnail_image }}" width="155"></a>
             </p>
             
         </div>
-        <div class="fl w-100 w-80-ns mb3">
+        
+        <div id="custom-chart-dataset-buttons" class="mt4 mb2 tr f6"><span class="b">Chart data:</span> &nbsp; <span class="custom-chart-latest"><text class="di">Latest 20 tests</text><a data-range="latest" href="" class="dn underline-hover animate-hover">Latest 20 tests</a></span> &nbsp;|&nbsp; <span class="custom-chart-all"><text class="dn">Full history</text><a data-range="all" href="" class="di custom-chart-all underline-hover animate-hover">Full history</a></span></div>
+        
+        <div class="mt1 fl w-100 w-80-ns mb3">
             <div id="linechart"></div>
         </div>            
     </div>
@@ -240,6 +243,8 @@
     </div>
 
 
+    {# This is all non-critical JS for this page, so we're putting it at the bottom of the page #}
+    
     {% compress js %}
         <script src="{% static 'report/js/jquery.datatables.pkg.min.js' %}"></script>
         <script src="{% static 'report/js/select2.min.js' %}"></script>
@@ -249,7 +254,7 @@
         <script>
     
             (function ($) {
-                
+
                 var datatableSettings = {
                         colReorder: true,
                         info: true,
@@ -259,7 +264,8 @@
                         responsive: true,
                         scrollCollapse: true,
                         searching: true
-                    };
+                    },
+                    lineChart;
                 
                 
                 function adjustExportButtons ($scope) {
@@ -275,19 +281,9 @@
                 
                 
                 function createHistoryLineChart () {
-                    var chart = c3.generate({
+                    lineChart = c3.generate({
                         bindto: '#linechart',
-    
-                        data: {
-                            x: 'x',
-                            xFormat: '%d-%m-%Y',
-                            columns: [
-                                {{ lineChartData.dates|safe }},
-                                {{ lineChartData.perfScores|safe }},
-                                {{ lineChartData.a11yScores|safe }},
-                                {{ lineChartData.seoScores|safe }},
-                            ]
-                        },
+                        data: {{ lineChartData|safe }},
                         axis: {
                             x: {
                                 type: 'timeseries',
@@ -296,13 +292,37 @@
                                 }
                             }
                         }
-                        
                     });
                 }
 
                 
-                $(function(){
+                function setupChartDataButtons () {
+                    $("#custom-chart-dataset-buttons").on("click", "a", function (evt) {
+                        evt.preventDefault();
+                        
+                        // Toggle show/hide states of buttons.
+                        $(evt.delegateTarget).find("text, a").toggleClass("di dn");
+
+                        var requestUrl = PL.urls.api_chart_scores + "?urlid={{ url1.id }}&range=" + $(this).data("range")
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('GET', requestUrl);
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                var data = JSON.parse(xhr.responseText);
+                                lineChart.unload();
+                                lineChart.load(data.results);
+                            }
+                            else {
+                                alert("Uh oh, there was an error retrieving the data set. We can't change the chart for you right now.");
+                            }
+                        };
+                        xhr.send();
+                    });
+                }
+                
+                $(function () {
                     createHistoryLineChart();
+                    setupChartDataButtons();
                     $("#pl-rundata-kpis table").DataTable(datatableSettings);
                     $("#pl-rundata-kpis").find("select").select2();
                     adjustExportButtons($("#pl-rundata-kpis"));
