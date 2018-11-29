@@ -348,13 +348,16 @@
 
                 $(function () {
                     createHistoryLineChart();
-                    setupChartDataButtons();
-                    setupTableDataButtons();
+                    
                     $kpiDatatableContainer = $("#pl-table-runs-kpis-container");
                     $kpiDatatable = $("#pl-table-runs-kpis");
                     initKpiDatatable();
+                    
                     PL.compare.setupCompareCheckboxes($(".pl-compare-checkbox-con"));
                     PL.compare.preselectCheckbox($(".pl-compare-checkbox-con").find("input"));
+                    
+                    setupChartDataButtons();
+                    setupTableDataButtons();
                 });
                 
             })(jQuery);        
