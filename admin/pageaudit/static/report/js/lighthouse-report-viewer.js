@@ -38,16 +38,18 @@
                 // Hit our API to get the Lighthouse raw data object,
                 // Pass the object to the Lighthouse Viewer function.
                 // Boom.
-                $.ajax({
-                    url: PL.urls.api_lighthouse_data + evt.currentTarget.dataset.runid,
-                    dataType: "json",
-                    success: function (d) {
-                        PL.openTabAndSendJsonReport(d.results.rawData, PL.urls.report_lighthouse_viewer);
-                    },
-                    error: function () {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', PL.urls.api_lighthouse_data + evt.currentTarget.dataset.runid + "/");
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        var data = JSON.parse(xhr.responseText);
+                        PL.openTabAndSendJsonReport(data.results.rawData, PL.urls.report_lighthouse_viewer);
+                    }
+                    else {
                         alert("Woops, something happened and we couldn't get that report.");
                     }
-                });
+                };
+                xhr.send();                
             }
         });
     }

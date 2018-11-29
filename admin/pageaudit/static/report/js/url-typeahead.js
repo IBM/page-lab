@@ -160,10 +160,12 @@
             // Hit service to validate URL report exists (in case of free-type in URL)
             // Returns the ID or null.
             // If not null, goto ID.
-            $.ajax({
-                url: PL.urls.api_urlid + "?url=" + $inputField[0].value,
-                dataType: "json",
-                success: function (data) {
+            var requestUrl = PL.urls.api_urlid + "?url=" + $inputField[0].value
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', requestUrl);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
                     try {
                         if (data.results.urlid) {
                             window.location.href = "urls/detail/" + data.results.urlid;
@@ -175,11 +177,12 @@
                     catch (ex) {
                         showTypeaheadResults(true);
                     }
-                },
-                error: function (err) {
+                }
+                else {
                     alert("DOH! Something happened and we couldn't find that URL.");
                 }
-            });
+            };
+            xhr.send(); 
         })
         
 		// Bind the results so when you click on one, it replaces the input text with it.
