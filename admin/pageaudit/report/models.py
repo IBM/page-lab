@@ -343,6 +343,24 @@ class SearchKeyVal(models.Model):
         return '%s: %s' % (self.key, self.val,)
 
 
+class Team(models.Model):
+    """
+    Person, team, department, whatever that might be responsible for a
+    user timing measure or URL.
+    """
+    
+    created_date = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return '%s' % (self.name,)
+
+
 class UserTimingMeasureName(models.Model):
     """
     A user-timing measure name. Used as name pointer for timing measures.
@@ -352,7 +370,10 @@ class UserTimingMeasureName(models.Model):
     
     created_date = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=255)
-
+    description = models.TextField(null=True, blank=True)
+    team = models.ForeignKey('Team',
+                            related_name='user_timing_measure_name_team',
+                            on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         ordering = ['name']
