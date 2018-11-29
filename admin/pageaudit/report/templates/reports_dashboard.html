@@ -18,11 +18,6 @@
     
     <style> 
            
-        .pl-avg-donut {
-            display: inline-block;
-            width: 230px;
-        }
-       
         .pl-avg-donut .pl-audit-score {
             border-width: 14px;
             font-size: 2.5rem;
@@ -177,25 +172,25 @@
 {% block content %}
     <div class="{{ templateHelpers.classes.grid }} mt4">
         {% include "switch_filter_view.html" with filter=filter view_name='browse' %}
-        <form id="pl-sortform" aria-label="Apply filters" action="" method="get">
-            {% include "url_filter_select.html" with filter=filter filters=filters view_name='dashboard' %}
-            <div style="margin-right: 60px; display: inline-block;">
-                <button id="apply" type="submit" class="{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }} relative" style="top:2px;">Apply</button>
-            </div>
-        </form>
+        <div>
+            <form id="pl-sortform" aria-label="Apply filters" action="" method="get">
+                {% include "url_filter_select.html" with filter=filter filters=filters view_name='dashboard' %}
+                <button id="apply" type="submit" class="{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }}" style="top:2px;">Apply</button>
+            </form>
+        </div>
     </div>
-    <div class="{{ templateHelpers.classes.grid }} tc mt4">
-        <p class="f4 b pb2">Average scores across <code class="fw4 dark-red">{{ urlCountTested|withComma }}</code> tested URLs</p>
-        
-        <div class="pl-avg-donut mb4">
+    <p class="{{ templateHelpers.classes.grid }} f4 mt4 b tc">Average scores across <code class="fw4 dark-red">{{ urlCountTested|withComma }}</code> tested URLs</p>
+    
+    <div class="{{ templateHelpers.classes.grid }} tc mt4 flex center justify-center flex-column flex-row-ns">
+        <div class="pl-avg-donut mb4 w5-ns w-100">
             {% include "partials/audit_score_donut.html" with scoreValue=urlGlobalPerfAvg %}
             <p class="f4 mt3">Performance</p>
         </div>
-        <div class="pl-avg-donut mb4">
+        <div class="pl-avg-donut mb4 w5-ns w-100">
             {% include "partials/audit_score_donut.html" with scoreValue=urlGlobalA11yAvg %}
             <p class="f4 mt3">Accessibility</p>
         </div>
-        <div class="pl-avg-donut mb4">
+        <div class="pl-avg-donut mb4 w5-ns w-100">
             {% include "partials/audit_score_donut.html" with scoreValue=urlGlobalSeoAvg %}
             <p class="f4 mt3">SEO</p>
         </div>

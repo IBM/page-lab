@@ -14,7 +14,7 @@
     <p><a class="light-blue no-underline underline-hover animate-hover" href="{{ url1.url }}" title="Visit page in new window" target="_blank">{{ url1.url|noprotocol }}</a></p>
     <div class="pl-compare-checkbox-con pt2">
         <span class="f6">
-            <input id="id_{{ url1.id }}" type="checkbox" value="{{ url1.id }}" class="w1 dib pointer" style="transform: scale(1.1);"><label for="id_{{ url1.id }}" class="ml1 relative dib pointer hover-light-blue light-gray">Compare</label>
+            <input id="id_{{ url1.id }}" type="checkbox" value="{{ url1.id }}" class="w1 pointer" style="transform: scale(1.1);"><label for="id_{{ url1.id }}" class="ml1 pointer hover-light-blue light-gray">Compare</label>
         </span>                       
     </div>
  {% endblock  %}
@@ -25,11 +25,6 @@
     {% compress css %}
         <style>
             
-            .pl-url-detail-donut {
-                display: inline-block;
-                width: 230px;
-            }
-           
             .pl-url-detail-donut .pl-audit-score {
                 border-width: 10px;
                 font-size: 2rem;
@@ -70,20 +65,20 @@
     {{ templateHelpers.html.hr|safe }}
     
     
-    <div class="{{ templateHelpers.classes.grid }} tc">
-        <h4 class="f4 b mb4">Average scores across <code class="fw4 dark-red">{{ lighthouseRuns.count }}</code> test runs</h4>
+    <h4 class="{{ templateHelpers.classes.grid }} f4 b mb4 tc">Average scores across <code class="fw4 dark-red">{{ lighthouseRuns.count }}</code> test runs</h4>
     
-        <div class="pl-url-detail-donut mb4">
+    <div class="{{ templateHelpers.classes.grid }} tc flex center justify-center flex-column flex-row-ns">
+        <div class="pl-url-detail-donut mb4 w-100 w5-ns">
             <div>{% include "partials/audit_score_donut.html" with scoreValue=url1.url_kpi_average.performance_score %}</div>
             <p class="f4 mt3">Performance</p>
         </div>
         
-        <div class="pl-url-detail-donut mb4">
+        <div class="pl-url-detail-donut mb4 w-100 w5-ns">
             <div>{% include "partials/audit_score_donut.html" with scoreValue=url1.url_kpi_average.accessibility_score %}</div>
             <p class="f4 mt3">Accessibility</p>
         </div>
         
-        <div class="pl-url-detail-donut mb4">
+        <div class="pl-url-detail-donut mb4 w-100 w5-ns">
             <div>{% include "partials/audit_score_donut.html" with scoreValue=url1.url_kpi_average.seo_score %}</div>
             <p class="f4 mt3">SEO</p>
         </div>
@@ -223,7 +218,7 @@
                 {% for lighthouseRun in lighthouseRuns %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td><a aria-label="View report in new window" class="pl-open-lighthouse-report hint--top-right small" href="#" data-runid="{{ lighthouseRun.id }}">{{ templateHelpers.html.icons.newWindow|safe }}</a></td>
+                        <td class="tc"><a aria-label="View report in new window" class="pl-open-lighthouse-report hint--top-right small" href="#" data-runid="{{ lighthouseRun.id }}">{{ templateHelpers.html.icons.newWindow|safe }}</a></td>
                         <td>{{ lighthouseRun.created_date }}</td>
                         <td>{{ lighthouseRun.performance_score }}</td>
                         <td>{{ lighthouseRun.accessibility_score }}</td>
@@ -271,7 +266,7 @@
                     var $tablewidgetContainer = $scope.parent(),
                         $buttonCon = $tablewidgetContainer.find(".dt-buttons");
                     
-                    $buttonCon.removeClass("dt-buttons").addClass("tr").appendTo("#pl-exportbuttons").prepend('<span class="b mb3 dib mr3">Export table</span>');
+                    $buttonCon.removeClass("dt-buttons").addClass("tr").appendTo("#pl-exportbuttons").prepend('<span class="b mb3 mr3">Export table</span>');
                    
                     $buttonCon.find("button").addClass("{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }}")[0].addEventListener("click", function () {
                         emailSelectedApps();

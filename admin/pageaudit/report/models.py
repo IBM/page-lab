@@ -12,6 +12,10 @@ from .helpers import *
 
 ## Custom Url object filters mapped to functions.
 ## These are chainable preset filters instead of using .all or .filter() all the time
+
+##
+## URL preset chainable queries.
+##
 class UrlQueryset(models.QuerySet):
     """
     Get all URLs that are set to 'active'. Omits 'inactive' URLs.
@@ -39,6 +43,28 @@ class UrlManger(models.Manager):
 
     def withValidRuns(self):
         return self.get_queryset().withValidRuns()
+
+##
+## LighthouseRun preset chainable queries.
+##
+class LighthouseRunQueryset(models.QuerySet):
+    """
+    Filter out runs that are invalid.
+    Usage:
+        LighthouseRun.objects.validRuns()
+    """
+    
+    def validRuns(self):
+        return self.filter(number_network_requests__gt=1, performance_score__gt=5, invalid_run=False)
+
+class LighthouseRunManger(models.Manager):
+    def get_queryset(self):
+        return LighthouseRunQueryset(self.model, using=self._db)  ## IMPORTANT KEY ITEM.
+
+    def validRuns(self):
+        return self.get_queryset().validRuns()
+
+
 
 
 class LighthouseRun(models.Model):
@@ -674,10 +700,9 @@ class LighthouseDataRaw(models.Model):
         this_run.save()
 
 
-        ## TODO: ONLY calc average if run is valid. Fix with a query and flag so all code in here can just check flag.
         if validRun:
             ## 5. Get/Create the average model object and re-calc new averages including the run we just saved.
-            urlRuns = LighthouseRun.objects.filter(url=url, performance_score__gt=5, number_network_requests__gt=1, invalid_run=False)
+            urlRuns = LighthouseRun.objects.validRuns()
     
             ## Seo is new, so only get average using runs that have it (>0), and for safety, set to 0 if there are none.
             urlRunsWithSeoScore = urlRuns.filter(seo_score__gt=0)
