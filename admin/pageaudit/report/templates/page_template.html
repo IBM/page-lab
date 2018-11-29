@@ -53,14 +53,15 @@
                 // Can't do Django vars in static files, so we set it in the template like this.
                 window.PL = {
                     'urls': {
-                        'static_path': '{% get_static_prefix %}',
                         'api_chart_scores': '{% url 'plr:api_chart_scores' %}',
                         'api_compareinfo': '{% url 'plr:api_compareinfo' %}',
-                        'api_urlid': '{% url 'plr:api_urlid' %}',
                         'api_lighthouse_data': '{% url 'plr:api_lighthouse_data' %}',
+                        'api_table_kpis': '{% url 'plr:api_table_kpis' %}',
                         'api_url_typeahead': '{% url 'plr:api_url_typeahead' %}',
+                        'api_urlid': '{% url 'plr:api_urlid' %}',
                         'home': '{% url 'plr:home' %}',
                         'report_lighthouse_viewer': '{% url 'plr:report_lighthouse_viewer' %}',
+                        'static_path': '{% get_static_prefix %}',
                     }
                 };
             </script>

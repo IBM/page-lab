@@ -1,0 +1,26 @@
+{% load beautify %}
+{% load template_helpers %}
+
+{% getTemplateHelpers as templateHelpers %}
+
+
+{% for lighthouseRun in lighthouseRuns %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td class="tc"><a aria-label="View report in new window" class="pl-open-lighthouse-report hint--top-right small" href="#{{ lighthouseRun.id }}" data-runid="{{ lighthouseRun.id }}">{{ templateHelpers.html.icons.newWindow|safe }}</a></td>
+        <td>{{ lighthouseRun.created_date }}</td>
+        <td>{{ lighthouseRun.performance_score }}</td>
+        <td>{{ lighthouseRun.accessibility_score }}</td>
+        <td>{{ lighthouseRun.seo_score }}</td>
+        <td>{{ lighthouseRun.total_byte_weight|byteToKb }}</td>
+        <td>{{ lighthouseRun.number_network_requests }}</td>
+        <td>{{ lighthouseRun.time_to_first_byte }}</td>
+        <td>{{ lighthouseRun.dom_content_loaded }}</td>
+        <td>{{ lighthouseRun.first_contentful_paint }}</td>
+        <td>{{ lighthouseRun.first_meaningful_paint }}</td>
+        <td>{{ lighthouseRun.interactive }}</td>
+        <td>{{ lighthouseRun.dom_loaded }}</td>
+        <td>{{ lighthouseRun.redirect_hops }}</td>
+        <td>{{ lighthouseRun.redirect_wasted_ms }}</td>
+    </tr>
+{% endfor %}

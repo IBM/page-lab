@@ -106,7 +106,7 @@ def get_urls(request):
 ########################################################################
 ########################################################################
 ##
-##  Web services
+##  Web services used by us.
 ##
 ########################################################################
 ########################################################################
@@ -312,7 +312,7 @@ def api_chart_scores(request):
     if rangeType == "all":
         urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId)    
     else:
-        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:4]
+        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:20]
         
     ## Create the output in format needed for line chart.
     lineChartData = createHistoricalScoreChartData(urlLighthouseRuns)
@@ -322,6 +322,74 @@ def api_chart_scores(request):
         'results': lineChartData
     })
     
+
+##
+##  /api/table/kpis/?<GET params:>
+##      urlid (int)
+##      range ('latest', 'all', 'custom' (FUTURE USE))
+##      startdate (FUTURE USE)
+##      enddate (FUTURE USE)
+##
+##  Returns data object in format needed for line chart.
+##
+##
+def api_table_kpis(request):
+    """
+    Used by report page data table.
+    Returns JSON in format needed for data table.
+    Used to load a scoped set of Lighthouse runs.
+    """
+    
+    urlId = request.GET.get('urlid', None)
+    rangeType = request.GET.get('range', None)
+    
+    
+    ## Validate that the passed URL ID is valid. No URL = no service.
+    try:
+        url = Url.objects.get(id=urlId)
+    except:
+        return JsonResponse({
+            'results': {}
+        })
+        
+
+    ## FUTURE FEATURE: custom range.
+    ## Will be used with data pickers to allow user to select start/stop date range.
+    #     ## Validate optional start date
+    #     try:
+    #         startDateString = request.GET.get('startdate', None)
+    #         startDate = datetime.datetime.strptime(startDateString, "%Y-%m-%d")
+    #     except:
+    #         startDate = None
+    #     
+    #     ## Validate optional end date
+    #     try:
+    #         endDateString = request.GET.get('enddate', None)
+    #         endDate = datetime.datetime.strptime(endDateString, "%Y-%m-%d")
+    #     except:
+    #         endDate = None
+    
+    
+    ## Get the scope of LighthouseRuns to put in the table: Latest 20 -or- all.
+    if rangeType == "all":
+        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId)    
+    else:
+        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:20]
+        
+    
+    context = {
+        'lighthouseRuns': urlLighthouseRuns
+    }
+    
+    html = render_to_string('partials/report_detail_table_run_kpi_rows.html', context)
+    
+    return JsonResponse({
+        'resultsHtml': html
+    })
+
+
+
+
 
 
 ########################################################################

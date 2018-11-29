@@ -17,7 +17,8 @@ urlpatterns = [
     url(r'^api/home/items/$', api_home_items, name='api_home_items'),
     url(r'^api/urltypeahead/$', api_url_typeahead, name='api_url_typeahead'),
     url(r'^api/chart/scores/$', api_chart_scores, name='api_chart_scores'),
-    
+    url(r'^api/table/kpis/$', api_table_kpis, name='api_table_kpis'),
+        
     ## Core pages.
     url(r'^$', home, name='home'),
     url(r'^browse/$', reports_browse, name='reports_browse'),
