@@ -82,7 +82,7 @@
         
         <main role="main" aria-label="PageLab content">
 
-            <nav class="{{ templateHelpers.classes.horizontalSpace }} pl-sitenav bg-black bb">
+            <nav class="{{ templateHelpers.classes.horizontalSpace }} pl-sitenav bg-black bb cf">
                 <a class="{{ templateHelpers.classes.navItem }} {{ templateHelpers.classes.siteColor }} b" href="{% url 'plr:home' %}">PageLab</a>
                 <a class="{{ templateHelpers.classes.navItem }} {% block menuHomeClass %}{% endblock %}" href="{% url 'plr:home' %}">Find reports</a>
                 <a class="{{ templateHelpers.classes.navItem }} {% block menuBrowsereportsClass %}{% endblock %}" href="{% url 'plr:reports_browse' %}">Browse reports</a>
@@ -114,11 +114,11 @@
             {% define "40" as imgsize %}
             <div class="tr-ns mb3 mt5 tl {{ templateHelpers.classes.grid }}">
                 <p class="mb2">Made with</p>
-                <div>
-                    <a class="dib mr2 " href="https://www.nodejs.org/" target="_blank"><img src="{% static 'report/img/nodejs.svg' %}" width="{{imgsize}}" height="{{imgsize}}" title="Nodejs is an asynchronous event driven JavaScript runtime" alt="Made with Node"></a>
-                    <a class="dib mr2 " href="https://redis.io/" target="_blank"><img src="{% static 'report/img/redis.svg' %}" width="{{imgsize}}" height="{{imgsize}}" title="Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache and message broker" alt="Made with Redis"></a>
-                    <a class="dib mr2 " href="https://www.postgresql.org/" target="_blank"><img src="{% static 'report/img/postgresql.png' %}" width="{{imgsize}}" height="{{imgsize}}" title="PostgreSQL: The world's most advanced open source relational database" alt="Made with PostgreSQL"></a>
-                    <a class="dib" href="https://www.djangoproject.com/" target="_blank"><img src="{% static 'report/img/django.svg' %}" width="31" height="{{imgsize}}" title="Django makes it easier to build better Web apps more quickly and with less code." alt="Made with Django"></a>
+                <div class="flex justify-end-ns">
+                    <a class="mr2" href="https://www.nodejs.org/" target="_blank"><img src="{% static 'report/img/nodejs.svg' %}" width="{{imgsize}}" height="{{imgsize}}" title="Nodejs is an asynchronous event driven JavaScript runtime" alt="Made with Node"></a>
+                    <a class="mr2" href="https://redis.io/" target="_blank"><img src="{% static 'report/img/redis.svg' %}" width="{{imgsize}}" height="{{imgsize}}" title="Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache and message broker" alt="Made with Redis"></a>
+                    <a class="mr2" href="https://www.postgresql.org/" target="_blank"><img src="{% static 'report/img/postgresql.png' %}" width="{{imgsize}}" height="{{imgsize}}" title="PostgreSQL: The world's most advanced open source relational database" alt="Made with PostgreSQL"></a>
+                    <a href="https://www.djangoproject.com/" target="_blank"><img src="{% static 'report/img/django.svg' %}" width="31" height="{{imgsize}}" title="Django makes it easier to build better Web apps more quickly and with less code." alt="Made with Django"></a>
                 </div>
             </div>
         </main>

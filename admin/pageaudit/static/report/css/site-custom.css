@@ -241,6 +241,7 @@ a {
 /* Add slight delay so fly-bys aren't so annoying. */
 .pl-card-con {
     transition: border .4s .15s;
+    width: 330px;
 }
 
 .pl-reportcard-notests {

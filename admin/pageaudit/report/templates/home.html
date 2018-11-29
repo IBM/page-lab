@@ -34,8 +34,11 @@
                 <div class="absolute w-100 pa0 pl-fadeout bg-white tl bl br bb" id="pl-typeahead-container"></div>
             </div>
             
-            <p><button class="{{ templateHelpers.classes.button }} {{ templateHelpers.classes.bluePriButton }}">View report</button><span class="dib mh4 mb3">or</span><a href="{% url 'plr:reports_browse'%}" class="{{ templateHelpers.classes.button }} {{ templateHelpers.classes.blueSecButton }} link">Browse all URL reports</a>
-            </p>
+            <div class="flex flex-wrap flex-nowrap-m justify-center-ns items-center">
+                <button class="{{ templateHelpers.classes.button }} {{ templateHelpers.classes.bluePriButton }}">View report</button>
+                <span class="mh4 mb3">or</span>
+                <a href="{% url 'plr:reports_browse'%}" class="{{ templateHelpers.classes.button }} {{ templateHelpers.classes.blueSecButton }} link">Browse all URL reports</a>
+            </div>
         </form>
 	</div>
 		
