@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django.contrib.sites',
     'report',
-    'django_extensions',
     'dbbackup',
     'compressor',
 ]
