@@ -1,5 +1,6 @@
 django==2.0.8
 psycopg2_binary
+django-extensions
 pyopenssl
 django-dbbackup
 ldap3
