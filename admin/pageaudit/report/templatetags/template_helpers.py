@@ -38,7 +38,7 @@ def getTemplateHelpers(context):
             'horizontalSpace': horizontalSpace,
             'hasIcon': 'inline-flex items-center underline-hover',
             'imageBorder': 'ba b--black-20',
-            'navItem': 'link near-white f6 f5-ns fl mr4 pv3 hover-%s' % (siteColor),
+            'navItem': 'link near-white f6 f5-ns fl relative mr4 pv3 hover-%s' % (siteColor),
             'rounded': rounded,
             'siteColor': siteColor,
             'spinner': 'pl-spinner ba br-100',
