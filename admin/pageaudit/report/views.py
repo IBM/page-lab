@@ -308,11 +308,11 @@ def api_chart_scores(request):
     #         endDate = None
     
     
-    ## Get the scope of LighthouseRuns to chart: Latest 20 -or- all.
-    if rangeType == "all":
-        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId)    
+    ## Get the scope of LighthouseRuns to chart: Latest 15/30/60. Whitelisted AVL.
+    if rangeType == "15" or rangeType == "30" or rangeType == "60":
+        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:int(rangeType)]
     else:
-        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:20]
+        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:15]
         
     ## Create the output in format needed for line chart.
     lineChartData = createHistoricalScoreChartData(urlLighthouseRuns)
@@ -370,11 +370,11 @@ def api_table_kpis(request):
     #         endDate = None
     
     
-    ## Get the scope of LighthouseRuns to put in the table: Latest 20 -or- all.
-    if rangeType == "all":
-        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId)    
+    ## Get the scope of LighthouseRuns to chart: Latest 15/30/60. Whitelisted AVL.
+    if rangeType == "15" or rangeType == "30" or rangeType == "60":
+        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:int(rangeType)]
     else:
-        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:20]
+        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:15]
         
     
     context = {
@@ -564,7 +564,7 @@ def reports_urls_detail(request, id):
     
     
     ## Get the latest 20 runs to display on chart and data table.
-    urlLighthouseRuns = LighthouseRun.objects.filter(url=url1).order_by('-created_date')[:20]
+    urlLighthouseRuns = LighthouseRun.objects.filter(url=url1).order_by('-created_date')[:14]
     lineChartData = createHistoricalScoreChartData(urlLighthouseRuns)   
     
     context = {

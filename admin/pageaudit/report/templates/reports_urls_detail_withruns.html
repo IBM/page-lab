@@ -57,7 +57,12 @@
             
         </div>
         
-        <div id="custom-chart-dataset-buttons" class="mt4 mb2 tr f6"><span class="b">Chart data:</span> &nbsp; <span class="custom-chart-latest"><text class="di">Latest 20 tests</text><a data-range="latest" href="" class="dn underline-hover animate-hover">Latest 20 tests</a></span> &nbsp;|&nbsp; <span class="custom-chart-all"><text class="dn">Full history</text><a data-range="all" href="" class="di underline-hover animate-hover">Full history</a></span></div>
+        <div id="custom-chart-dataset-buttons" class="mt4 mb2 tr f6">
+            <span class="b">Chart data, most recent:</span> &nbsp; 
+            <span class="custom-chart-15"><text class="di">15 tests</text><a data-range="15" href="#" class="dn underline-hover animate-hover">15 tests</a></span> &nbsp;|&nbsp; 
+            <span class="custom-chart-30"><text class="dn">30 tests</text><a data-range="30" href="#" class="di underline-hover animate-hover">30 tests</a></span> &nbsp;|&nbsp; 
+            <span class="custom-chart-60"><text class="dn">60 tests</text><a data-range="60" href="" class="di underline-hover animate-hover">60 tests</a></span>
+        </div>
         
         <div class="mt1 fl w-100 w-80-ns mb3">
             <div id="linechart"></div>
@@ -194,7 +199,12 @@
     <div class="{{ templateHelpers.classes.grid }} mb4 cf">
         <div class="fl w-100 w-50-ns">
             <p class="f4 b mt0">Test history</p>
-            <div id="custom-table-dataset-buttons" class="f6"><span class="b">Table data:</span> &nbsp; <span class="custom-table-latest"><text class="di">Latest 20 tests</text><a data-range="latest" href="" class="dn underline-hover animate-hover">Latest 20 tests</a></span> &nbsp;|&nbsp; <span class="custom-table-all"><text class="dn">Full history</text><a data-range="all" href="" class="di underline-hover animate-hover">Full history</a></span></div>
+            <div id="custom-table-dataset-buttons" class="f6">
+                <span class="b">Table data, most recent:</span> &nbsp; 
+                <span class="custom-table-15"><text class="di">15 tests</text><a data-range="15" href="#" class="dn underline-hover animate-hover">15 tests</a></span> &nbsp;|&nbsp; 
+                <span class="custom-table-30"><text class="dn">30 tests</text><a data-range="30" href="#" class="di underline-hover animate-hover">30 tests</a></span> &nbsp;|&nbsp; 
+                <span class="custom-table-60"><text class="dn">60 tests</text><a data-range="60" href="" class="di underline-hover animate-hover">60 tests</a></span>
+            </div>
         </div>
         <div class="mt4 fl w-100 w-50-ns" id="pl-exportbuttons"></div>
     </div>
@@ -300,8 +310,13 @@
                         evt.preventDefault();
                         
                         // Toggle show/hide states of buttons.
-                        $(evt.delegateTarget).find("text, a").toggleClass("di dn");
-
+                        // I KNOW this looks jacked up, but it never has to be touched.
+                        // We can add as many or change/remove links and this text/links toggle functionality
+                        // NEVER has to be touched.
+                        $(evt.delegateTarget).find("a").removeClass("dn").addClass("di");
+                        $(evt.delegateTarget).find("text").removeClass("di").addClass("dn");
+                        $(evt.target).removeClass("di").addClass("dn").siblings().removeClass("dn").addClass("da");
+                        
                         var requestUrl = PL.urls.api_chart_scores + "?urlid={{ url1.id }}&range=" + $(this).data("range")
                         var xhr = new XMLHttpRequest();
                         xhr.open('GET', requestUrl);
@@ -325,7 +340,12 @@
                         evt.preventDefault();
                         
                         // Toggle show/hide states of buttons.
-                        $(evt.delegateTarget).find("text, a").toggleClass("di dn");
+                        // I KNOW this looks jacked up, but it never has to be touched.
+                        // We can add as many or change/remove links and this text/links toggle functionality
+                        // NEVER has to be touched.
+                        $(evt.delegateTarget).find("a").removeClass("dn").addClass("di");
+                        $(evt.delegateTarget).find("text").removeClass("di").addClass("dn");
+                        $(evt.target).removeClass("di").addClass("dn").siblings().removeClass("dn").addClass("da");
 
                         var requestUrl = PL.urls.api_table_kpis + "?urlid={{ url1.id }}&range=" + $(this).data("range")
                         var xhr = new XMLHttpRequest();
