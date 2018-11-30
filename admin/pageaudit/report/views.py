@@ -389,9 +389,6 @@ def api_table_kpis(request):
 
 
 
-
-
-
 ########################################################################
 ########################################################################
 ##
@@ -563,18 +560,16 @@ def reports_urls_detail(request, id):
         return redirect(reverse('plr:home'))
     
     
-    ## Get the latest 20 runs to display on chart and data table.
-    urlLighthouseRuns = LighthouseRun.objects.filter(url=url1).order_by('-created_date')[:14]
-    lineChartData = createHistoricalScoreChartData(urlLighthouseRuns)   
+    ## Pass empty data set to chart for initial render. JS loads dataset async.
+    lineChartData = createHistoricalScoreChartData(None)   
+    
     
     context = {
         'url1': url1,
-        'lighthouseRuns': urlLighthouseRuns,
         'lineChartData': lineChartData,
     }
     
-    
-    if urlLighthouseRuns.count() > 1:
+    if LighthouseRun.objects.filter(url=url1).count() > 1:
         return render(request, 'reports_urls_detail_withruns.html', context)
     else:
         return render(request, 'reports_urls_detail_noruns.html', context)

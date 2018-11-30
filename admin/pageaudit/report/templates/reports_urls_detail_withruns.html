@@ -231,7 +231,7 @@
             </thead>
             
             <tbody>
-                {% include "partials/report_detail_table_run_kpi_rows.html" with lighthouseRun=lighthouseRuns %}
+                {# No rows are loaded server-side by default. JS makes web service request and loads them async #}
             </tbody>
         </table>
     </div>
@@ -317,20 +317,7 @@
                         $(evt.delegateTarget).find("text").removeClass("di").addClass("dn");
                         $(evt.target).removeClass("di").addClass("dn").siblings().removeClass("dn").addClass("da");
                         
-                        var requestUrl = PL.urls.api_chart_scores + "?urlid={{ url1.id }}&range=" + $(this).data("range")
-                        var xhr = new XMLHttpRequest();
-                        xhr.open('GET', requestUrl);
-                        xhr.onload = function() {
-                            if (xhr.status === 200) {
-                                var data = JSON.parse(xhr.responseText);
-                                lineChart.unload();
-                                lineChart.load(data.results);
-                            }
-                            else {
-                                alert("Uh oh, there was an error retrieving the data set. We can't change the chart for you right now.");
-                            }
-                        };
-                        xhr.send();
+                        getAndLoadChartData($(this).data("range"));
                     });
                 }
                 
@@ -347,27 +334,54 @@
                         $(evt.delegateTarget).find("text").removeClass("di").addClass("dn");
                         $(evt.target).removeClass("di").addClass("dn").siblings().removeClass("dn").addClass("da");
 
-                        var requestUrl = PL.urls.api_table_kpis + "?urlid={{ url1.id }}&range=" + $(this).data("range")
-                        var xhr = new XMLHttpRequest();
-                        xhr.open('GET', requestUrl);
-                        xhr.onload = function() {
-                            if (xhr.status === 200) {
-                                var data = JSON.parse(xhr.responseText);
-                                $("#pl-table-runs-kpis").DataTable().destroy();
-                                $("#pl-table-runs-kpis").children("tbody").html(data.resultsHtml);
-                                initKpiDatatable();
-                            }
-                            else {
-                                alert("Uh oh, there was an error retrieving the data set. We can't change the table for you right now.");
-                            }
-                        };
-                        xhr.send();
+                        getAndLoadTableData($(this).data("range"));
                     });
                 }
 
+                
+                function getAndLoadChartData (dataRange) {
+                    var requestUrl = PL.urls.api_chart_scores + "?urlid={{ url1.id }}&range=" + dataRange,
+                        xhr = new XMLHttpRequest();
+                    
+                    xhr.open('GET', requestUrl, true);
+                    
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            var data = JSON.parse(xhr.responseText);
+                            data.results.unload = true;
+                            lineChart.load(data.results);
+                        }
+                        else {
+                            alert("Uh oh, there was an error retrieving the data set. We can't change the chart for you right now.");
+                        }
+                    };
+                    xhr.send();
+                }
+
+
+                function getAndLoadTableData (dataRange) {
+                    var requestUrl = PL.urls.api_table_kpis + "?urlid={{ url1.id }}&range=" + dataRange,
+                        xhr = new XMLHttpRequest();
+                    
+                    xhr.open('GET', requestUrl, true);
+                    
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            var data = JSON.parse(xhr.responseText);
+                            $("#pl-table-runs-kpis").DataTable().destroy();
+                            $("#pl-table-runs-kpis").children("tbody").html(data.resultsHtml);
+                            initKpiDatatable();
+                        }
+                        else {
+                            alert("Uh oh, there was an error retrieving the data set. We can't change the table for you right now.");
+                        }
+                    };
+                    xhr.send();
+                }
 
                 $(function () {
                     createHistoryLineChart();
+                    getAndLoadChartData(15);
                     
                     $kpiDatatableContainer = $("#pl-table-runs-kpis-container");
                     $kpiDatatable = $("#pl-table-runs-kpis");
@@ -378,6 +392,8 @@
                     
                     setupChartDataButtons();
                     setupTableDataButtons();
+                    
+                    getAndLoadTableData(15);
                 });
                 
             })(jQuery);        
