@@ -41,6 +41,7 @@ def getTemplateHelpers(context):
             'navItem': 'link near-white f6 f5-ns fl mr4 pv3 hover-%s' % (siteColor),
             'rounded': rounded,
             'siteColor': siteColor,
+            'spinner': 'pl-spinner ba br-100',
             'tableListCell': 'pv3 pr4 bb b--black-20',
             'viewAll': commonButton + ' b--blue bg-white hover-bg-blue blue hover-white link',
             'viewReport': commonButton + ' b--dark-green bg-green hover-bg-dark-green white',

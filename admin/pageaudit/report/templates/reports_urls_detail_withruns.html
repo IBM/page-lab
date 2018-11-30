@@ -64,7 +64,13 @@
             <span class="custom-chart-60"><text class="dn">60 tests</text><a data-range="60" href="" class="di underline-hover animate-hover">60 tests</a></span>
         </div>
         
-        <div class="mt1 fl w-100 w-80-ns mb3">
+        <div class="mt1 fl w-100 w-80-ns mb3 relative">
+            <div id="pl-chart-spinner" class="dn absolute pa2 w-100 h-100 {{ templateHelpers.classes.rounded }}" style="background:rgba(255,255,255,.8);z-index:2;">
+                <div class="flex items-center justify-center flex-column mt5">
+                    <div class="{{ templateHelpers.classes.spinner }} bw2 w3 h3"></div>
+                    <div class="f5 mt2">Loading data</div>
+                </div>
+            </div>
             <div id="linechart"></div>
         </div>            
     </div>
@@ -209,7 +215,14 @@
         <div class="mt4 fl w-100 w-50-ns" id="pl-exportbuttons"></div>
     </div>
      
-    <div id="pl-table-runs-kpis-container" class="{{ templateHelpers.classes.grid }} cf">
+    <div id="pl-table-runs-kpis-container" class="relative {{ templateHelpers.classes.grid }} cf">
+        <div id="pl-table-spinner" class="dn absolute pa2 w-100 h-100 {{ templateHelpers.classes.rounded }}" style="background:rgba(255,255,255,.85);z-index:2;">
+            <div class="flex items-center justify-center flex-column mt5">
+                <div class="{{ templateHelpers.classes.spinner }} bw2 w3 h3"></div>
+                <div class="f5 mt2">Loading data</div>
+            </div>
+        </div>
+            
         <table id="pl-table-runs-kpis" class="f6 hover display stripe" style="width:100%!important;" data-column-defs='[{"targets":"no-sort","orderable":false}]' data-buttons='["excel"]' data-dom="lBfrtip">
             <thead>
                 <th scope="col" class="no-sort"></th>
@@ -261,7 +274,9 @@
                     },
                     $kpiDatatable,
                     $kpiDatatableContainer,
-                    lineChart;
+                    lineChart,
+                    $chartSpinner,
+                    $tableSpinner;
                 
                 
                 function adjustExportButtons ($scope) {
@@ -340,6 +355,8 @@
 
                 
                 function getAndLoadChartData (dataRange) {
+                    $chartSpinner.removeClass("dn");
+                    
                     var requestUrl = PL.urls.api_chart_scores + "?urlid={{ url1.id }}&range=" + dataRange,
                         xhr = new XMLHttpRequest();
                     
@@ -349,9 +366,11 @@
                         if (xhr.status === 200) {
                             var data = JSON.parse(xhr.responseText);
                             data.results.unload = true;
+                            $chartSpinner.addClass("dn");
                             lineChart.load(data.results);
                         }
                         else {
+                            $chartSpinner.addClass("dn");
                             alert("Uh oh, there was an error retrieving the data set. We can't change the chart for you right now.");
                         }
                     };
@@ -360,6 +379,8 @@
 
 
                 function getAndLoadTableData (dataRange) {
+                    $tableSpinner.removeClass("dn");
+                    
                     var requestUrl = PL.urls.api_table_kpis + "?urlid={{ url1.id }}&range=" + dataRange,
                         xhr = new XMLHttpRequest();
                     
@@ -371,8 +392,10 @@
                             $("#pl-table-runs-kpis").DataTable().destroy();
                             $("#pl-table-runs-kpis").children("tbody").html(data.resultsHtml);
                             initKpiDatatable();
+                            $tableSpinner.addClass("dn");
                         }
                         else {
+                            $tableSpinner.addClass("dn");
                             alert("Uh oh, there was an error retrieving the data set. We can't change the table for you right now.");
                         }
                     };
@@ -380,6 +403,8 @@
                 }
 
                 $(function () {
+                    $chartSpinner = $("#pl-chart-spinner");
+                    $tableSpinner = $("#pl-table-spinner");
                     createHistoryLineChart();
                     getAndLoadChartData(15);
                     
