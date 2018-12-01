@@ -2,6 +2,7 @@
 *.pot
 *.py[co]
 .tox/
+.vscode/
 __pycache__
 MANIFEST
 .DS_Store
