@@ -308,11 +308,11 @@ def api_chart_scores(request):
     #         endDate = None
     
     
-    ## Get the scope of LighthouseRuns to chart: Latest 20 -or- all.
-    if rangeType == "all":
-        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId)    
+    ## Get the scope of LighthouseRuns to chart: Latest 15/30/60. Whitelisted AVL.
+    if rangeType == "15" or rangeType == "30" or rangeType == "60":
+        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:int(rangeType)]
     else:
-        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:20]
+        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:15]
         
     ## Create the output in format needed for line chart.
     lineChartData = createHistoricalScoreChartData(urlLighthouseRuns)
@@ -370,11 +370,11 @@ def api_table_kpis(request):
     #         endDate = None
     
     
-    ## Get the scope of LighthouseRuns to put in the table: Latest 20 -or- all.
-    if rangeType == "all":
-        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId)    
+    ## Get the scope of LighthouseRuns to chart: Latest 15/30/60. Whitelisted AVL.
+    if rangeType == "15" or rangeType == "30" or rangeType == "60":
+        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:int(rangeType)]
     else:
-        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:20]
+        urlLighthouseRuns = LighthouseRun.objects.filter(url=urlId).order_by('-created_date')[:15]
         
     
     context = {
@@ -386,9 +386,6 @@ def api_table_kpis(request):
     return JsonResponse({
         'resultsHtml': html
     })
-
-
-
 
 
 
@@ -563,18 +560,16 @@ def reports_urls_detail(request, id):
         return redirect(reverse('plr:home'))
     
     
-    ## Get the latest 20 runs to display on chart and data table.
-    urlLighthouseRuns = LighthouseRun.objects.filter(url=url1).order_by('-created_date')[:20]
-    lineChartData = createHistoricalScoreChartData(urlLighthouseRuns)   
+    ## Pass empty data set to chart for initial render. JS loads dataset async.
+    lineChartData = createHistoricalScoreChartData(None)   
+    
     
     context = {
         'url1': url1,
-        'lighthouseRuns': urlLighthouseRuns,
         'lineChartData': lineChartData,
     }
     
-    
-    if urlLighthouseRuns.count() > 1:
+    if LighthouseRun.objects.filter(url=url1).count() > 1:
         return render(request, 'reports_urls_detail_withruns.html', context)
     else:
         return render(request, 'reports_urls_detail_noruns.html', context)

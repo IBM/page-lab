@@ -125,23 +125,26 @@ def createHistoricalScoreChartData(LighthouseRunQueryset):
         'seoScores': ['SEO score'],
     }
     
-    ## Get list of field values as array data and add to our arrays setup above for each line.
-    lhRunsPerfScores = LighthouseRunQueryset.values_list('performance_score', flat=True)
-    lhRunsA11yScores = LighthouseRunQueryset.values_list('accessibility_score', flat=True)
-    lhRunsSeoScores = LighthouseRunQueryset.values_list('seo_score', flat=True)
+    ## Safety: IF there are actually any items in the inbound queryset, add them as data points.
+    if LighthouseRunQueryset is not None and LighthouseRunQueryset.count() > 0:
+        ## Get list of field values as array data and add to our arrays setup above for each line.
+        lhRunsPerfScores = LighthouseRunQueryset.values_list('performance_score', flat=True)
+        lhRunsA11yScores = LighthouseRunQueryset.values_list('accessibility_score', flat=True)
+        lhRunsSeoScores = LighthouseRunQueryset.values_list('seo_score', flat=True)
+        
+        ## Add the data values array for each line we want to chart.
+        lineChartData['perfScores'].extend(list(lhRunsPerfScores))
+        lineChartData['a11yScores'].extend(list(lhRunsA11yScores))
+        lineChartData['seoScores'].extend(list(lhRunsSeoScores))
+        
+        ## Add dates, formatted, as x-axis array data.
+        for runData in LighthouseRunQueryset:
+            lineChartData['dates'].append(runData.created_date.strftime('%d-%m-%Y'))
+        
+        ## This is the exact specific data object this chart uses. 
+        ## We just echo this out to the JS. No further processing needed.
+        ## It's all here, nice tight bundle and makes the page JS real clean.
     
-    ## Add the data values array for each line we want to chart.
-    lineChartData['perfScores'].extend(list(lhRunsPerfScores))
-    lineChartData['a11yScores'].extend(list(lhRunsA11yScores))
-    lineChartData['seoScores'].extend(list(lhRunsSeoScores))
-    
-    ## Add dates, formatted, as x-axis array data.
-    for runData in LighthouseRunQueryset:
-        lineChartData['dates'].append(runData.created_date.strftime('%d-%m-%Y'))
-    
-    ## This is the exact specific data object this chart uses. 
-    ## We just echo this out to the JS. No further processing needed.
-    ## It's all here, nice tight bundle and makes the page JS real clean.
     data = {
         'x': 'x',
         'xFormat': '%d-%m-%Y',

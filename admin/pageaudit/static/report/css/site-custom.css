@@ -37,15 +37,12 @@ a {
 }
 
 
+
 /************************************************************************************************
     Site navigation bar
 ************************************************************************************************/
-.pl-sitenav a {
-    position: relative;
-}
 .pl-sitenav .pl-highlight:after {
     background: var(--site-color);
-    
     content: "";
     height: 4px;
     width: 100%;
@@ -54,6 +51,63 @@ a {
     bottom: 0;
 }
 
+
+
+/************************************************************************************************
+    Spinner
+************************************************************************************************/
+.pl-spinner {
+	animation: 0.6s linear 0s normal none infinite pl-spinner-kf-spin, 5s ease-in-out 0s normal none infinite pl-spinner-kf-colors;
+	-webkit-transform: rotate(0deg);
+	transform: rotate(0deg);
+}
+
+@-webkit-keyframes pl-spinner-kf-colors {
+	0% {
+		border-color: rgba(0, 0, 0, 0) #ccc;
+	}
+
+	50% {
+		border-color: rgba(0, 0, 0, 0) var(--gold) ;
+	}
+
+	100% {
+		border-color: rgba(0, 0, 0, 0) #ccc;
+	}
+}
+@keyframes pl-spinner-kf-colors {
+	0% {
+		border-color: rgba(0, 0, 0, 0) var(--blue);
+	}
+
+	50% {
+		border-color: rgba(0, 0, 0, 0) var(--blue) var(--blue) ;
+	}
+
+	100% {
+		border-color: rgba(0, 0, 0, 0) var(--blue);
+	}
+}
+
+@-webkit-keyframes pl-spinner-kf-spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+	}
+
+	100% {
+		-webkit-transform: rotate(-360deg);
+	}
+}
+
+@keyframes pl-spinner-kf-spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(-360deg);
+	}
+}
 
 
 /************************************************************************************************
@@ -70,14 +124,9 @@ a {
     Audit score donuts.
 ************************************************************************************************/
 .pl-audit-score {
-    border-radius: 100%;
     border: transparent 5px solid;
-    display: inline-block;
-    height: 65px;
     line-height: 35px;
     padding: 10px;
-    text-align: center;
-    width: 65px;
 }
 
 .pl-goodscore {
@@ -98,40 +147,6 @@ a {
     Typeahead drop-down menu list.
     This class is intended to go on the <ul>.
 ************************************************************************************************/
-.pl-dropdown-menu {
-	li {
-		padding: 0;
-		white-space: nowrap;
-
-		&::before  {
-			content: none;
-		}
-
-		+ li {
-			padding-top: 0;
-		}
-	}
-
-	a {
-		display: block;
-		padding: 7px 10px;
-		position: relative;
-		text-decoration: none;
-	}
-
-	.pl-highlight a,
-	a:hover,
-	a:focus {
-		color: #fff;
-		text-decoration: none;
-	}
-}
-
-.pl-dropdown-menu li {
-    padding: 0;
-    white-space: nowrap;
-}
-
 @media only screen and (min-width: 0px) and (max-width: 579px) {
     .pl-dropdown-menu li {
         white-space: normal;
@@ -142,16 +157,9 @@ a {
     content: none;
 }
 
-.pl-dropdown-menu li+li {
-    padding-top: 0;
-}
-
 .pl-dropdown-menu a {
     color: var(--text-color);
-    display: block;
     padding: 7px 10px;
-    position: relative;
-    text-decoration: none;
 }
 
 .pl-dropdown-menu .pl-highlight a,
@@ -159,7 +167,6 @@ a {
 .pl-dropdown-menu a:focus {
     background-color: var(--blue);
     color: #fff;
-    text-decoration: none;
 }
 
 
@@ -169,13 +176,9 @@ a {
 ************************************************************************************************/
 
 #pl-compare {
-    bottom: 0;
     display: none;
-    position: fixed;
     transform: translate3d(0, calc(100% - 50px),0);
     transition: transform .5s cubic-bezier(0.2, 1, 0.2, 1);
-    width: 100%;
-    z-index: 5;
 }
 
 @media print {
@@ -246,22 +249,10 @@ a {
 
 .pl-reportcard-notests {
     background: rgba(0,0,0,0.75);
-    box-sizing: border-box;
     left: 50%;
-    padding: 16px;
-    position: absolute;
     top: 40%;
     transform: translate3d(-50%,-50%,0);
     width: 120px;
-}
-
-.pl-reportcard {
-    background: #fff;
-    position: relative;
-}
-
-.pl-reportcard img {
-    border: 1px solid #c7c7c7;
 }
 
 /* Add slight delay so fly-bys aren't so annoying. */

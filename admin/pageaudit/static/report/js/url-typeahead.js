@@ -114,7 +114,7 @@
 			term = term.replace(reg, '<strong>' + searchedFor + '</strong>');
 			
 			if (i < maxNum) {
-				lis += '<li data-urlid="' + itemObj.id + '" id="pl-search-overlay-typeahead-res-' + i + '" role="option" tabindex="-1"><a href="#" tabindex="-1">' + term + '</a></li>';
+				lis += '<li data-urlid="' + itemObj.id + '" id="pl-search-overlay-typeahead-res-' + i + '" role="option" tabindex="-1" class="nowrap"><a class="db relative" href="#" tabindex="-1">' + term + '</a></li>';
 			}
 		});
 
