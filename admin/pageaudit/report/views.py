@@ -415,7 +415,7 @@ def home(request):
 
 
 ##
-##  /report/browse/
+##  /report/browse/<filter_slug>(optional)
 ##
 ##
 def reports_browse(request, filter_slug=''):
@@ -425,6 +425,7 @@ def reports_browse(request, filter_slug=''):
 
     filter = UrlFilter.get_filter_safe(filter_slug)
     ids = list(filter.run_query().values_list('id', flat=True)) if filter != None else []    
+    
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
         'sortorder': request.GET.get('sortorder'),
@@ -448,17 +449,31 @@ def reports_browse(request, filter_slug=''):
         'filter': filter,
         'filters': UrlFilter.objects.all()
     }
+    
     return render(request, 'reports_browse.html', context)
 
+
 ##
-## /report/filters
+## /report/filters/
+##
 ##
 def reports_filters(request):
+    """
+    Show a list of all public created URL filters and allows user to create one.
+    """
     url_filter_list = UrlFilter.objects.all()
+    
     filter_sets = []
+    
     for url_filter in url_filter_list:
-      filter_sets.append((url_filter, UrlFilterPart.objects.filter(url_filter=url_filter)))
-    return render(request, 'reports_filters.html', {'filter_sets': filter_sets})
+        filter_sets.append((url_filter, UrlFilterPart.objects.filter(url_filter=url_filter)))
+        
+    context = {
+        'filter_sets': filter_sets
+    }
+
+    return render(request, 'reports_filters.html', context)
+
 
 ##
 ##  /report/dashboard/
@@ -469,6 +484,8 @@ def reports_dashboard(request, filter_slug=''):
     High-level page that shows key averages and overview #s.
     """
     
+    ## Custom defined as an average realistic KPI measurement.
+    ## TODO: Make these as a model and settable for each implementation
     reportBuckets = {
         'fcp': {
             'fast': 1.6,
@@ -486,14 +503,26 @@ def reports_dashboard(request, filter_slug=''):
     
     ## Vars here allow for easy future update to scope data to any set of URLs, instead of all.
     ## This way NONE OF THE THINGS IN "CONTEXT" need to be touched.
-    ## Simple change the scope/queries of these two vars.
+    ## Simply change the scope/queries of these two vars.
     filter = UrlFilter.get_filter_safe(filter_slug)
+    
     if filter != None:
-      urls = filter.run_query()
-      urlKpiAverages = UrlKpiAverage.getFilteredAverages(urls)
+        urls = filter.run_query()
+        urlKpiAverages = UrlKpiAverage.getFilteredAverages(urls)
     else:
-      urls = Url.objects.withValidRuns()
-      urlKpiAverages = UrlKpiAverage.objects.all()
+        urls = Url.objects.withValidRuns()
+        urlKpiAverages = UrlKpiAverage.objects.all()
+    
+    ## If there are runs for the URL query set, get the average of average KPI scores across them.
+    if urlKpiAverages.count() > 0:
+        perfScoreAverage = round(urlKpiAverages.aggregate(Avg('performance_score'))['performance_score__avg'])
+        a11yScoreAverage = round(urlKpiAverages.aggregate(Avg('accessibility_score'))['accessibility_score__avg'])
+        seoScoreAverage = round(urlKpiAverages.aggregate(Avg('seo_score'))['seo_score__avg'])
+    else:
+        perfScoreAverage = 0
+        a11yScoreAverage = 0
+        seoScoreAverage = 0
+    
     
     ## Get a bunch of counts to chart.
     ## Nothing here should be changed unless we add a new data point to chart.
@@ -502,9 +531,9 @@ def reports_dashboard(request, filter_slug=''):
         'filter': filter,
         'filters': UrlFilter.objects.all(),
         
-        'urlGlobalPerfAvg': round(urlKpiAverages.aggregate(Avg('performance_score'))['performance_score__avg']) if urlKpiAverages.count() > 0 else 0,
-        'urlGlobalA11yAvg': round(urlKpiAverages.aggregate(Avg('accessibility_score'))['accessibility_score__avg']) if urlKpiAverages.count() > 0 else 0,
-        'urlGlobalSeoAvg': round(urlKpiAverages.aggregate(Avg('seo_score'))['seo_score__avg']) if urlKpiAverages.count() > 0 else 0,
+        'urlGlobalPerfAvg': perfScoreAverage,
+        'urlGlobalA11yAvg': a11yScoreAverage,
+        'urlGlobalSeoAvg': seoScoreAverage,
         
         'urlPerfCountPoor': urls.filter(url_kpi_average__performance_score__gt = 5, url_kpi_average__performance_score__lte=GOOGLE_SCORE_SCALE['poor']['max']).count(),
         'urlPerfCountAvg': urls.filter(url_kpi_average__performance_score__gte=GOOGLE_SCORE_SCALE['average']['min'], url_kpi_average__performance_score__lte=GOOGLE_SCORE_SCALE['average']['max']).count(),

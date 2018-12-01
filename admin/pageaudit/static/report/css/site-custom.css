@@ -36,6 +36,12 @@ a {
     text-decoration: none;
 }
 
+a .icon {
+    transition: transform .4s cubic-bezier(0.2,1,0.2,1);
+}
+a:hover .icon {
+    transform: translate3d(4px,0,0);
+}
 
 
 /************************************************************************************************
