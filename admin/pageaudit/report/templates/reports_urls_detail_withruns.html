@@ -100,7 +100,7 @@
     
             
     <div class="{{ templateHelpers.classes.grid }} cf">
-        <div class="fl w-100 w-50-l mb4">
+        <div class="fl-ns w-100 w-50-l mb4">
             <h4 class="f4 b inline-flex">Average KPIs <span class="items-center pointer hint--top normal ml2" aria-label="Standard indicators of a page's performance.">{{ templateHelpers.html.icons.info|safe }}</span></h4>
             
             <table class="pf-tooltip-cue">
@@ -165,7 +165,6 @@
 
         </div>
         
-        
         {# Only show the user-timing table if the URL has any user timing measures #}
         
         {% if url1.user_timing_measure_avg_url.count > 0 %}
@@ -203,7 +202,7 @@
     
     
     <div class="{{ templateHelpers.classes.grid }} mb4 cf">
-        <div class="fl w-100 w-50-ns">
+        <div class="fl-ns w-100 w-50-l">
             <p class="f4 b mt0">Test history</p>
             <div id="custom-table-dataset-buttons" class="f6">
                 <span class="b">Table data, most recent:</span> &nbsp; 
