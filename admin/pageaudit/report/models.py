@@ -44,6 +44,7 @@ class UrlManger(models.Manager):
     def withValidRuns(self):
         return self.get_queryset().withValidRuns()
 
+
 ##
 ## LighthouseRun preset chainable queries.
 ##
@@ -63,8 +64,6 @@ class LighthouseRunManger(models.Manager):
 
     def validRuns(self):
         return self.get_queryset().validRuns()
-
-
 
 
 class LighthouseRun(models.Model):
@@ -110,7 +109,6 @@ class LighthouseRun(models.Model):
 
     ## REMOVE THIS after new user-timing models are POPULATED WITH THE DATA.
     masthead_onscreen = models.PositiveIntegerField(default=0)
-
 
     class Meta:
         ordering = ['-created_date']
@@ -253,7 +251,6 @@ class Url(models.Model):
         else:
             super(Url, self).save(*args, **kwargs)
 
-
     def getUrls(options):
         """
         Get a list of URLs, sorted, and return only ones with at least 1 valid run in the book.
@@ -301,8 +298,10 @@ class Url(models.Model):
         querySortorder = "" if userSortorder == "asc" else defSortorder
 
         urls = Url.objects.withValidRuns().prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").order_by(querySortorder + querySortby)
+        
         if len(urlIds) > 0:
             urls = urls.filter(id__in=urlIds)
+        
         return urls
 
     def getKpiAverages(self):
@@ -522,6 +521,7 @@ class UrlKpiAverage(models.Model):
         except Exception as ex:
           return UrlKpiAverage.objects.all()
 
+
 ## FUTURE USE:
 # class LighthouseConfig(models.Model):
 #     """
@@ -557,6 +557,7 @@ class UrlKpiAverage(models.Model):
 #         # Call the "real" save method.
 #         super().save(*args, **kwargs)
 #
+
 
 class LighthouseDataRaw(models.Model):
     """
@@ -836,7 +837,6 @@ class LighthouseDataRaw(models.Model):
                     itemAvgObj.number_samples += 1
                     itemAvgObj.save()
 
-
     def __str__(self):
         return "%s - %s" % (self.lighthouse_run, self.created_date,)
 
@@ -895,7 +895,6 @@ class PageView(models.Model):
     url = models.CharField(max_length=2000, unique=True)
     view_count = models.PositiveIntegerField(default=0)
 
-
     class Meta:
         ordering = ['-view_count']
 
@@ -932,6 +931,7 @@ class UrlFilterPart(models.Model):
     url_filter = models.ForeignKey('UrlFilter',
                                    related_name='url_filter_part_url_filter',
                                    on_delete=models.CASCADE)
+    
     class Meta:
         ordering = ['prop',]
 
@@ -957,7 +957,7 @@ class UrlFilter(models.Model):
     modified_date = models.DateTimeField(auto_now=True, editable=False)
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
-    slug = models.SlugField(max_length=50)
+    slug = models.SlugField(unique=True)
 
     class Meta:
         ordering = ['name']
@@ -983,7 +983,7 @@ class UrlFilter(models.Model):
             query_obj = self.make_query_object(part)
             and_condition.add(Q(**query_obj), Q.AND)
 
-        query_set = Url.objects.filter(and_condition).distinct()
+        query_set = Url.objects.withValidRuns().filter(and_condition).distinct()
 
         return query_set
 
@@ -1017,3 +1017,4 @@ class UrlFilter(models.Model):
             obj[part.prop] = part.filter_val
 
             return obj
+

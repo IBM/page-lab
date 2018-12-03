@@ -1,0 +1,15 @@
+
+<div class="mb3 mr4">
+    
+    <p class="b mt0">URL Filter:</p>
+    
+    <select name="filter" id="url-filter">
+        <option value="">None</option>
+        
+        {% for url_filter in filters %}
+            <option value="{{ url_filter.slug }}" {% if filter.slug == url_filter.slug %}selected="selected"{% endif %}>{{ url_filter.name }}</option>
+        {% endfor %}
+        
+    </select>
+    
+</div>

@@ -79,6 +79,46 @@
                         }
                     }
                 });
+
+                var pieA11yCategories = c3.generate({
+                    bindto: '#pl-a11y-percent-cats',
+                    data: {
+                        columns: [
+                            ['Poor', {{ urlA11yCountPoor }}],
+                            ['Average', {{ urlA11yCountAvg }}],
+                            ['Good', {{ urlA11yCountGood }}]
+                        ],
+                        type : 'pie'
+                    },
+                    tooltip: {
+                        format: {
+                            value: function (value, ratio, id) {
+                                var format = id === 'data1' ? d3.format(',') : d3.format('#');
+                                return format(value);
+                            }
+                        }
+                    }
+                });
+
+                var pieSeoCategories = c3.generate({
+                    bindto: '#pl-seo-percent-cats',
+                    data: {
+                        columns: [
+                            ['Poor', {{ urlSeoCountPoor }}],
+                            ['Average', {{ urlSeoCountAvg }}],
+                            ['Good', {{ urlSeoCountGood }}]
+                        ],
+                        type : 'pie'
+                    },
+                    tooltip: {
+                        format: {
+                            value: function (value, ratio, id) {
+                                var format = id === 'data1' ? d3.format(',') : d3.format('#');
+                                return format(value);
+                            }
+                        }
+                    }
+                });
             }
             
             
@@ -150,15 +190,31 @@
                 });
             }
             
+            
+            // If the select list item doesn't have a value selected, don't submit it.
+            // Prevents empty params from showing in URL
+            function setupFilterform () {
+                $("#pl-filterform").on("submit", function (evt) {
+                    $(this).find('select')
+                        .filter(function () {
+                            return !this.value;
+                        })
+                        .prop('name', '');
+                });
+            }
+            
+
             // Showtime.
             $(function () {
+                $("select").select2({
+                    minimumResultsForSearch: 8
+                });
+
                 createAuditCategories();
                 createPieFmp();
                 createPieFcp();
                 createPieFi();
-                $("select").select2({
-                    minimumResultsForSearch: 8
-                });
+                setupFilterform();
             });
             
             
@@ -171,15 +227,29 @@
 
 {% block content %}
     <div class="{{ templateHelpers.classes.grid }} mt4">
-        {% include "switch_filter_view.html" with filter=filter view_name='browse' %}
-        <div>
-            <form id="pl-sortform" aria-label="Apply filters" action="" method="get">
-                {% include "url_filter_select.html" with filter=filter filters=filters view_name='dashboard' %}
-                <button id="apply" type="submit" class="{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }}" style="top:2px;">Apply</button>
-            </form>
-        </div>
+
+        <form id="pl-filterform" aria-label="Apply filters" action="" method="get">
+            
+            <div class="flex flex-wrap items-end">
+                        
+                {% include "partials/url_filter_select.html" with filter=filter filters=filters view_name='dashboard' %}
+                
+                <button id="pl-filter-apply" type="submit" class="{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }}" style="top:2px;">Apply</button>
+            </div>
+            
+        </form>
+        
     </div>
-    <p class="{{ templateHelpers.classes.grid }} f4 mt4 b tc">Average scores across <code class="fw4 dark-red">{{ urlCountTested|withComma }}</code> tested URLs</p>
+    
+    
+    {% if scopedUrlsTestedCount == totalTestedUrls %} 
+        <p class="{{ templateHelpers.classes.grid }} f4 mt4 b tc">Average test scores across all <code class="fw4 dark-red">{{ scopedUrlsTestedCount|withComma }}</code> tested URLs.</p>
+    
+    {% else %}
+        <p class="{{ templateHelpers.classes.grid }} f4 mt4 b tc">Average scores across <code class="fw4 dark-red">{{ scopedUrlsTestedCount|withComma }}</code> tested URLs <span class="f4 dark-gray normal">(filtered from {{ totalTestedUrls }} total URLs)</span></p>
+    
+    {% endif %}
+    
     
     <div class="{{ templateHelpers.classes.grid }} tc mt4 flex center justify-center flex-column flex-row-ns">
         <div class="pl-avg-donut mb4 w5-ns w-100">
@@ -198,9 +268,25 @@
 
 	
 	<div class="{{ templateHelpers.classes.grid }} mt5">
-        <p class="b f4 tc">Overall performance</p>
-        <div class="relative" id="pl-perf-percent-cats"></div>    
+        <p class="b f4 tc">Aggregate scores</p>
 	</div>
+
+	<div class="{{ templateHelpers.classes.grid }} mt4 cf">
+        <div class="fl w-33 tc mb4">
+            <p class="f4 b">Performance</p>
+            <div id="pl-perf-percent-cats"></div>  
+        </div>
+        <div class="fl w-33 tc mb4">
+            <p class="f4 b">Accessibility</p>
+            <div id="pl-a11y-percent-cats"></div>
+            
+        </div>
+        <div class="fl w-33 tc mb4">
+            <p class="f4 b">SEO</p>
+            <div id="pl-seo-percent-cats"></div>
+        </div>
+	</div>
+
 	
 	
 	<div class="{{ templateHelpers.classes.grid }} mt5 cf">

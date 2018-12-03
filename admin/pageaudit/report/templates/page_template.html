@@ -87,9 +87,9 @@
             <nav class="{{ templateHelpers.classes.horizontalSpace }} pl-sitenav bg-black bb cf">
                 <a class="{{ templateHelpers.classes.navItem }} {{ templateHelpers.classes.siteColor }} b" href="{% url 'plr:home' %}">PageLab</a>
                 <a class="{{ templateHelpers.classes.navItem }} {% block menuHomeClass %}{% endblock %}" href="{% url 'plr:home' %}">Find reports</a>
-                <a class="{{ templateHelpers.classes.navItem }} {% block menuBrowsereportsClass %}{% endblock %}" href="{% url 'plr:reports_browse' %}">Browse reports</a>
-                <a class="{{ templateHelpers.classes.navItem }} {% block menuDashboardClass %}{% endblock %}" href="{% url 'plr:reports_dashboard' %}">Dashboard</a>
-                <a class="{{ templateHelpers.classes.navItem }} {% block menuFiltersClass %}{% endblock %}" href="{% url 'plr:reports_filters' %}">Browse filters</a>
+                <a class="{{ templateHelpers.classes.navItem }} {% block menuBrowsereportsClass %}{% endblock %}" href="{% url 'plr:reports_browse' %}{% if filterSlug %}?filter={{ filterSlug }}{% endif %}">Browse reports</a>
+                <a class="{{ templateHelpers.classes.navItem }} {% block menuDashboardClass %}{% endblock %}" href="{% url 'plr:reports_dashboard' %}{% if filterSlug %}?filter={{ filterSlug }}{% endif %}">Dashboard</a>
+                <a class="{{ templateHelpers.classes.navItem }} {% block menuFiltersClass %}{% endblock %}" href="{% url 'plr:reports_filters' %}">Filters</a>
                 
                 {% get_flatpages as flatpages %}
                 {% for page in flatpages %}

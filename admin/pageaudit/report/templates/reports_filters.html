@@ -1,75 +1,110 @@
 {% extends "page_template.html" %}
-{% block extraFiles %}
-    <style>
-      a {
-        padding-right: 50px;
-      }
-      button {
-        margin-bottom: 7px;
-        margin-left: 20px;
-        vertical-align: 6px;
-      }
-      p {
-        padding-bottom: 3px;
-      }
-      .filter-details {
-        display: none;
-        padding-bottom: 5px;
-        padding-left: 18px;
-      }
-      .filter-details-text {
-        background-color: rgb(180, 211, 173);
-        border-radius: 6px;
-        display: inline-block;
-        margin-right: 20px;
-        padding: 2px 4px 3px 4px;
-      }
-      .filter-item {
-        padding-left: 15px;
-        padding-top: 20px;
-      }
-      .filter-name {
-        min-width: 450px;
-      }
-      .link-list {
-        padding-left: 20px;
-      }
-    </style>
-    <script>
-        (($) => {
-          $(document).ready(() => {
-            $('.click-show-hide').click((e) => {
-                $(`#${e.currentTarget.id.split('-toggle')[0]}`).toggle();
-            });
-          });
-        })(jQuery);
-    </script>
-{% endblock %}
+
+
+{% block browserTitle %} {{ block.super }} - Filters{% endblock %}
+
+{% block pageTitle %} Filters {% endblock  %}
+
 {% block menuFiltersClass %}pl-highlight{% endblock %}
+
+
+{% block extraFiles %}
+    
+    <style>
+        
+        .pl-filter-list-item + tr {
+            display: none;
+        }
+        .pl-filter-list-item + tr td {
+            transition: opacity 2.0s var(--animation-curve);
+        }
+         
+        .pl-filter-list-item .hide-details {
+            display: none;
+        }
+        
+        .pl-filter-list-item.showing-details + tr {
+            display: table-row;
+        }
+        .pl-filter-list-item.showing-details .hide-details {
+            display: inline-block;
+        }
+        .pl-filter-list-item.showing-details .show-details {
+            display: none;
+        }
+    </style>
+    
+    
+    <script>
+        
+        (function($) {
+            
+            function setupFilterDetailShowhide () {
+                $(".pl-filter-list-item").on("click", "a", function (evt) {
+                    if ($(this).hasClass("pl-filter-item-toggle-details")) {
+                        evt.preventDefault();
+                        
+                        // Toggles class which controls the +/-, tooltip, and detail row.
+                        $(evt.delegateTarget).toggleClass("showing-details");
+                        
+                        // Give it a fade-in effect after we unhide the details row.
+                        setTimeout(function () {
+                            $(evt.delegateTarget).next("tr").children().toggleClass("o-0");
+                        },100);
+                    }
+                });
+            }
+            
+            $(setupFilterDetailShowhide);
+        
+        })(jQuery);
+        
+    </script>
+    
+{% endblock %}
+
 {% block content %}
     <div class="{{ templateHelpers.classes.grid }} mt4">
         <div>
-            <h1>Select a filter</h1>
-            {% for filter, parts in filter_sets %}
-                <div class="filter-item">
-                    <div>
-                        <h3 style="display: inline-block;" class="filter-name">{{ filter.name }}</h3>
-                        <button id="{{ filter.slug }}-toggle" style="display: inline;"
-                            class="click-show-hide {{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }}">
-                            Show filter details
-                        </button>
-                    </div>
-                    <div id="{{ filter.slug }}" class="filter-details">
-                        {% for part in parts %}
-                            <p class="filter-details-text">{{ part.prop|title }}: {{ part.filter_val }}</p>
-                        {% endfor %}
-                    </div>
-                    <div class="link-list">
-                        <a href="{% url 'plr:reports_dashboard' %}{{ filter.slug }}">Dashboard view</a>
-                        <a href="{% url 'plr:reports_browse' %}{{ filter.slug }}">Report-card view</a>
-                    </div>
-                </div>
-            {% endfor %}
+            
+            <p class="mb4">Filters are used to scope the reports list page and dashboard view. They allow you to easily view a particular subset of URLs.</p>
+            
+            {% if filter_sets.count == 0 %}
+            
+                <p>There are currently no filter sets. Contact an admin if you would like to have one created for you.</p>
+            
+            {% else %}
+            
+                <table class="collapse">
+                    
+                    {% for filter, parts in filter_sets %}
+                        
+                        <tr class="pl-filter-list-item">
+                            <td class="pr3 {{ templateHelpers.classes.tableListCell_bt }}"><span class="hint--top-right" aria-label="{{ filter.description }}">{{ filter.name }}</span></td>
+                            <td class="f4 w3 light-silver {{ templateHelpers.classes.tableListCell_bt }}">
+                                {% if parts.count > 0 %}
+                                    [<a href="#" class="underline-hover pl-toggle-details pl-filter-item-toggle-details"><span class="show-details w1 dib tc underline-hover hint--top" aria-label="Show filter details">+</span></span><span class="hide-details dn w1 tc underline-hover hint--top" aria-label="Hide filter details">-</span></a>]
+                                {% endif %}
+                            </td>
+                            <td class="{{ templateHelpers.classes.tableListCell_bt }}"><a href="{% url 'plr:reports_browse' %}?filter={{ filter.slug }}" class="{{ templateHelpers.classes.hasIcon }}">Reports {{ templateHelpers.html.icons.chevronForward|safe }}</a></td>
+                            <td class="{{ templateHelpers.classes.tableListCell_bt }}"><a href="{% url 'plr:reports_dashboard' %}?filter={{ filter.slug }}" class="{{ templateHelpers.classes.hasIcon }}">Dashboard {{ templateHelpers.html.icons.chevronForward|safe }}</a></td>
+                        </tr>
+                        
+                        <tr>
+                            <td colspan="4" class="pb3 o-0">
+                                {% for part in parts %}
+                                    <span class="pa1 ph2 mr3 bg-dark-green dib white {{ templateHelpers.classes.rounded }}">{{ part.prop|title }} = {{ part.filter_val }}</span>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        
+                    {% endfor %}
+                    
+                </table>
+                
+            {% endif %}
+            
+            
         </div>
     </div>
 {% endblock %}

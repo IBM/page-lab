@@ -26,7 +26,7 @@
             
             (function ($) {
                 
-                var $sortForm, $loadmoreContainer, $cardContainer, pageNum = 1;
+                var $filterForm, $loadmoreContainer, $cardContainer, pageNum = 1;
                 
                 
                 function setupLoadMore () {
@@ -38,7 +38,7 @@
                     $.ajax({
                         url: "{% url 'plr:api_home_items' %}?page=" + (pageNum + 1),
                         dataType: "json",
-                        data: $sortForm.serialize(),
+                        data: $filterForm.serialize(),
                         success: function (data) {
                             $cardContainer.append(data.resultsHtml);
                             
@@ -55,10 +55,28 @@
                 }
                 
                 
-                $(function () {
+                // If the select list item doesn't have a value selected, don't submit it.
+                // Prevents empty params from showing in URL
+                function setupFilterform () {
+                    $filterForm.on("submit", function (evt) {
+                        $(this).find('select')
+                            .filter(function () {
+                                return !this.value;
+                            })
+                            .prop('name', '');
+                    });
+                }
+                
+                
+                $(function () {    
                     $cardContainer = $("#pl-cards-container");
                     $loadmoreContainer = $("#pl-loadmore");
-                    $sortForm = $("#pl-sortform");
+                    $filterForm = $("#pl-filterform");
+                    
+                    // Setup select2 widgets.
+                    $("select").select2({
+                        minimumResultsForSearch: 8
+                    });
                     
                     if ($loadmoreContainer[0]) {
                         setupLoadMore();
@@ -68,10 +86,7 @@
                     PL.compare.setupCompareCheckboxes($("#pl-cards-container"));
                     PL.compare.preselectCheckbox($("input:checkbox"));
                     
-                    // Setup select2 widgets.
-                    $("select").select2({
-                        minimumResultsForSearch: 8
-                    });
+                    setupFilterform();
                 });
                 
             })(jQuery);
@@ -84,10 +99,10 @@
 
 {% block content %}
 
-	<form id="pl-sortform" aria-label="Sort data listing" action="" method="get">
+	<form id="pl-filterform" aria-label="Sort data listing" action="" method="get">
         
         <div class="{{ templateHelpers.classes.grid }} mt4">
-            {% include "switch_filter_view.html" with filter=filter view_name='dashboard' %}
+            
             <div class="flex flex-wrap items-end">
                 <div class="mb3 mr2">
                     <p class="b mt0">Sort:</p>
@@ -117,9 +132,10 @@
                     </select>
                 </div>
                         
-                {% include "url_filter_select.html" with filter=filter filters=filters view_name='browse' %}
+                {% include "partials/url_filter_select.html" with filter=filter filters=filters view_name='browse' %}
+                
                 <div class="mr3">
-                    <button id="apply" type="submit" class="{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }} relative">Apply</button>
+                    <button id="pl-filter-apply" type="submit" class="{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }} relative">Apply</button>
                 </div>
             </div>
 	    </div>
@@ -127,7 +143,7 @@
 	</form>
 	
 	
-	<div id="pl-cards-container" class="{{ templateHelpers.classes.grid }} mt4 flex flex-wrap">
+	<div id="pl-cards-container" class="{{ templateHelpers.classes.grid }} mt5 flex flex-wrap">
         {% for url in urls %}
             {% include "partials/report_card.html" with url=url %}
         {% endfor %}	  
