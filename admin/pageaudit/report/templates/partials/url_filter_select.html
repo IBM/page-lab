@@ -2,7 +2,7 @@
     
     (function ($) {
         function setApplyHandler() {
-            $('#apply').click((e) => {
+            $('#pl-filter-apply').click((e) => {
                 e.preventDefault();
                 $('#pl-sortform').attr('action', `{% url 'plr:reports_'|add:view_name %}${$('#url-filter').val()}`).submit();
             });
