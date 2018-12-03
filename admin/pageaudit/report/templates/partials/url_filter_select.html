@@ -1,0 +1,31 @@
+<script>
+    
+    (function ($) {
+        function setApplyHandler() {
+            $('#apply').click((e) => {
+                e.preventDefault();
+                $('#pl-sortform').attr('action', `{% url 'plr:reports_'|add:view_name %}${$('#url-filter').val()}`).submit();
+            });
+        }
+    
+        $(setApplyHandler);
+        
+    })(jQuery)
+
+</script>
+
+
+<div class="mb3 mr4">
+    
+    <p class="b mt0">URL Filter:</p>
+    
+    <select id="url-filter">
+        <option value="">None</option>
+        
+        {% for url_filter in filters %}
+            <option value="{{ url_filter.slug }}" {% if filter.slug == url_filter.slug %}selected="selected"{% endif %}>{{ url_filter.name }}</option>
+        {% endfor %}
+        
+    </select>
+    
+</div>

@@ -447,7 +447,8 @@ def reports_browse(request, filter_slug=''):
         'viewdata': viewData,
         'hasNextPage': urlsToShow.has_next(),
         'filter': filter,
-        'filters': UrlFilter.objects.all()
+        'filters': UrlFilter.objects.all(),
+        'filterSlug': filter_slug
     }
     
     return render(request, 'reports_browse.html', context)
@@ -530,6 +531,7 @@ def reports_dashboard(request, filter_slug=''):
         'urlCountTested': urls.withValidRuns().count(),
         'filter': filter,
         'filters': UrlFilter.objects.all(),
+        'filterSlug': filter_slug,
         
         'urlGlobalPerfAvg': perfScoreAverage,
         'urlGlobalA11yAvg': a11yScoreAverage,

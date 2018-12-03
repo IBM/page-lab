@@ -87,7 +87,7 @@
 	<form id="pl-sortform" aria-label="Sort data listing" action="" method="get">
         
         <div class="{{ templateHelpers.classes.grid }} mt4">
-            {% include "switch_filter_view.html" with filter=filter view_name='dashboard' %}
+            
             <div class="flex flex-wrap items-end">
                 <div class="mb3 mr2">
                     <p class="b mt0">Sort:</p>
@@ -117,7 +117,8 @@
                     </select>
                 </div>
                         
-                {% include "url_filter_select.html" with filter=filter filters=filters view_name='browse' %}
+                {% include "partials/url_filter_select.html" with filter=filter filters=filters view_name='browse' %}
+                
                 <div class="mr3">
                     <button id="apply" type="submit" class="{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }} relative">Apply</button>
                 </div>
@@ -127,7 +128,7 @@
 	</form>
 	
 	
-	<div id="pl-cards-container" class="{{ templateHelpers.classes.grid }} mt4 flex flex-wrap">
+	<div id="pl-cards-container" class="{{ templateHelpers.classes.grid }} mt5 flex flex-wrap">
         {% for url in urls %}
             {% include "partials/report_card.html" with url=url %}
         {% endfor %}	  

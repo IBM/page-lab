@@ -171,13 +171,18 @@
 
 {% block content %}
     <div class="{{ templateHelpers.classes.grid }} mt4">
-        {% include "switch_filter_view.html" with filter=filter view_name='browse' %}
-        <div>
-            <form id="pl-sortform" aria-label="Apply filters" action="" method="get">
-                {% include "url_filter_select.html" with filter=filter filters=filters view_name='dashboard' %}
+
+        <form id="pl-sortform" aria-label="Apply filters" action="" method="get">
+            
+            <div class="flex flex-wrap items-end">
+                        
+                {% include "partials/url_filter_select.html" with filter=filter filters=filters view_name='dashboard' %}
+                
                 <button id="apply" type="submit" class="{{ templateHelpers.classes.smallButton }} {{ templateHelpers.classes.bluePriButton }}" style="top:2px;">Apply</button>
-            </form>
-        </div>
+            </div>
+            
+        </form>
+        
     </div>
     <p class="{{ templateHelpers.classes.grid }} f4 mt4 b tc">Average scores across <code class="fw4 dark-red">{{ urlCountTested|withComma }}</code> tested URLs</p>
     

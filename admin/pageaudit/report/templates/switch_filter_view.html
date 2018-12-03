@@ -1,7 +1,0 @@
-{% if filter != None %}
-    <div style="margin-bottom: 10px">
-        <a href="{% url 'plr:reports_'|add:view_name %}{{ filter.slug }}">
-            <b>Jump to {{ view_name }} view for current filter</b>
-        </a>
-    </div>
-{% endif %}
