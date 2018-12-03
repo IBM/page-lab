@@ -79,6 +79,46 @@
                         }
                     }
                 });
+
+                var pieA11yCategories = c3.generate({
+                    bindto: '#pl-a11y-percent-cats',
+                    data: {
+                        columns: [
+                            ['Poor', {{ urlA11yCountPoor }}],
+                            ['Average', {{ urlA11yCountAvg }}],
+                            ['Good', {{ urlA11yCountGood }}]
+                        ],
+                        type : 'pie'
+                    },
+                    tooltip: {
+                        format: {
+                            value: function (value, ratio, id) {
+                                var format = id === 'data1' ? d3.format(',') : d3.format('#');
+                                return format(value);
+                            }
+                        }
+                    }
+                });
+
+                var pieSeoCategories = c3.generate({
+                    bindto: '#pl-seo-percent-cats',
+                    data: {
+                        columns: [
+                            ['Poor', {{ urlSeoCountPoor }}],
+                            ['Average', {{ urlSeoCountAvg }}],
+                            ['Good', {{ urlSeoCountGood }}]
+                        ],
+                        type : 'pie'
+                    },
+                    tooltip: {
+                        format: {
+                            value: function (value, ratio, id) {
+                                var format = id === 'data1' ? d3.format(',') : d3.format('#');
+                                return format(value);
+                            }
+                        }
+                    }
+                });
             }
             
             
@@ -203,9 +243,25 @@
 
 	
 	<div class="{{ templateHelpers.classes.grid }} mt5">
-        <p class="b f4 tc">Overall performance</p>
-        <div class="relative" id="pl-perf-percent-cats"></div>    
+        <p class="b f4 tc">Aggregate scores</p>
 	</div>
+
+	<div class="{{ templateHelpers.classes.grid }} mt4 cf">
+        <div class="fl w-33 tc mb4">
+            <p class="f4 b">Performance</p>
+            <div id="pl-perf-percent-cats"></div>  
+        </div>
+        <div class="fl w-33 tc mb4">
+            <p class="f4 b">Sccessibility</p>
+            <div id="pl-a11y-percent-cats"></div>
+            
+        </div>
+        <div class="fl w-33 tc mb4">
+            <p class="f4 b">SEO</p>
+            <div id="pl-seo-percent-cats"></div>
+        </div>
+	</div>
+
 	
 	
 	<div class="{{ templateHelpers.classes.grid }} mt5 cf">
