@@ -86,8 +86,8 @@
                                     [<a href="#" class="underline-hover pl-toggle-details pl-filter-item-toggle-details"><span class="show-details w1 dib tc underline-hover hint--top" aria-label="Show filter details">+</span></span><span class="hide-details dn w1 tc underline-hover hint--top" aria-label="Hide filter details">-</span></a>]
                                 {% endif %}
                             </td>
-                            <td class="{{ templateHelpers.classes.tableListCell_bt }}"><a href="{% url 'plr:reports_browse' filter_slug=filter.slug %}" class="{{ templateHelpers.classes.hasIcon }}">Reports {{ templateHelpers.html.icons.chevronForward|safe }}</a></td>
-                            <td class="{{ templateHelpers.classes.tableListCell_bt }}"><a href="{% url 'plr:reports_dashboard' filter_slug=filter.slug %}" class="{{ templateHelpers.classes.hasIcon }}">Dashboard {{ templateHelpers.html.icons.chevronForward|safe }}</a></td>
+                            <td class="{{ templateHelpers.classes.tableListCell_bt }}"><a href="{% url 'plr:reports_browse' %}?filter={{ filter.slug }}" class="{{ templateHelpers.classes.hasIcon }}">Reports {{ templateHelpers.html.icons.chevronForward|safe }}</a></td>
+                            <td class="{{ templateHelpers.classes.tableListCell_bt }}"><a href="{% url 'plr:reports_dashboard' %}?filter={{ filter.slug }}" class="{{ templateHelpers.classes.hasIcon }}">Dashboard {{ templateHelpers.html.icons.chevronForward|safe }}</a></td>
                         </tr>
                         
                         <tr>

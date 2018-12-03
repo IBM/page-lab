@@ -418,11 +418,13 @@ def home(request):
 ##  /report/browse/<filter_slug>(optional)
 ##
 ##
-def reports_browse(request, filter_slug=''):
+def reports_browse(request):
     """
     Browse page showing list of report cards.
     """
-
+    
+    filter_slug = request.GET.get("filter", None)
+    
     filter = UrlFilter.get_filter_safe(filter_slug)
     ids = list(filter.run_query().values_list('id', flat=True)) if filter != None else []    
     
@@ -505,13 +507,16 @@ def reports_dashboard(request, filter_slug=''):
     ## Vars here allow for easy future update to scope data to any set of URLs, instead of all.
     ## This way NONE OF THE THINGS IN "CONTEXT" need to be touched.
     ## Simply change the scope/queries of these two vars.
+    filter_slug = request.GET.get("filter", None)
     filter = UrlFilter.get_filter_safe(filter_slug)
     
+    totalTestedUrls = Url.objects.withValidRuns()
+
     if filter != None:
         urls = filter.run_query()
         urlKpiAverages = UrlKpiAverage.getFilteredAverages(urls)
     else:
-        urls = Url.objects.withValidRuns()
+        urls = totalTestedUrls
         urlKpiAverages = UrlKpiAverage.objects.all()
     
     ## If there are runs for the URL query set, get the average of average KPI scores across them.
@@ -528,7 +533,8 @@ def reports_dashboard(request, filter_slug=''):
     ## Get a bunch of counts to chart.
     ## Nothing here should be changed unless we add a new data point to chart.
     context = {
-        'urlCountTested': urls.withValidRuns().count(),
+        'totalTestedUrls': totalTestedUrls.count(),
+        'scopedUrlsTestedCount': urls.withValidRuns().count(),
         'filter': filter,
         'filters': UrlFilter.objects.all(),
         'filterSlug': filter_slug,

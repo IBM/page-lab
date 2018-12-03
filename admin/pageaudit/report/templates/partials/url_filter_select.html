@@ -1,25 +1,9 @@
-<script>
-    
-    (function ($) {
-        function setApplyHandler() {
-            $('#pl-filter-apply').click((e) => {
-                e.preventDefault();
-                $('#pl-sortform').attr('action', `{% url 'plr:reports_'|add:view_name %}${$('#url-filter').val()}`).submit();
-            });
-        }
-    
-        $(setApplyHandler);
-        
-    })(jQuery)
-
-</script>
-
 
 <div class="mb3 mr4">
     
     <p class="b mt0">URL Filter:</p>
     
-    <select id="url-filter">
+    <select name="filter" id="url-filter">
         <option value="">None</option>
         
         {% for url_filter in filters %}
