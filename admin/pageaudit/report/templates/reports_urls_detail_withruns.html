@@ -103,7 +103,7 @@
         <div class="fl-ns w-100 w-50-l mb4">
             <h4 class="f4 b inline-flex">Average KPIs <span class="items-center pointer hint--top normal ml2" aria-label="Standard indicators of a page's performance.">{{ templateHelpers.html.icons.info|safe }}</span></h4>
             
-            <table class="pf-tooltip-cue">
+            <table class="pf-tooltip-cue collapse">
                 <tbody>
                     <tr>
                         <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal" aria-label="Most recent test run on this URL"><span class="b">Last tested:</span></span></td>
@@ -171,7 +171,7 @@
             <div class="fl w-100 w-50-l mb4">
                 <h4 class="f4 b inline-flex">Average user timing measures <span class="items-center pointer hint--top hint--large normal ml2" aria-label="Custom user timing measures from any JS on the page. Only non-zero durations are shown. These do not necessarily show the cause of page performance issues.">{{ templateHelpers.html.icons.info|safe }}</span></h4>
                 
-                <table>
+                <table class="collapse">
                     <thead>
                         <tr>
                             <td class="b {{ templateHelpers.classes.tableListCell }}">Name</td>
@@ -222,7 +222,7 @@
             </div>
         </div>
             
-        <table id="pl-table-runs-kpis" class="f6 hover display stripe" style="width:100%!important;" data-column-defs='[{"targets":"no-sort","orderable":false}]' data-buttons='["excel"]' data-dom="lBfrtip">
+        <table id="pl-table-runs-kpis" class="f6 hover display stripe collapse" style="width:100%!important;" data-column-defs='[{"targets":"no-sort","orderable":false}]' data-buttons='["excel"]' data-dom="lBfrtip">
             <thead>
                 <th scope="col" class="no-sort"></th>
                 <th class="no-sort">Report</th>
