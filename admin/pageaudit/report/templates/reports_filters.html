@@ -16,7 +16,7 @@
             display: none;
         }
         .pl-filter-list-item + tr td {
-            transition: opacity 2.0s cubic-bezier(0.2,1,0.2,1);
+            transition: opacity 2.0s var(--animation-curve);
         }
          
         .pl-filter-list-item .hide-details {
@@ -52,7 +52,6 @@
                             $(evt.delegateTarget).next("tr").children().toggleClass("o-0");
                         },100);
                     }
-                    
                 });
             }
             

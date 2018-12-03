@@ -13,6 +13,7 @@
     --text-color: #333;
     --blue: #357edd;
     --site-color: var(--gold);
+    --animation-curve: cubic-bezier(0.2,1,0.2,1);
 }
 
 
@@ -37,7 +38,7 @@ a {
 }
 
 a .icon {
-    transition: transform .4s cubic-bezier(0.2,1,0.2,1);
+    transition: transform .4s var(--animation-curve);
 }
 a:hover .icon {
     transform: translate3d(4px,0,0);
@@ -184,7 +185,7 @@ a:hover .icon {
 #pl-compare {
     display: none;
     transform: translate3d(0, calc(100% - 50px),0);
-    transition: transform .5s cubic-bezier(0.2, 1, 0.2, 1);
+    transition: transform .5s var(--animation-curve);
 }
 
 @media print {
