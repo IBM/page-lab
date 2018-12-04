@@ -33,6 +33,10 @@
                 width: 100px;
             }
             
+            .c3-axis-y-label {
+                font-size: 12px;
+            }
+            
         </style>
 
         <link href="{% static 'report/css/c3.min.css' %}" rel="stylesheet">   
@@ -299,12 +303,25 @@
                     lineChart = c3.generate({
                         bindto: '#linechart',
                         data: {{ lineChartData|safe }},
+                        color: {
+                            pattern: ['#004093', '#8c00ff', '#ff6600']
+                        },
                         axis: {
                             x: {
                                 type: 'timeseries',
                                 tick: {
                                     format: '%m-%d-%Y'
                                 }
+                            },
+                            y: {
+                                label: {
+                                    text: 'Score',
+                                    position: 'outer-middle',
+                                },
+                                max: 100,
+                                min: 0,
+                                // Range includes padding, set 0 if no padding needed
+                                padding: {top:10, bottom:0}
                             }
                         }
                     });

@@ -120,9 +120,9 @@ def createHistoricalScoreChartData(LighthouseRunQueryset):
     ## Each object is an array that is simply passed to D3 and each represents a line on the chart.
     lineChartData = {
         'dates': ['x'],
-        'perfScores': ['Performance score'],
-        'a11yScores': ['Accessibility score'],
-        'seoScores': ['SEO score'],
+        'perfScores': ['Performance'],
+        'a11yScores': ['Accessibility '],
+        'seoScores': ['SEO'],
     }
     
     ## Safety: IF there are actually any items in the inbound queryset, add them as data points.
