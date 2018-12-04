@@ -961,11 +961,17 @@ class UrlFilter(models.Model):
     A named UrlFilter. Allows users to create and save a filter for reuse and shared usage.
     """
 
+    FILTER_MODES = (
+        ('AND', 'AND',),
+        ('OR', 'OR',),
+    )
+
     created_date = models.DateTimeField(auto_now_add=True, editable=False)
     modified_date = models.DateTimeField(auto_now=True, editable=False)
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
     slug = models.SlugField(unique=True)
+    mode = models.CharField(max_length=16, choices=FILTER_MODES)
 
     class Meta:
         ordering = ['name']
@@ -985,12 +991,13 @@ class UrlFilter(models.Model):
         to do dashboard operations on.
         """
         filter_parts = UrlFilterPart.objects.filter(url_filter=self)
+        filter_map = {'OR': Q.OR, 'AND': Q.AND}
 
         and_condition = Q()
         
         for part in filter_parts:
             query_obj = self.make_query_object(part)
-            and_condition.add(Q(**query_obj), Q.AND)
+            and_condition.add(Q(**query_obj), filter_map[self.mode])
 
         query_set = Url.objects.filter(and_condition).distinct()
 
