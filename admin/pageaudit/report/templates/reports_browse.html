@@ -36,9 +36,8 @@
                 
                 function loadMoreCards () {
                     $.ajax({
-                        url: "{% url 'plr:api_browse_items' %}?page=" + (pageNum + 1),
+                        url: "{% url 'plr:api_browse_items' %}?page=" + (pageNum + 1) + "&{{ request.GET.urlencode }}",
                         dataType: "json",
-                        data: $filterForm.serialize(),
                         success: function (data) {
                             $cardContainer.append(data.resultsHtml);
                             
