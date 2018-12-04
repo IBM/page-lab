@@ -11,7 +11,7 @@
     		<input id="id_{{ url.id }}" value="{{ url.id }}" class="w1 pointer" type="checkbox" style="transform: scale(1.1);"><label for="id_{{ url.id }}" class="ml1 mr3 pointer hover-light-blue">Compare</label>    
     	</div>
     	<a class="pl-reportcard bg-white w-100 db tc dark-gray ba b--white relative f6 no-underline pa3" href="{% url 'plr:reports_urls_detail' id=url.id %}" title="View details">
-        	<div class="mb3 tc"><img class="{{ templateHelpers.classes.imageBorder }}" src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="100"></div>
+        	<div class="mb3 tc"><img class="{{ templateHelpers.classes.imageBorder }}" src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="100" alt="Web page screenshot"></div>
             
             <div class="mb2 tc">
                 {% if viewdata == "a11yscore" %}
@@ -31,7 +31,7 @@
     	</a>
     	
     {% else %}
-    	<a class="pl-reportcard bg-white w-100 db tc dark-gray ba b--white relative f6 no-underline pa3" href="{% url 'plr:reports_urls_detail' id=url.id %}" title="View details"><img src="{% static 'report/img/notests.png' %}" width="100"><div class="mt3 pl-textcolor-body">No tests yet</div>
+    	<a class="pl-reportcard bg-white w-100 db tc dark-gray ba b--white relative f6 no-underline pa3" href="{% url 'plr:reports_urls_detail' id=url.id %}" title="View details" alt=""><img src="{% static 'report/img/notests.png' %}" width="100"><div class="mt3 pl-textcolor-body">No tests yet</div>
             <div class="f6 mb0 dark-blue">{{ url.url|noprotocol }}</div>
     	</a>
     {% endif %}

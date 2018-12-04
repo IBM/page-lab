@@ -4,6 +4,6 @@
 
 <div data-itemid="{{ url.id }}" class="pl-compare-item w-third tc">
     <p><a href="#" data-itemid="{{ url.id }}" class="pl-compare-item-remove dark-red underline-hover">Remove</a></p>
-    <div class="mb2"><img src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="80" class="{{ templateHelpers.classes.imageBorder }}"></div>
+    <div class="mb2"><img src="data:image/png;base64,{{ url.lighthouse_run.thumbnail_image }}" width="80" class="{{ templateHelpers.classes.imageBorder }}" alt="Web page screenshot"></div>
     <p class="f6 wb">{{ url.url|noprotocol }}</p>
 </div>
