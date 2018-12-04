@@ -297,7 +297,7 @@ class Url(models.Model):
         ## Map sortorder field to proper query filter condition.
         querySortorder = "" if userSortorder == "asc" else defSortorder
 
-        urls = Url.objects.withValidRuns().prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").order_by(querySortorder + querySortby)
+        urls = Url.objects.prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").order_by(querySortorder + querySortby)
         
         if len(urlIds) > 0:
             urls = urls.filter(id__in=urlIds)
@@ -979,11 +979,12 @@ class UrlFilter(models.Model):
         filter_parts = UrlFilterPart.objects.filter(url_filter=self)
 
         and_condition = Q()
+        
         for part in filter_parts:
             query_obj = self.make_query_object(part)
             and_condition.add(Q(**query_obj), Q.AND)
 
-        query_set = Url.objects.withValidRuns().filter(and_condition).distinct()
+        query_set = Url.objects.filter(and_condition).distinct()
 
         return query_set
 

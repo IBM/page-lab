@@ -424,9 +424,13 @@ def reports_browse(request):
     """
     
     filter_slug = request.GET.get("filter", None)
+    ids = []
     
     filter = UrlFilter.get_filter_safe(filter_slug)
-    ids = list(filter.run_query().values_list('id', flat=True)) if filter != None else []    
+    
+    if filter is not None:
+        filter.run_query()
+        ids = list(filter.run_query().values_list('id', flat=True))   
     
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
