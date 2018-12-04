@@ -1,4 +1,5 @@
 import csv
+import datetime
 
 field_names=['url', 'url2', 'views', 'hist', 'sequence',]
 
