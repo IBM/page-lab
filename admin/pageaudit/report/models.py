@@ -4,7 +4,7 @@ from urllib import parse
 from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.models import User, Group
 from django.db import models
-from django.db.models import Avg, Max, Min, Q, Sum
+from django.db.models import Avg, Max, Min, Q, Sum, F
 from collections import namedtuple
 
 from .helpers import *
@@ -297,7 +297,15 @@ class Url(models.Model):
         ## Map sortorder field to proper query filter condition.
         querySortorder = "" if userSortorder == "asc" else defSortorder
 
-        urls = Url.objects.prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").order_by(querySortorder + querySortby)
+
+        urls = Url.objects.prefetch_related("lighthouse_run").prefetch_related("url_kpi_average")
+        
+        ## Do a special sorting procedure to put null values first if ascending, last if order is descending.
+        ## By default, Django always puts null date fields first no matter what.
+        if querySortorder == "":
+            urls = urls.order_by(F(querySortby).asc(nulls_first=True))
+        else:
+            urls = urls.order_by(F(querySortby).desc(nulls_last=True))
         
         if len(urlIds) > 0:
             urls = urls.filter(id__in=urlIds)
