@@ -222,24 +222,33 @@ def api_compareinfo(request):
 
 
 ##
-##  /api/home/items/page/?<GET params>
+##  /api/browse/items/page/?<GET params>
 ##
 ##  Lazy loader.
 ##  Called by 'load more' button on bottom of page.
 ##
 ##
-def api_home_items(request):
+def api_browse_items(request):
     """
-    Used by home page "more" button at bottom.
-    Gets 20 'more' report cards, with offset/pagination, and returns the cards HTML
+    Used by "browse reports" page, "load more" button at bottom.
+    Gets 20 more report cards, with offset/pagination, and returns the cards HTML
     to inject at the bottom of the page.
     """
+    
+    filter_slug = request.GET.get("filter", None)
+    ids = []
+    
+    filter = UrlFilter.get_filter_safe(filter_slug)
+    
+    if filter is not None:
+        filter.run_query()
+        ids = list(filter.run_query().values_list('id', flat=True))   
     
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),
         'sortorder': request.GET.get('sortorder'),
+        'ids': ids
     })
-    
     
     page = request.GET.get('page')
     urlPaginator = Paginator(urls, 20) # Show 20 'cards' per request.
@@ -424,9 +433,13 @@ def reports_browse(request):
     """
     
     filter_slug = request.GET.get("filter", None)
+    ids = []
     
     filter = UrlFilter.get_filter_safe(filter_slug)
-    ids = list(filter.run_query().values_list('id', flat=True)) if filter != None else []    
+    
+    if filter is not None:
+        filter.run_query()
+        ids = list(filter.run_query().values_list('id', flat=True))   
     
     urls = Url.getUrls({
         'sortby': request.GET.get('sortby'),

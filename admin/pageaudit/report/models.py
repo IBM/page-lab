@@ -4,7 +4,7 @@ from urllib import parse
 from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.models import User, Group
 from django.db import models
-from django.db.models import Avg, Max, Min, Q, Sum
+from django.db.models import Avg, Max, Min, Q, Sum, F
 from collections import namedtuple
 
 from .helpers import *
@@ -297,7 +297,15 @@ class Url(models.Model):
         ## Map sortorder field to proper query filter condition.
         querySortorder = "" if userSortorder == "asc" else defSortorder
 
-        urls = Url.objects.withValidRuns().prefetch_related("lighthouse_run").prefetch_related("url_kpi_average").order_by(querySortorder + querySortby)
+
+        urls = Url.objects.prefetch_related("lighthouse_run").prefetch_related("url_kpi_average")
+        
+        ## Do a special sorting procedure to put null values first if ascending, last if order is descending.
+        ## By default, Django always puts null date fields first no matter what.
+        if querySortorder == "":
+            urls = urls.order_by(F(querySortby).asc(nulls_first=True))
+        else:
+            urls = urls.order_by(F(querySortby).desc(nulls_last=True))
         
         if len(urlIds) > 0:
             urls = urls.filter(id__in=urlIds)
@@ -979,11 +987,12 @@ class UrlFilter(models.Model):
         filter_parts = UrlFilterPart.objects.filter(url_filter=self)
 
         and_condition = Q()
+        
         for part in filter_parts:
             query_obj = self.make_query_object(part)
             and_condition.add(Q(**query_obj), Q.AND)
 
-        query_set = Url.objects.withValidRuns().filter(and_condition).distinct()
+        query_set = Url.objects.filter(and_condition).distinct()
 
         return query_set
 

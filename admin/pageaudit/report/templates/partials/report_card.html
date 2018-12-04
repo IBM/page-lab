@@ -27,22 +27,13 @@
             </div>
     
         	<div class="f6 mb0 dark-blue">{{ url.url|noprotocol }}</div>
-            <div class="f6 mb0">Last test: <span class="mid-gray">{{ url.lighthouse_run.created_date }}</span>
-            </div>
+            <div class="f6 mb0">Last test: <span class="mid-gray">{{ url.lighthouse_run.created_date }}</span></div>
     	</a>
     	
     {% else %}
-        <div style="width: 350px;" class="tc mb3 w-100"s 
-        	<div class="mb3 tc">
-            	<div class="pl-reportcard-notests absolute pa2">
-                	<p class="white">No tests<br>have been<br>run yet</p>
-                </div>
-            	<div><img src="{% static 'report/img/notests.png' %}" width="100"></div>
-        	</div>
-            
-        	<p class="f6">{{ url.url|noprotocol }}</p>
-    	</div>  
-
+    	<a class="pl-reportcard bg-white w-100 db tc dark-gray ba b--white relative f6 no-underline pa3" href="{% url 'plr:reports_urls_detail' id=url.id %}" title="View details"><img src="{% static 'report/img/notests.png' %}" width="100"><div class="mt3 pl-textcolor-body">No tests yet</div>
+            <div class="f6 mb0 dark-blue">{{ url.url|noprotocol }}</div>
+    	</a>
     {% endif %}
 
 </div>
