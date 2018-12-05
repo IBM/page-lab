@@ -107,55 +107,55 @@
         <div class="fl-ns w-100 w-50-l mb4">
             <h4 class="f4 b inline-flex">Average KPIs <span class="items-center pointer hint--top normal ml2" aria-label="Standard indicators of a page's performance.">{{ templateHelpers.html.icons.info|safe }}</span></h4>
             
-            <table class="pf-tooltip-cue collapse">
+            <table class="collapse">
                 <tbody>
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal" aria-label="Most recent test run on this URL"><span class="b">Last tested:</span></span></td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="{{ templateHelpers.classes.tooltipCue }} hint--top-right normal" aria-label="Most recent test run on this URL"><span class="b">Last tested:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.lighthouse_run.created_date }}</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="Total page size including all images, script, stylesheets and any other included or referenced resources."><span class="b">Total size:</span></span></td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="{{ templateHelpers.classes.tooltipCue }} hint--top-right normal hint--large" aria-label="Total page size including all images, script, stylesheets and any other included or referenced resources."><span class="b">Total size:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.total_byte_weight|kbToMb }}</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="Total number of resources requested by the page including all images, script, stylesheets and any other included or referenced resources."><span class="b"># of network requests:</span></span></td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="{{ templateHelpers.classes.tooltipCue }} hint--top-right normal hint--large" aria-label="Total number of resources requested by the page including all images, script, stylesheets and any other included or referenced resources."><span class="b"># of network requests:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.number_network_requests|withComma }}</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="Time spent waiting for the initial response. This time captures the latency of a round trip to the server in addition to the time spent waiting for the server to deliver the response."><span class="b">Time to first byte:</span></span></td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="{{ templateHelpers.classes.tooltipCue }} hint--top-right normal hint--large" aria-label="Time spent waiting for the initial response. This time captures the latency of a round trip to the server in addition to the time spent waiting for the server to deliver the response."><span class="b">Time to first byte:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.time_to_first_byte|withComma }} ms</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="This event is fired when the initial HTML document has been completely loaded and parsed, without waiting for stylesheets, images, and subframes to finish loading; the page is loaded but scripts just started to be executed."><span class="b">DOM content loaded:</span></span></td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="{{ templateHelpers.classes.tooltipCue }} hint--top-right normal hint--large" aria-label="This event is fired when the initial HTML document has been completely loaded and parsed, without waiting for stylesheets, images, and subframes to finish loading; the page is loaded but scripts just started to be executed."><span class="b">DOM content loaded:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.dom_content_loaded|withComma }} ms</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="FCP reports the time when the browser first rendered any text, image (including background images), non-white canvas or SVG. This includes text with pending webfonts. This is the first time users could start consuming page content."><span class="b">First contentful paint:</span></span></td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="{{ templateHelpers.classes.tooltipCue }} hint--top-right normal hint--large" aria-label="FCP reports the time when the browser first rendered any text, image (including background images), non-white canvas or SVG. This includes text with pending webfonts. This is the first time users could start consuming page content."><span class="b">First contentful paint:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.first_contentful_paint|withComma }} ms</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="FMP measures when the primary content of a page is visible; answers the question: 'is it useful?'. The concept of 'useful' is very hard to spec in a way that applies generically to all web pages, so this is Lighthouse's best guess."><span class="b">First meaningful paint:</span></span></td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="{{ templateHelpers.classes.tooltipCue }} hint--top-right normal hint--large" aria-label="FMP measures when the primary content of a page is visible; answers the question: 'is it useful?'. The concept of 'useful' is very hard to spec in a way that applies generically to all web pages, so this is Lighthouse's best guess."><span class="b">First meaningful paint:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.first_meaningful_paint|withComma }} ms</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="(Time to interactive) The TTI metric identifies the point at which the page's initial JavaScript is loaded and the main thread is idle (free of long tasks). As a general rule, you should try as hard as possible to minimize the time between FMP and TTI"><span class="b">Fully interactive:</span></span></td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="{{ templateHelpers.classes.tooltipCue }} hint--top-right normal hint--large" aria-label="(Time to interactive) The TTI metric identifies the point at which the page's initial JavaScript is loaded and the main thread is idle (free of long tasks). As a general rule, you should try as hard as possible to minimize the time between FMP and TTI"><span class="b">Fully interactive:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.interactive|withComma }} ms</td>
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="The load event is fired when the page and its dependent resources have finished loading. Essentially, all requests have finished. Stalled/hung requests (including asynchronous) will blow this number out."><span class="b">DOM loaded:</span></span></td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="{{ templateHelpers.classes.tooltipCue }} hint--top-right normal hint--large" aria-label="The load event is fired when the page and its dependent resources have finished loading. Essentially, all requests have finished. Stalled/hung requests (including asynchronous) will blow this number out."><span class="b">DOM loaded:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.dom_loaded|withComma }} ms</td>
                     </tr>
                    
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="Number of redirect hops (301, 302) it took to get to the actual final destination URL that was tested."><span class="b"># of redirects:</span></span></td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="{{ templateHelpers.classes.tooltipCue }} hint--top-right normal hint--large" aria-label="Number of redirect hops (301, 302) it took to get to the actual final destination URL that was tested."><span class="b"># of redirects:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">
                             {# If there's a redirect, Lighthouse treats initial request as a 'hop' so there's always one extra. #}
                             {% if url1.lighthouse_run.redirect_hops == 0 %}
@@ -167,7 +167,7 @@
                     </tr>
                     
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="The total redirection (301, 302) time spent getting to the actual final destination URL that was tested."><span class="b">Wasted redirect time:</span></span></td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="{{ templateHelpers.classes.tooltipCue }} hint--top-right normal hint--large" aria-label="The total redirection (301, 302) time spent getting to the actual final destination URL that was tested."><span class="b">Wasted redirect time:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.url_kpi_average.redirect_wasted_ms|withComma }} ms</td>
                     </tr>
                     
@@ -185,20 +185,25 @@
                 <table class="collapse">
                     <thead>
                         <tr>
-                            <td class="b {{ templateHelpers.classes.tableListCell }}">Name</td>
-                            <td class="b {{ templateHelpers.classes.tableListCell }}">Start</td>
+                            <td class="b pr3 {{ templateHelpers.classes.tableListCell }}">Name</td>
+                            <td class="b pr3 {{ templateHelpers.classes.tableListCell }}">Start</td>
                             <td class="b {{ templateHelpers.classes.tableListCell }}">Duration</td>
                         </tr>
                     </thead>
                     <tbody>
                         {# Skip measures that are zero duration because they don't make a difference #}
                         
-                        {% for measure in url1.user_timing_measure_avg_url.all %}
-                            {% if measure.duration > 0 %}
+                        {% for timingAverage in url1.user_timing_measure_avg_url.all %}
+                            {% if timingAverage.duration > 0 %}
                             <tr>
-                                <td class="{{ templateHelpers.classes.tableListCell }}">{{ measure.name }}</td>
-                                <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ measure.start_time|withComma }} ms</td>
-                                <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ measure.duration|withComma }} ms</td>
+                                <td class="pr3 {{ templateHelpers.classes.tableListCell }}">
+                                    {% if timingAverage.name.description is not None %}
+                                        <span class="{{ templateHelpers.classes.tooltipCue }} hint--top" aria-label="{{ timingAverage.name.description }}">{{ timingAverage.name }}</span>
+                                    {% else %}
+                                        {{ timingAverage.name }}
+                                    {% endif %}</td>
+                                <td class="tr pr3 {{ templateHelpers.classes.tableListCell }}">{{ timingAverage.start_time|withComma }} ms</td>
+                                <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ timingAverage.duration|withComma }} ms</td>
                             </tr>    
                             {% endif %}
                         {% endfor %}

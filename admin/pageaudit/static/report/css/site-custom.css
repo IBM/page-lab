@@ -395,13 +395,7 @@ a:hover .icon {
     font-size: .875rem !important;
 }
 
-.pf-tooltip-cue .hint--top-right span {
-    border-bottom-style: dashed;
-    border-bottom-color: #d2d2d2;
-    border-bottom-width: 1px;
-    cursor: pointer;
-}
-    
+
 
 /************************************************************************************************
     Helpers

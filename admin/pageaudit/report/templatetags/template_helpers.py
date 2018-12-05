@@ -44,6 +44,7 @@ def getTemplateHelpers(context):
             'spinner': 'pl-spinner ba br-100',
             'tableListCell': 'pv3 bb b--black-20',
             'tableListCell_bt': 'pv3 bt b--black-20',
+            'tooltipCue': 'bb b--black-20 b--dashed pointer bt-0 br-0 bl-0',
             'viewAll': commonButton + ' b--blue bg-white hover-bg-blue blue hover-white link',
             'viewReport': commonButton + ' b--dark-green bg-green hover-bg-dark-green white',
         },
