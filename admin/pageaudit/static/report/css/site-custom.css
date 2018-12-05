@@ -11,9 +11,26 @@
 :root {
     --gold: #ffb700;
     --text-color: #333;
-    --blue: #357edd;
+    --blue: #2571eb;
     --site-color: var(--gold);
     --animation-curve: cubic-bezier(0.2,1,0.2,1);
+}
+
+/** 
+    Make blue slightly darker to pass accessibility on buttons and links. 
+    Any other Tachyons "blue" classes used have to be (re)set here to the new blue.
+**/
+.blue {
+    color: var(--blue);
+}
+
+.bg-blue,
+.hover-bg-blue:hover {
+    background-color: var(--blue);
+}
+
+.b--blue {
+    border-color: var(--blue);
 }
 
 
