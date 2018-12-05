@@ -156,7 +156,14 @@
                    
                     <tr>
                         <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="hint--top-right normal hint--large" aria-label="Number of redirect hops (301, 302) it took to get to the actual final destination URL that was tested."><span class="b"># of redirects:</span></span></td>
-                        <td class="tr {{ templateHelpers.classes.tableListCell }}">{{ url1.lighthouse_run.redirect_hops|withComma }}</td>
+                        <td class="tr {{ templateHelpers.classes.tableListCell }}">
+                            {# If there's a redirect, Lighthouse treats initial request as a 'hop' so there's always one extra. #}
+                            {% if url1.lighthouse_run.redirect_hops == 0 %}
+                                0
+                            {% else %}
+                                {{ url1.lighthouse_run.redirect_hops|add:"-1"}}
+                            {% endif %}
+                            </td>
                     </tr>
                     
                     <tr>
