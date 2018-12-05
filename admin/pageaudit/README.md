@@ -12,8 +12,8 @@
 * [PageLab node app](../../pageaudit)
 
 
-**Note**: We are using python 3, so any command should use  `python3` for the command, not `python`.
-If you accidentally use `python` you will get an error like: _"Couldn't import Django. Are you sure it's installed..."_
+**Note**: We are using python 3. If you already have python 2 setup and mapped to `python` command, you will need to use `python3`. Or you can setup a virtual env. and make life easy for yourself and have `python` mapped to `python3`.
+
 
 
 ## Getting started - First time install:
