@@ -36,7 +36,8 @@ urlpatterns = [
     url(r'^urls/compare/(?P<id1>[\d-]+)/(?P<id2>[\d-]+)/(?P<id3>[\d-]+)/(.*)', RedirectView.as_view(url=reverse_lazy('plr:home'))),
     
     ## Lighthouse report data viewer.
-    url(r'^lighthouse-viewer/$', TemplateView.as_view(template_name='lighthouse-viewer.html'), name='report_lighthouse_viewer'),
+    url(r'^urls/lighthouse-viewer/(?P<id>[\d-]+)/$', reports_lighthouse_viewer, name='reports_lighthouse_viewer'),
+    url(r'^urls/lighthouse-viewer-template/$', TemplateView.as_view(template_name='reports_lighthouse_viewer_template.html'), name='reports_lighthouse_viewer_template'),
     
     ## Standard across all apps.
     url(r'^signin/$', signin, name='signin'),

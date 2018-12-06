@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <title>PageLab - Lighthouse report viewer</title>
+        
+        
+        <script>
+            
+            window.lighthouseData = {{ lighthouseData|safe }};
+            
+            (function () {
+                
+                window.addEventListener('message', function msgHandler(/** @type {Event} */ e) {
+                    const messageEvent = /** @type {MessageEvent} */ (e);
+
+                    if (messageEvent.data.opened) {
+                        window.frames[1].postMessage({lhresults: lighthouseData.rawData}, window.location);
+                        window.removeEventListener('message', msgHandler);
+                    }
+                });
+
+            })();
+            
+        </script>
+        
+    </head>
+
+    <frameset rows="0%,100%">
+        <frame name="top" />
+        <frame name="main" src="{% url 'plr:reports_lighthouse_viewer_template' %}" />
+    </frameset>
+    
+</html>

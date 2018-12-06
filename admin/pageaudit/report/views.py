@@ -126,15 +126,15 @@ def api_lighthouse_data(request, id):
     a report calls this as a web service to get the JSON to send to the lighthouse viewer.
     """
     
-    lightouseData = {}
+    lighthouseData = {}
     
     try:
-        lightouseData['rawData'] = LighthouseRun.objects.get(id=id).lighthouse_data_raw_lighthouse_run.get().report_data
+        lighthouseData['rawData'] = LighthouseRun.objects.get(id=id).lighthouse_data_raw_lighthouse_run.get().report_data
     except Exception as ex:
         pass
     
     return JsonResponse({
-        'results': lightouseData 
+        'results': lighthouseData 
     })
 
 
@@ -587,6 +587,28 @@ def reports_dashboard(request, filter_slug=''):
     return render(request, 'reports_dashboard.html', context)
 
 
+##
+##  /report/urls/lighthouse-viewer/id/
+##
+##  Compares 2 (required) or optional 3rd URL report side-by-side.
+##
+##
+def reports_lighthouse_viewer(request, id):
+    
+    lighthouseData = {}
+    
+    try:
+        lighthouseData['rawData'] = LighthouseRun.objects.get(id=id).lighthouse_data_raw_lighthouse_run.get().report_data
+    except Exception as ex:
+        pass
+    
+    context = {
+        'lighthouseData': json.dumps(lighthouseData)
+    }
+
+    return render(request, 'reports_lighthouse_viewer.html', context)
+    
+    
 ##
 ##  /report/urls/compare/<id1>/<id2>/<id3>?/
 ##

@@ -7,7 +7,7 @@
 {% for lighthouseRun in lighthouseRuns %}
     <tr>
         <td>{{ forloop.counter }}</td>
-        <td class="tc"><a aria-label="View report in new window" class="pl-open-lighthouse-report hint--top-right small" href="#{{ lighthouseRun.id }}" data-runid="{{ lighthouseRun.id }}">{{ templateHelpers.html.icons.newWindow|safe }}</a></td>
+        <td class="tc"><a target="_blank" aria-label="View report in new window" class="pl-open-lighthouse-report hint--top-right small" href="{% url 'plr:reports_lighthouse_viewer' id=lighthouseRun.id %}">{{ templateHelpers.html.icons.newWindow|safe }}</a></td>
         <td>{{ lighthouseRun.created_date }}</td>
         <td>{{ lighthouseRun.performance_score }}</td>
         <td>{{ lighthouseRun.accessibility_score }}</td>
