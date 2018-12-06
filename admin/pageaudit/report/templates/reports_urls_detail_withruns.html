@@ -155,7 +155,7 @@
                     </tr>
                    
                     <tr>
-                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="{{ templateHelpers.classes.tooltipCue }} hint--top-right normal hint--large" aria-label="Number of redirect hops (301, 302) it took to get to the actual final destination URL that was tested."><span class="b"># of redirects:</span></span></td>
+                        <td class="b {{ templateHelpers.classes.tableListCell }}"><span class="{{ templateHelpers.classes.tooltipCue }} hint--top-right normal hint--large" aria-label="Number of redirect hops (301, 302) it took to get to the actual final destination URL that was tested."><span class="b">Current # of redirects:</span></span></td>
                         <td class="tr {{ templateHelpers.classes.tableListCell }}">
                             {# If there's a redirect, Lighthouse treats initial request as a 'hop' so there's always one extra. #}
                             {% if url1.lighthouse_run.redirect_hops == 0 %}
@@ -272,6 +272,7 @@
         <script src="{% static 'report/js/select2.min.js' %}"></script>
         <script src="{% static 'report/js/d3.v4.min.js' %}"></script>
         <script src="{% static 'report/js/c3.min.js' %}"></script>
+        <script src="{% static 'report/js/micromodal.min.js' %}"></script>
     
         <script>
     
@@ -457,6 +458,8 @@
     
     
     {% include "partials/compare_tray.html" %}
+    
+    {% include "partials/modal_redirects.html" with modalNum=1 redirects=redirects %}
     
     
 {% endblock %}
