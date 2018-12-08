@@ -771,7 +771,7 @@ class LighthouseDataRaw(models.Model):
         
         if validRun:
             ## 5. Get/Create the average model object and re-calc new averages including the run we just saved.
-            urlRuns = LighthouseRun.objects.validRuns()
+            urlRuns = LighthouseRun.objects.filter(url=url).validRuns()
 
             ## Seo is new, so only get average using runs that have it (>0), and for safety, set to 0 if there are none.
             urlRunsWithSeoScore = urlRuns.filter(seo_score__gt=0)
