@@ -1,4 +1,3 @@
-
 import calendar
 import datetime
 import json
@@ -664,15 +663,31 @@ def reports_urls_detail(request, id):
     
     
     ## Pass empty data set to chart for initial render. JS loads dataset async.
-    lineChartData = createHistoricalScoreChartData(None)   
+    lineChartData = createHistoricalScoreChartData(None) 
+    lighthouseRunsCount = 0
+    redirects = []
+    
+    validRuns = LighthouseRun.objects.filter(url=url1).validRuns()
+    
+    if validRuns:
+        lighthouseRunsCount = validRuns.count()
+    
+    if lighthouseRunsCount > 0:
+        try:
+            lastRun = validRuns.order_by('-created_date').first().lighthouse_data_raw_lighthouse_run.get()
+            redirects = lastRun.report_data['audits']['redirects']['details']['items']
+        except Exception as ex:
+            pass
     
     
     context = {
         'url1': url1,
         'lineChartData': lineChartData,
+        'lighthouseRunsCount': lighthouseRunsCount,
+        'redirects': redirects
     }
     
-    if LighthouseRun.objects.filter(url=url1).count() > 1:
+    if lighthouseRunsCount > 0:
         return render(request, 'reports_urls_detail_withruns.html', context)
     else:
         return render(request, 'reports_urls_detail_noruns.html', context)
