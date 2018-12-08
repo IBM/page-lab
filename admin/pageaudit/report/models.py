@@ -110,6 +110,9 @@ class LighthouseRun(models.Model):
     ## REMOVE THIS after new user-timing models are POPULATED WITH THE DATA.
     masthead_onscreen = models.PositiveIntegerField(default=0)
 
+    ## Sets up custom queries at top.
+    objects = LighthouseRunManger()
+
     class Meta:
         ordering = ['-created_date']
 
@@ -191,6 +194,7 @@ class Url(models.Model):
 
     url_paths = models.ManyToManyField('UrlPath', blank=True)
     search_key_vals = models.ManyToManyField('SearchKeyVal', blank=True)
+    
     ## Sets up custom queries at top.
     objects = UrlManger()
 
@@ -763,8 +767,8 @@ class LighthouseDataRaw(models.Model):
 
         ## Save the run object with populated fields.
         this_run.save()
-
-
+        
+        
         if validRun:
             ## 5. Get/Create the average model object and re-calc new averages including the run we just saved.
             urlRuns = LighthouseRun.objects.validRuns()
