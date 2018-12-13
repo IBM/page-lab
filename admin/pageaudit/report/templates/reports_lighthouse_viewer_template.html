@@ -15,6 +15,11 @@ Unless required by applicable law or agreed to in writing, software distributed 
   <meta name="theme-color" content="#304ffe">
   <link rel="stylesheet" href="{% static 'report/lighthouse-viewer/styles/viewer.css' %}">
   
+  <script>
+      // Added to allow linking to a report via a run # in the report viewer page URL.
+      self.opener = window.parent;
+  </script>
+  
 </head>
 <body class="lh-root lh-vars">
 <div hidden><!--

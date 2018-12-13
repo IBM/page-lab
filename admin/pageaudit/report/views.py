@@ -1,4 +1,3 @@
-
 import calendar
 import datetime
 import json
@@ -126,15 +125,15 @@ def api_lighthouse_data(request, id):
     a report calls this as a web service to get the JSON to send to the lighthouse viewer.
     """
     
-    lightouseData = {}
+    lighthouseData = {}
     
     try:
-        lightouseData['rawData'] = LighthouseRun.objects.get(id=id).lighthouse_data_raw_lighthouse_run.get().report_data
+        lighthouseData['rawData'] = LighthouseRun.objects.get(id=id).lighthouse_data_raw_lighthouse_run.get().report_data
     except Exception as ex:
         pass
     
     return JsonResponse({
-        'results': lightouseData 
+        'results': lighthouseData 
     })
 
 
@@ -588,6 +587,28 @@ def reports_dashboard(request, filter_slug=''):
 
 
 ##
+##  /report/urls/lighthouse-viewer/id/
+##
+##  Compares 2 (required) or optional 3rd URL report side-by-side.
+##
+##
+def reports_lighthouse_viewer(request, id):
+    
+    lighthouseData = {}
+    
+    try:
+        lighthouseData['rawData'] = LighthouseRun.objects.get(id=id).lighthouse_data_raw_lighthouse_run.get().report_data
+    except Exception as ex:
+        pass
+    
+    context = {
+        'lighthouseData': json.dumps(lighthouseData)
+    }
+
+    return render(request, 'reports_lighthouse_viewer.html', context)
+    
+    
+##
 ##  /report/urls/compare/<id1>/<id2>/<id3>?/
 ##
 ##  Compares 2 (required) or optional 3rd URL report side-by-side.
@@ -642,15 +663,31 @@ def reports_urls_detail(request, id):
     
     
     ## Pass empty data set to chart for initial render. JS loads dataset async.
-    lineChartData = createHistoricalScoreChartData(None)   
+    lineChartData = createHistoricalScoreChartData(None) 
+    lighthouseRunsCount = 0
+    redirects = []
+    
+    validRuns = LighthouseRun.objects.filter(url=url1).validRuns()
+    
+    if validRuns:
+        lighthouseRunsCount = validRuns.count()
+    
+    if lighthouseRunsCount > 0:
+        try:
+            lastRun = validRuns.order_by('-created_date').first().lighthouse_data_raw_lighthouse_run.get()
+            redirects = lastRun.report_data['audits']['redirects']['details']['items']
+        except Exception as ex:
+            pass
     
     
     context = {
         'url1': url1,
         'lineChartData': lineChartData,
+        'lighthouseRunsCount': lighthouseRunsCount,
+        'redirects': redirects
     }
     
-    if LighthouseRun.objects.filter(url=url1).count() > 1:
+    if lighthouseRunsCount > 0:
         return render(request, 'reports_urls_detail_withruns.html', context)
     else:
         return render(request, 'reports_urls_detail_noruns.html', context)

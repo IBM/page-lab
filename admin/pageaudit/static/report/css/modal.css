@@ -1,0 +1,14 @@
+/************************************************************************************************
+    Modal styles not achieved thru Tachyons classes.
+************************************************************************************************/
+.pl-modal {
+    display: none;
+}
+
+.pl-modal.is-open {
+    display: block;
+}
+
+.pl-modal-close:before {
+    content: "\2715";
+}

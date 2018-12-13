@@ -1,0 +1,30 @@
+{% load beautify %}
+
+<div class="pl-modal" id="modal-redirects" aria-hidden="true">
+    <div class="fixed flex justify-center items-center bg-black-60 top-0 right-0 bottom-0 left-0" tabindex="-1" data-micromodal-close>
+    <div class="mw7-ns bg-white pv3 ph4" role="dialog" aria-modal="true" aria-labelledby="modal-{{ modalNum }}-title" >
+        <header class="flex align-items justify-between">
+            <h3 class="f5 b" id="modal-{{ modalNum }}-title" >Redirect hops</h2>
+            <button class="mt2 pl-modal-close pointer h2 ba br2 ph3 border-box b--blue blue bg-white hover-bg-blue hover-white" aria-label="Close modal" data-micromodal-close></button>
+        </header>
+        <div id="modal-{{ modalNum }}-content">
+            <table class="mt3">
+                <thead>
+                    <tr>
+                        <th class="tl pr3 b {{ templateHelpers.classes.tableListCell_bt }}">Wasted MS</th>
+                        <th class="tl b {{ templateHelpers.classes.tableListCell_bt }}">Url</th>
+                    </trs
+                </thead>
+                <tbody>
+                    {% for redirect in redirects %}
+                        <tr>
+                            <td class="pr3 tr {{ templateHelpers.classes.tableListCell_bt }}">{{ redirect.wastedMs|withComma }}</td>
+                            <td class="{{ templateHelpers.classes.tableListCell_bt }}">{{ redirect.url }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+</div>
