@@ -148,6 +148,7 @@ def createHistoricalScoreChartData(LighthouseRunQueryset):
     data = {
         'x': 'x',
         'xFormat': '%d-%m-%Y',
+        'type': 'spline',
         'columns': [
             lineChartData['dates'],
             lineChartData['perfScores'],
