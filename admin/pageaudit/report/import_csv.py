@@ -8,7 +8,8 @@ from django.db import transaction
 from django.db.models import Avg, Max, Min, Q, Sum
 from django.utils import timezone
 
-from report.models import Url, LighthouseRun, LighthouseDataRaw, UserTimingMeasureName, UserTimingMeasure, UserTimingMeasureAverage
+from report.models import (Url, LighthouseRun, LighthouseDataRaw, LighthouseDataUsertiming,
+                           UserTimingMeasureName, UserTimingMeasure, UserTimingMeasureAverage)
 
 
 superuser = User.objects.get(id=1)
