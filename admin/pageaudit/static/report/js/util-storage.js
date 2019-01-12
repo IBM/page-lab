@@ -64,7 +64,7 @@
 		try {
     		return localStorage && typeof JSON !== "undefined";
         }
-        catch {
+        catch (e) {
             return false;
         }
 	};
