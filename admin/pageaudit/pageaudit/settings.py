@@ -28,15 +28,15 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 36214400
 SECRET_KEY = 'qhk(v0g!4#(+_$$36hyks$nx!wkq$g&8qfgb92)92e)jkm1g%a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# To test Django in "debug = false" mode, but using Django to server static files as in dev, 
+# To test Django in "debug = false" mode, but using Django to server static files as in dev,
 #  run this locally:  `manage.py runserver --insecure`
 DEBUG = os.getenv('DJANGO_DEBUG_FLAG', False)
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-if os.getenv('DJANGO_ALLOWED_HOST'): 
+if os.getenv('DJANGO_ALLOWED_HOST'):
     ALLOWED_HOSTS.append(os.getenv('DJANGO_ALLOWED_HOST'))
-    
+
 INTERNAL_IPS = ['127.0.0.1',]
 
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'report',
     'dbbackup',
     'compressor',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -118,7 +119,7 @@ ADMINS_EMAIL_TO_SMS = []
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql', 
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DJANGO_DB_NAME', 'perf_lab'),
         'USER': os.getenv('DJANGO_DB_USER', 'perf_lab'),
         'PASSWORD': os.getenv('DJANGO_DB_PASSWORD', ''),
@@ -190,11 +191,11 @@ MEDIA_URL = os.getenv('DJANGO_MEDIA_URL', '/media/')
 
 
 ## Compressor module settings.
-## Compressor is default set to OPPOSITE of DEBUG. 
+## Compressor is default set to OPPOSITE of DEBUG.
 ## To force compressor locally during debug, add "COMPRESS_ENABLED = True" var to your settings_local.py
 COMPRESS_ROOT = os.path.join(BASE_DIR, "static/")
 COMPRESS_CSS_FILTERS = [
-    'compressor.filters.css_default.CssAbsoluteFilter', 
+    'compressor.filters.css_default.CssAbsoluteFilter',
     'compressor.filters.cssmin.rCSSMinFilter'
 ]
 
@@ -208,6 +209,9 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
+CRONJOBS = [
+    ('10 03 * * *', 'report.cron.daily_report')
+]
 
 ## Local settings override for ease, instead of/in addition to using ENV vars.
 ## Create a settings_local.py and override any vars above, even if they were set in your ENV.
@@ -215,4 +219,3 @@ try:
     from .settings_local import *
 except ImportError:
     pass
-    
