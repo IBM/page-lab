@@ -29,13 +29,14 @@ from report.models import (
 
 superuser = User.objects.get(id=1)
 
-def report_yesterday_data():
+def report_yesterday_data(output_path='/tmp'):
     """
     Get the data generated yesterday
     """
+
     include_user_timing = True
     timestr = time.strftime("%Y-%m-%d-%H%M%S")
-    path = "%s/%s.csv" % (DAILY_DUMP_PATH, timestr,)
+    path = "%s/%s.csv" % (output_path, timestr,)
     file = open(path, 'w')
     writer = csv.writer(file)
 
