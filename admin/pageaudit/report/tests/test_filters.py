@@ -38,14 +38,16 @@ class TestUrlFilters(TestCase):
             )
 
         # make 3 UrlFilters
-        filters = ['foo', 'bar', 'w00t']
+        filters = ['foo', 'bar', 'foo or w00t']
         filter_arr = []
 
         for filter in filters:
             filter_arr.append(
                 UrlFilter.objects.create(
                     name='%s filter' % filter,
-                    description='%s filter description' % filter
+                    description='%s filter description' % filter,
+                    slug='%s-filter' % filter,
+                    mode='AND' if 'or' not in filter else 'OR'
                 )
             )
 
@@ -63,10 +65,15 @@ class TestUrlFilters(TestCase):
                     filter_path_index=1,
                     url_filter=filter_arr[1]
                 )
-            elif filter == 'w00t':
+            elif filter == 'foo or w00t':
                 UrlFilterPart.objects.create(
                     prop='hash',
                     filter_val='w00t',
+                    url_filter=filter_arr[2]
+                )
+                UrlFilterPart.objects.create(
+                    prop='path_segment',
+                    filter_val='foo',
                     url_filter=filter_arr[2]
                 )
 
@@ -81,9 +88,11 @@ class TestUrlFilters(TestCase):
         bar = UrlFilter.objects.get(name='bar filter')
         urls = bar.run_query()
 
-        self.assertEqual(urls[0].url, 'https://ibm.com/bar/baz/biff')
+        self.assertEqual(urls[0].url, 'https://ibm.com/bar/baz/#w00t')
 
-        woot = UrlFilter.objects.get(name='w00t filter')
-        urls = woot.run_query()
+        foo_or_woot = UrlFilter.objects.get(name='foo or w00t filter')
+        urls = foo_or_woot.run_query()
 
         self.assertEqual(urls[0].url, 'https://ibm.com/bar/baz/#w00t')
+        self.assertEqual(urls[1].url, 'https://ibm.com/foo')
+        self.assertEqual(len(urls), 2)
