@@ -93,7 +93,10 @@
                         <tr>
                             <td colspan="4" class="pb3 o-0">
                                 {% for part in parts %}
-                                    <span class="pa1 ph2 mr3 bg-dark-green dib white {{ templateHelpers.classes.rounded }}">{{ part.prop|title }} = {{ part.filter_val }}</span>
+                                    <span class="pa1 ph2 ml1 mr1 bg-dark-green dib white {{ templateHelpers.classes.rounded }}">{{ part.prop|title }} = {{ part.filter_val }}</span>
+                                    {% if forloop.last == False %}
+                                        <span>{{ filter.mode|lower }}</span>
+                                    {% endif %}
                                 {% endfor %}
                             </td>
                         </tr>
