@@ -10,3 +10,4 @@ ipdb
 django-inline-static
 urllib3
 django_compressor
+django_crontab
